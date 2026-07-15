@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Langton's Ant — Structural Constraints on Finite-Support Periodic Highways</title>
+<style>
+  :root{--ink:#12233a;--muted:#5a6b7b;--accent:#1f4e79;--rule:#dde3ea;--bg:#f5f8fb;--card:#fff;}
+  html{-webkit-text-size-adjust:100%;}
+  body{margin:0;background:var(--bg);color:var(--ink);
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;line-height:1.6;}
+  .wrap{max-width:760px;margin:0 auto;padding:56px 22px 100px;}
+  h1{font-size:1.7rem;line-height:1.25;margin:0 0 .15em;}
+  .sub{color:var(--muted);font-size:1.05rem;margin-bottom:.2em;}
+  .author{color:var(--accent);font-weight:600;margin-bottom:1.4em;}
+  .status{background:#eef7f0;border:1px solid #a9d3b4;border-radius:10px;padding:12px 18px;font-size:.95rem;margin:1.2em 0;}
+  h2{font-size:1.18rem;margin:2em 0 .5em;border-bottom:1px solid var(--rule);padding-bottom:.2em;}
+  .cards{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:1em 0;}
+  @media (max-width:560px){.cards{grid-template-columns:1fr;}}
+  .card{background:var(--card);border:1px solid var(--rule);border-radius:10px;padding:16px 18px;text-decoration:none;color:inherit;display:block;transition:box-shadow .15s,transform .15s;}
+  .card:hover{box-shadow:0 4px 16px rgba(20,40,70,.1);transform:translateY(-1px);}
+  .card .t{font-weight:700;font-size:1.02rem;color:var(--accent);}
+  .card .d{color:var(--muted);font-size:.9rem;margin-top:.25em;}
+  ul{padding-left:1.25em;} li{margin:.35em 0;}
+  code{font-family:Consolas,monospace;background:#e9eef3;padding:.06em .35em;border-radius:4px;font-size:.85em;}
+  a{color:var(--accent);}
+  .foot{color:var(--muted);font-size:.85rem;margin-top:3em;border-top:1px solid var(--rule);padding-top:1em;}
+  table{border-collapse:collapse;width:100%;font-size:.9rem;margin:.5em 0;}
+  th,td{border:1px solid var(--rule);padding:6px 9px;text-align:left;} th{background:#e9eef3;}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<h1>Structural Constraints on Finite-Support Periodic Highways of Langton&rsquo;s Ant</h1>
+<div class="sub">Exact structural &amp; arithmetic results, an exhaustive small-period exclusion, and a Lean 4 formalization.</div>
+<div class="author">Atharva Jillhewar</div>
+
+<div class="status">
+<strong>Status.</strong> The highway conjecture is <strong>open</strong>. This project
+does not prove or disprove it; it establishes necessary conditions on any
+finite-support periodic highway and excludes short-period ones exhaustively.
+</div>
+
+<h2>Read the papers</h2>
+<div class="cards">
+<a class="card" href="paper.html">
+  <div class="t">Paper &rarr; (HTML)</div>
+  <div class="d">New structural &amp; arithmetic constraints. The main publishable paper, with full proofs.</div>
+</a>
+<a class="card" href="companion.html">
+  <div class="t">Companion report &rarr; (HTML)</div>
+  <div class="d">The complete ledger of results (P1&ndash;P31), reductions, and open problems.</div>
+</a>
+<a class="card" href="../paper/main.tex">
+  <div class="t">Paper LaTeX source &rarr;</div>
+  <div class="d">Self-contained <code>main.tex</code> — paste into Overleaf, compile with pdfLaTeX.</div>
+</a>
+<a class="card" href="../README.md">
+  <div class="t">Repository &amp; code &rarr;</div>
+  <div class="d">Search engines, Lean project, result summaries, reproduction commands.</div>
+</a>
+</div>
+
+<h2>The results in one paragraph</h2>
+<p>Langton&rsquo;s ant, from any finite black configuration, is conjectured to eventually
+build the period-104 &ldquo;highway.&rdquo; We prove that any finite-support periodic
+highway must satisfy strong constraints: it cannot be a zero-growth glider (the
+<strong>even-winding theorem</strong>), so it always grows a wake of net size a positive
+multiple of four; its checker-signed wake bases obey an exact <strong>mod-four residue
+identity</strong>, giving the sharp bound <em>g</em> &ge; 2&nbsp;max(|a|,|b|) between
+growth and drift; the dynamics is exactly conjugate to <strong>edge-toggling on a Tait
+graph</strong> with a cycle-rank surgery law; and an exhaustive two-engine, rank-audited
+computation shows there is <strong>no periodic highway of period &le; 48</strong> other
+than the standard one. The algebraic core is machine-checked in Lean&nbsp;4.</p>
+
+<h2>Exhaustive small-period exclusion</h2>
+<table>
+<tr><th>Period</th><th>Method</th><th>Nodes searched</th><th>Highways found</th></tr>
+<tr><td>&le; 32</td><td>complete enumeration</td><td>46,185,421</td><td>0</td></tr>
+<tr><td>34&ndash;40</td><td>positive-growth</td><td>up to 2.0&times;10&#8312;</td><td>0</td></tr>
+<tr><td>42&ndash;46</td><td>two-engine, audited</td><td>up to 3.5&times;10&#8313;</td><td>0</td></tr>
+<tr><td>48</td><td>two-engine, audited</td><td>8,677,026,370</td><td>0</td></tr>
+</table>
+
+<h2>What remains open</h2>
+<ul>
+<li>A <strong>bounded-retreat / bounded-active-core lemma</strong>: that the ant eventually
+stays in a bounded corridor behind its frontier.</li>
+<li>A <strong>single-tour chronology theorem</strong> classifying positive-growth periodic
+traces for unbounded period.</li>
+</ul>
+<p>These, and not the arithmetic constraints proved here, are what a full solution of the
+conjecture must still supply.</p>
+
+<div class="foot">
+&copy; 2026 Atharva Jillhewar. Code &amp; Lean under MIT; papers under CC BY 4.0.
+Large searches run on the George Mason University clusters.
+</div>
+
+</div>
+</body>
+</html>

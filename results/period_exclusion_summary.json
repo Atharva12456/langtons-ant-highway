@@ -1,0 +1,87 @@
+{
+  "description": "Exhaustive exclusion of finite-support periodic highways of nonzero drift for Langton's ant. 'hits'=0 for every period means NO periodic highway of that period exists other than (for period 104) the standard one. Odd periods cannot restore the heading and are excluded analytically.",
+  "generated": "2026-07-14",
+  "periods": {
+    "<=32": {
+      "method": "complete legal trace enumeration",
+      "nodes": 46185421,
+      "hits": 0,
+      "note": "32 prefix shards; covers all periods up to 32"
+    },
+    "34": {
+      "method": "exact positive-growth search",
+      "hits": 0,
+      "nodes": 9726176
+    },
+    "36": {
+      "method": "exact positive-growth search",
+      "hits": 0,
+      "nodes": 19781050
+    },
+    "38": {
+      "method": "exact positive-growth search",
+      "hits": 0,
+      "nodes": 41972884
+    },
+    "40": {
+      "method": "exact positive-growth search",
+      "hits": 0,
+      "nodes": 201924597
+    },
+    "46": {
+      "method": "two-engine, rank-audited exhaustive search",
+      "prefix_length": 16,
+      "rank_count": 32768,
+      "original_engine": {
+        "nodes": 3463441745,
+        "leaves": 98568824,
+        "hits": 0,
+        "complete_shards": 16
+      },
+      "residue_engine": {
+        "nodes": 3463441745,
+        "leaves": 98568824,
+        "p3_checks": 6132192,
+        "residue_prunes": 92436632,
+        "hits": 0,
+        "complete_shards": 16
+      },
+      "engines_agree_on_nodes": true,
+      "engines_agree_on_leaves": true,
+      "hits": 0
+    },
+    "48": {
+      "method": "two-engine, rank-audited exhaustive search",
+      "prefix_length": 17,
+      "rank_count": 65536,
+      "original_engine": {
+        "nodes": 8677026370,
+        "leaves": 451962870,
+        "hits": 0,
+        "complete_shards": 16
+      },
+      "residue_engine": {
+        "nodes": 8677026370,
+        "leaves": 451962870,
+        "p3_checks": 12257208,
+        "residue_prunes": 439705662,
+        "hits": 0,
+        "complete_shards": 16
+      },
+      "engines_agree_on_nodes": true,
+      "engines_agree_on_leaves": true,
+      "hits": 0
+    },
+    "42": {
+      "method": "two-engine, rank-audited (see records)",
+      "hits": 0,
+      "note": "complete records in project data; residue+original engines agree"
+    },
+    "44": {
+      "method": "two-engine, rank-audited (see records)",
+      "hits": 0,
+      "note": "complete records in project data; residue+original engines agree"
+    }
+  },
+  "conclusion": "No finite-support periodic highway of nonzero drift and period <= 48 exists."
+}

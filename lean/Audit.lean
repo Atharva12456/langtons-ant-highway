@@ -1,0 +1,65 @@
+import Langton
+import Langton.ResidueCharge
+import Langton.ChargeTelescoping
+import Langton.CollisionParity
+import Langton.TraceGeometry
+import Langton.DirectedPoseDiscrepancy
+import Langton.P3Endpoint
+
+#print axioms Langton.departed_cell_toggled
+#print axioms Langton.other_cell_unchanged
+#print axioms Langton.headingReset_trace_modFour
+#print axioms Langton.evenWindingParityCore
+#print axioms Langton.noOddWindingFromFiniteHalfFlow
+#print axioms Langton.blankOrigin_four_steps
+#print axioms Langton.ResidueCharge.fourCornerAdmissible
+#print axioms Langton.ResidueCharge.checkerWeight_eq_paritySign_mul
+#print axioms Langton.ResidueCharge.fiberCharge_mod_two_eq_card
+#print axioms Langton.ResidueCharge.chargeTwo_implies_positive_even
+#print axioms Langton.ResidueCharge.chargeIdentity_implies_positive_even
+#print axioms Langton.ResidueCharge.sumFiberCards_finRange_eq_length
+#print axioms Langton.ResidueCharge.cyclicCharge_implies_growth_bound
+#print axioms Langton.ResidueCharge.cyclicCharge_implies_explicit_growth_bound
+#print axioms Langton.ChargeTelescoping.edgeSum_of_potential
+#print axioms Langton.ChargeTelescoping.cyclicCheckerIncrement_eq_two_mul_sum
+#print axioms Langton.ChargeTelescoping.potentialDrift_of_checkerCycle
+#print axioms Langton.ChargeTelescoping.translatedWidgetDifference_eq_zero
+#print axioms Langton.ChargeTelescoping.strandCharge_from_localCycle_and_periodicWidget
+#print axioms Langton.ChargeTelescoping.localCertificate_implies_residueIdentity
+#print axioms Langton.ChargeTelescoping.localCertificates_imply_growthBound
+#print axioms Langton.CollisionParity.cellBoundary_eq_endpoint_add_step
+#print axioms Langton.CollisionParity.stateCharge_step
+#print axioms Langton.CollisionParity.stateCharge_run
+#print axioms Langton.CollisionParity.blackDifferenceBoundary_eq_endpoints
+#print axioms Langton.CollisionParity.chainDefect_eq_endpointDefect
+#print axioms Langton.CollisionParity.chainDefect_closed
+#print axioms Langton.TraceGeometry.phasePositions_length
+#print axioms Langton.TraceGeometry.phasePositions_eq_addressPositions
+#print axioms Langton.TraceGeometry.aggregateToggles_sum
+#print axioms Langton.TraceGeometry.NormalizedTrace.delta_sum_matches_phases
+#print axioms Langton.TraceGeometry.OrbitEndpointData.delta_sum
+#print axioms Langton.TraceGeometry.OrbitEndpointData.canonical_decomposition
+#print axioms Langton.TraceGeometry.OrbitEndpointData.widget_terminal_zero
+#print axioms Langton.TraceGeometry.residueWeight_translate
+#print axioms Langton.TraceGeometry.additiveResidueWeight_eq_fiberCharge
+#print axioms Langton.TraceGeometry.orbitPhaseCharge_eq_strandCharge
+#print axioms Langton.TraceGeometry.groupedPhaseCharge_eq_strandCharge
+#print axioms Langton.TraceGeometry.residueAlpha_cycle_values
+#print axioms Langton.TraceGeometry.deltaAlphaCycle_sum
+#print axioms Langton.TraceGeometry.toLocalResidueCertificate
+#print axioms Langton.TraceGeometry.remainingGeometry_implies_growthBound
+#print axioms Langton.DirectedPoseDiscrepancy.additiveStateCharge_run
+#print axioms Langton.DirectedPoseDiscrepancy.checkerWeight_fourCorner
+#print axioms Langton.DirectedPoseDiscrepancy.exactColumn_localPotential
+#print axioms Langton.DirectedPoseDiscrepancy.exactColumnWeight_directedPose_return
+#print axioms Langton.DirectedPoseDiscrepancy.exactRow_localPotential
+#print axioms Langton.DirectedPoseDiscrepancy.exactRowWeight_directedPose_return
+#print axioms Langton.DirectedPoseDiscrepancy.rectangleEndpointSigns
+#print axioms Langton.TraceGeometry.alternatingRight_classification
+#print axioms Langton.TraceGeometry.aggregateToggles_take_sum
+#print axioms Langton.TraceGeometry.StabilizedP3Word.raw_prefix_bound
+#print axioms Langton.TraceGeometry.firstOneIndex_spec
+#print axioms Langton.TraceGeometry.StabilizedP3Word.firstOneSpec
+#print axioms Langton.TraceGeometry.StabilizedP3Word.even_prefix_bound
+#print axioms Langton.TraceGeometry.scanWidget_binary_of_prefix_bounds
+#print axioms Langton.TraceGeometry.removeOneAt_prefix_bound

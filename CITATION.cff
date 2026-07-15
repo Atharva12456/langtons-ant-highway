@@ -1,0 +1,32 @@
+cff-version: 1.2.0
+message: "If you use this work, please cite the paper below."
+title: "New Structural and Arithmetic Constraints on Finite-Support Periodic Highways of Langton's Ant"
+authors:
+  - family-names: Jillhewar
+    given-names: Atharva
+type: article
+year: 2026
+abstract: >-
+  For the classical two-colour Langton's ant on the integer lattice with finite
+  initial black support, we establish the first structural and arithmetic
+  constraints on the possible periodic highways: an even-winding theorem forcing
+  strictly positive net black growth divisible by four, a signed mod-four
+  wake-residue identity and the sharp bound g >= 2 max(|a|,|b|) relating growth to
+  drift, a Tait-graph conjugacy with a cycle-rank surgery identity, a two-endpoint
+  collision-chain parity theorem and a touch-graph interlacement rank formula, and
+  a two-engine rank-audited exhaustive exclusion of every finite-support periodic
+  highway of nonzero drift and period at most 48. A decidable
+  periodic-realisability criterion with an explicit finite seed is given, and the
+  algebraic core is machine-checked in Lean 4. No claim of a proof or disproof of
+  the highway conjecture is made.
+keywords:
+  - "Langton's ant"
+  - turmite
+  - cellular automata
+  - highway conjecture
+  - symbolic dynamics
+  - Tait graph
+  - interlacement
+  - Lean
+repository-code: "https://github.com/USERNAME/langtons-ant-highway"
+license: CC-BY-4.0
