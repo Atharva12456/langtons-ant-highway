@@ -193,7 +193,7 @@ avoid a clash with the unrelated ``interlaced word'' of \cite{Lutfalla2025sidewa
 \item \textbf{Small-period exclusion} (Theorem~\ref{thm:periodexcl}): a two-engine,
 rank-audited exhaustive search excludes every finite-support periodic highway of
 nonzero drift and period at most $48$. Existing computational work enumerates highways
-that \emph{occur}; we are not aware of a prior exhaustive nonexistence result below a
+that do occur; we are not aware of a prior exhaustive nonexistence result below a
 fixed period bound.
 \end{enumerate}
 
@@ -395,31 +395,46 @@ Let $H_B=\{e_z:z\in B\}$ be the finite edge subgraph induced by the black cells.
 
 \begin{figure}[h]
 \centering
-\begin{tikzpicture}[scale=0.95,line width=0.9pt]
-  % crossing at z
+\begin{tikzpicture}[scale=1.05,line width=0.9pt]
+  % --- crossing at z, with the four incident arcs labelled 1..4
   \begin{scope}
     \draw (-0.8,-0.8)--(0.8,0.8);
     \draw (-0.8,0.8)--(0.8,-0.8);
     \filldraw (0,0) circle (1.6pt);
-    \node at (0,-1.2) {\footnotesize crossing at $z$};
+    \node[font=\scriptsize] at (-1.02,-1.02) {$1$};
+    \node[font=\scriptsize] at (-1.02, 1.02) {$2$};
+    \node[font=\scriptsize] at ( 1.02, 1.02) {$3$};
+    \node[font=\scriptsize] at ( 1.02,-1.02) {$4$};
+    \node[font=\scriptsize] at (0,-0.42) {$z$};
+    \node at (0,-1.5) {\footnotesize crossing at $z$};
   \end{scope}
-  % white smoothing: vertical arcs reconnect left/left, right/right (e_z absent)
-  \begin{scope}[xshift=3.6cm]
+  % --- white smoothing: joins 1-2 and 3-4 (e_z absent)
+  \begin{scope}[xshift=3.9cm]
     \draw (-0.8,-0.8) .. controls (-0.15,-0.35) and (-0.15,0.35) .. (-0.8,0.8);
     \draw (0.8,-0.8)  .. controls (0.15,-0.35)  and (0.15,0.35)  .. (0.8,0.8);
-    \node at (0,-1.2) {\footnotesize white: $e_z\notin H_B$};
+    \node[font=\scriptsize] at (-1.02,-1.02) {$1$};
+    \node[font=\scriptsize] at (-1.02, 1.02) {$2$};
+    \node[font=\scriptsize] at ( 1.02, 1.02) {$3$};
+    \node[font=\scriptsize] at ( 1.02,-1.02) {$4$};
+    \node at (0,-1.5) {\footnotesize white: $1{-}2$, $3{-}4$; $e_z\notin H_B$};
   \end{scope}
-  % black smoothing: horizontal arcs; the Tait edge e_z is present (dashed)
-  \begin{scope}[xshift=7.2cm]
+  % --- black smoothing: joins 1-4 and 2-3; Tait edge e_z present (dashed)
+  \begin{scope}[xshift=7.8cm]
     \draw (-0.8,-0.8) .. controls (-0.35,-0.15) and (0.35,-0.15) .. (0.8,-0.8);
     \draw (-0.8,0.8)  .. controls (-0.35,0.15)  and (0.35,0.15)  .. (0.8,0.8);
     \draw[dashed] (0,-0.42)--(0,0.42);
-    \node at (0,-1.2) {\footnotesize black: $e_z\in H_B$};
+    \node[font=\scriptsize] at (0.34,0) {$e_z$};
+    \node[font=\scriptsize] at (-1.02,-1.02) {$1$};
+    \node[font=\scriptsize] at (-1.02, 1.02) {$2$};
+    \node[font=\scriptsize] at ( 1.02, 1.02) {$3$};
+    \node[font=\scriptsize] at ( 1.02,-1.02) {$4$};
+    \node at (0,-1.5) {\footnotesize black: $1{-}4$, $2{-}3$; $e_z\in H_B$};
   \end{scope}
 \end{tikzpicture}
-\caption{The two smoothings of the frozen crossing at an ant cell $z$. Colour selects
-which of the two ways the four incident frozen arcs reconnect; the black smoothing is
-the occupied Tait edge $e_z$ (dashed).}
+\caption{The two smoothings of the frozen crossing at an ant cell $z$. The four
+incident frozen arcs are labelled $1,2,3,4$. Colour selects which of the two ways they
+reconnect: white joins $1{-}2$ and $3{-}4$, black joins $1{-}4$ and $2{-}3$. The black
+smoothing is exactly the occupied Tait edge $e_z$ (dashed).}
 \label{fig:smoothing}
 \end{figure}
 
@@ -583,10 +598,13 @@ diamond $(x,y)\to(x{+}1,y{+}1)\to(x{+}2,y)\to(x{+}1,y{-}1)\to(x,y)$ equals the n
 of the sum of the four-corner expressions \eqref{eq:cocycle} based at $(x,y{-}1)$ and
 $(x{+}1,y{-}1)$ (the two differ by $4\,[w(x{+}1,y)+w(x{+}1,y{-}1)]\equiv0$); hence it
 vanishes by \eqref{eq:cocycle}, so the integration is path-independent and $F_N$ is
-well defined. Now set $F_S=F_N-2w$ and define $F_E,F_W$
-from $F_N$ by \eqref{eq:pot}; the two ways of reaching $F_S$ agree precisely because
-$4w=0$, so all four $F_q$ are consistent. Over $\F_2$ the solution space of
-\eqref{eq:cocycle} is the separable weights $\alpha(x)+\beta(y)$.
+well defined. Now set $F_S=F_N-2w$ and define $F_E,F_W$ from $F_N$ by \eqref{eq:pot}.
+Substituting these definitions back into the four $\turnR/\turnL$ relations verifies
+each case in turn; the only possible ambiguity is between the two ways of reaching
+$F_S$---via the $\turnR$-at-$S$/$\turnL$-at-$N$ pair, which gives $F_N+2w$, and via the
+$\turnL$-at-$S$/$\turnR$-at-$N$ pair, which gives $F_N-2w$---and their discrepancy is
+exactly $4w$, which vanishes. Hence all four $F_q$ are consistent. Over $\F_2$ the
+solution space of \eqref{eq:cocycle} is the separable weights $\alpha(x)+\beta(y)$.
 \end{proof}
 
 A mod-four refinement of Proposition~\ref{prop:laurent} (using the quadratic solution
@@ -1349,7 +1367,8 @@ L.~Traldi.
 A.~Jillhewar.
 \newblock Langton's ant: structural constraints, exact searches, and a Lean
 formalization (supplementary code, data, and a companion technical report).
-\newblock GitHub repository, release \texttt{v1.0}, 2026.
+\newblock GitHub repository, release \texttt{v1.0} (commit
+\texttt{49fada5bac673f5307d21053bcded49529d2eeb3}), 2026.
 \newblock \url{https://github.com/Atharva12456/langtons-ant-highway/releases/tag/v1.0}.
 
 \end{thebibliography}

@@ -309,16 +309,27 @@ and \(H_B=\{e_z:z\in B\}\) is the finite black edge subgraph.</p>
   <line x1="12" y1="66" x2="60" y2="18"/>
   <line x1="12" y1="18" x2="60" y2="66"/>
   <circle cx="36" cy="42" r="2.4" fill="currentColor"/>
-  <text x="36" y="86" text-anchor="middle" font-size="10" stroke="none" fill="currentColor">crossing at z</text>
-  <!-- white smoothing -->
+  <g font-size="8" stroke="none" fill="currentColor" text-anchor="middle">
+    <text x="7" y="76">1</text><text x="7" y="15">2</text><text x="65" y="15">3</text><text x="65" y="76">4</text>
+    <text x="36" y="58">z</text>
+  </g>
+  <text x="36" y="86" text-anchor="middle" font-size="9" stroke="none" fill="currentColor">crossing at z</text>
+  <!-- white smoothing: 1-2, 3-4 -->
   <path d="M132 66 C 150 54, 150 30, 132 18"/>
   <path d="M180 66 C 162 54, 162 30, 180 18"/>
-  <text x="156" y="86" text-anchor="middle" font-size="10" stroke="none" fill="currentColor">white: e_z absent</text>
-  <!-- black smoothing + Tait edge -->
+  <g font-size="8" stroke="none" fill="currentColor" text-anchor="middle">
+    <text x="127" y="76">1</text><text x="127" y="15">2</text><text x="185" y="15">3</text><text x="185" y="76">4</text>
+  </g>
+  <text x="156" y="86" text-anchor="middle" font-size="9" stroke="none" fill="currentColor">white: 1–2, 3–4 (e_z absent)</text>
+  <!-- black smoothing: 1-4, 2-3 + Tait edge -->
   <path d="M252 66 C 264 48, 288 48, 300 66"/>
   <path d="M252 18 C 264 36, 288 36, 300 18"/>
   <line x1="276" y1="30" x2="276" y2="54" stroke-dasharray="4 3"/>
-  <text x="276" y="86" text-anchor="middle" font-size="10" stroke="none" fill="currentColor">black: e_z present</text>
+  <g font-size="8" stroke="none" fill="currentColor" text-anchor="middle">
+    <text x="247" y="76">1</text><text x="247" y="15">2</text><text x="305" y="15">3</text><text x="305" y="76">4</text>
+    <text x="287" y="45">e_z</text>
+  </g>
+  <text x="276" y="86" text-anchor="middle" font-size="9" stroke="none" fill="currentColor">black: 1–4, 2–3 (e_z present)</text>
 </svg>
 <figcaption class="note" style="margin-top:.2em">The two smoothings of the frozen crossing at an ant cell \(z\): colour selects how the four incident frozen arcs reconnect, and the black smoothing is the occupied Tait edge \(e_z\) (dashed).</figcaption>
 </figure>

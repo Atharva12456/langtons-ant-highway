@@ -30,7 +30,7 @@ period-104 highway.*
 | # | Result | Where |
 |---|--------|-------|
 | 1 | **Even-winding theorem** — no finite-support pattern can drift to an exact copy of itself with *zero* net black growth. Hence every periodic highway grows a wake of size `g ∈ 4ℤ₍>0₎`. | `paper/` §6 |
-| 2 | **Signed mod-four wake-residue identity** — checker-signed strand bases sum to `2 (mod 4)` in each drift residue class, giving the sharp bound `g ≥ 2·max(|a|,|b|)`. | `paper/` §7 |
+| 2 | **Signed mod-four wake-residue identity** — checker-signed strand bases sum to `2 (mod 4)` in each drift residue class, giving the strand-density lower bound `g ≥ 2·max(|a|,|b|)`. (A lower bound, not claimed attained: the standard highway has `g = 12` against a bound of `4`.) | `paper/` §7 |
 | 3 | **Tait-graph conjugacy** + cycle-rank surgery identity `E + ΔC = 2β`. | `paper/` §4 |
 | 4 | **Two-endpoint collision-chain parity** + touch-graph interlacement rank formula. | `paper/` §8 |
 | 5 | **Exhaustive exclusion of every finite-support periodic highway of period ≤ 48** (two independent engines, rank-by-rank cross-audited, `hits = 0`). | `paper/` §9, `results/` |
@@ -121,7 +121,10 @@ per-rank node/leaf/prune counters in agreement. See `code/README.md`.
 java -cp build/original PositiveGrowthSearch --check-trace <standard-word>
 # => {"prefix_rules_valid":true,"growth":12,"drift":[2,-2],"p16_valid":true,"p3_valid":true}
 ```
-The standard word and its 13-cell seed are in `results/standard_highway.json`.
+The standard word, its **11-cell** seed (for the normalized printed phase, first turn
+`R`, drift `(2,-2)`), and the **13-cell** seed of the shifted phase (first turn `L`,
+drift `(-2,2)`) are in `results/standard_highway.json`. The two phases are different
+and their seeds must not be interchanged.
 
 ---
 
