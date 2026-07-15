@@ -1,0 +1,30 @@
+{
+  "title": "Langton's ant: structural constraints, exact searches, and a Lean 4 formalization",
+  "upload_type": "software",
+  "creators": [
+    { "name": "Jillhewar, Atharva" }
+  ],
+  "description": "Supplementary material for the paper \"New Structural and Arithmetic Constraints on Finite-Support Periodic Highways of Langton's Ant\".\n\nContents: the paper and a companion technical report (LaTeX + HTML); two independent exact search engines (reference and residue-pruned) in Java; a Lean 4 formalization of the algebraic core (no sorry; standard axioms only); Python reference and verification scripts; aggregated search results; and a SHA-256 manifest of every released file (results/artifact_hashes.json).\n\nMain results: an even-winding theorem (no finite-support clean translator, so every periodic highway has net black growth a positive multiple of four); a signed mod-four wake-residue identity giving the strand-density lower bound g >= 2*max(|a|,|b|); an exact Tait-graph conjugacy with a cycle-rank surgery identity; a two-endpoint collision-chain parity theorem; a decidable periodic-realisability criterion with an explicit finite seed; and a two-engine, rank-audited exhaustive computation excluding every finite-support periodic highway of nonzero drift and period at most 48.\n\nThe Langton's ant highway conjecture remains OPEN. Every result is a necessary condition on a finite-support periodic highway or an exact finite computation; none resolves the conjecture.\n\nLicensing: code, Lean formalization and data are MIT; the papers and prose are CC BY 4.0.",
+  "license": "cc-by-4.0",
+  "access_right": "open",
+  "keywords": [
+    "Langton's ant",
+    "turmite",
+    "cellular automata",
+    "highway conjecture",
+    "symbolic dynamics",
+    "reversible dynamics",
+    "Tait graph",
+    "medial graph",
+    "interlacement",
+    "Lean 4",
+    "formal verification"
+  ],
+  "related_identifiers": [
+    {
+      "identifier": "https://github.com/Atharva12456/langtons-ant-highway",
+      "relation": "isSupplementTo",
+      "scheme": "url"
+    }
+  ]
+}
