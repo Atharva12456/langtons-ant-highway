@@ -41,6 +41,9 @@ Thus a returning bad core needs an unbounded chronological chain of flight chang
 
 ## Exact periodic search status
 
+**Update (paper/repo continuation, 14 Jul 2026):** two-engine, rank-audited exclusion now extends to **period 46 and 48**. Period 46: both engines 3,463,441,745 nodes / 98,568,824 leaves / 0 hits. Period 48: both engines 8,677,026,370 nodes / 451,962,870 leaves / 0 hits; residue engine pruned 439,705,662 leaves via P22. All per-rank counters agree. Therefore **no finite-support periodic highway of nonzero drift has period at most 48.** Shards: work/p46_*_shards/, work/p48_*_shards/. Aggregated summary: langtons-ant-highway/results/period_exclusion_summary.json. The Lean project now includes Langton/P3Endpoint.lean in the build graph (previously silently broken); clean 16-job build, no sorry.
+
+
 Odd heading-reset periods are analytically impossible. Zero-growth repeating traces are analytically impossible at every period by P22.
 
 Two independent complete period-42 searches cover prefix ranks 0 through 8191 exactly once:

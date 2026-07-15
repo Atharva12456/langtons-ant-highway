@@ -2669,3 +2669,48 @@ Equation (34.9) predicts rank 41, and the projected lifetime matrix has rank 41.
 The remaining periodic lemma is now precise: control the $Z(W)$ lift and the unbounded closed H/V circuits using translation voltage, square-lattice labels, or the signed mod-four charges strongly enough to exclude both growth-four wake graphs.  General circuit nullity alone cannot do this.
 
 The hostile proof audit is `work/chronology_pairing_hostile_audit.md`, SHA-256 `9beb8d7882841276f1212a01b1dfddf0ef6111e711900a87984fb05649953c11`.  The deterministic narrow reproducer is `work/chronology_pairing_audit.py`, SHA-256 `e0b063427e30428c8d43b09bd8621bcf0456ee87c3292a721ff7025653f780e1`; its JSON output has SHA-256 `b7f50e83a77eccf0acccf60f82b235261bf1d23e094ad4f66f0680d5c45ed345`.  It checks only the standard word and the six already fixed near-models.  The touch-graph derivation is in `work/interlace_touchgraph_notes.md`, SHA-256 `66626ac1e12a6aac34fdc772b8efe2bac56c8dd00b06ebdbc528ce168a15c0f1`.
+
+## 35. Continuation session: period 46/48 exclusion, Lean repair, and repository
+
+**Working date:** 14 July 2026 (paper/repo continuation).
+
+### 35.1 Exact periodic exclusion extended to period 48
+Both search engines were recompiled and positive-controlled (each accepts the
+normalized standard 104-word: growth 12, drift (2,-2), P16/residue/P3 all valid).
+
+- **Period 46.** Two independent engines, 16 shards each over all 2^15 length-16
+  prefix ranks. Identical totals: 3,463,441,745 nodes, 98,568,824 leaves, 0 hits.
+  Residue engine pruned 92,436,632 leaves via P22, applied exact P3 to 6,132,192.
+  All per-rank node/leaf/prune counters agree between engines.
+- **Period 48.** Two independent engines, 16 shards each over all 2^16 length-17
+  prefix ranks. Identical totals: 8,677,026,370 nodes, 451,962,870 leaves, 0 hits.
+  Residue engine pruned 439,705,662 leaves, applied exact P3 to 12,257,208. All
+  per-rank counters agree.
+
+Combined with the earlier record (<=44), the impossibility of odd heading-reset
+periods, and P15/P22's zero-growth exclusion at every period: **no finite-support
+periodic highway of nonzero drift has period at most 48.** Shard directories:
+`work/p46_{original,residue}_shards/`, `work/p48_{original,residue}_shards/`.
+Aggregated summary: `langtons-ant-highway/results/period_exclusion_summary.json`.
+
+### 35.2 Lean: P3Endpoint repaired and brought into the build graph
+`Langton/P3Endpoint.lean` previously failed to elaborate (a `rw` with a
+motive-not-type-correct error at `firstOneIndex_spec`, and the file was outside the
+default build target so the failure was silent). Fixed the tactic (`rw [hindex]` ->
+`simp only [hindex]`), imported the file from `Main.lean` and `Audit.lean`, and added
+`#print axioms` lines for its key theorems. The whole project now builds clean (16
+jobs) with every audited theorem depending only on `propext, Classical.choice,
+Quot.sound`; no `sorry`.
+
+### 35.3 Publication artifacts
+Two self-contained LaTeX papers (embedded bibliographies, no external .bib) authored
+under the name Atharva Jillhewar: a novel-results paper and a complete-ledger
+companion, plus HTML renderings. A public repository skeleton was assembled at
+`langtons-ant-highway/` (paper/, companion/, lean/, code/, results/, docs/,
+research-notes/) with README, MIT+CC-BY licensing, CITATION.cff, and .gitignore
+excluding the toolchain, build output, and bulk shard data.
+
+### 35.4 Status unchanged
+No proof or disproof of the highway conjecture. The period-48 result is a stronger
+bounded-period frontier, not a resolution; the open branches of Sections 30-34
+(single-tour chronology / bounded-retreat) remain.
