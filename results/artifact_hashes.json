@@ -21,8 +21,9 @@
   "code/python/verify_standard_highway.py": "cf43650bd5920e27ecfcc9dca69cfad0e32c0ac3454c9f2e8d2b180071a99c65",
   "companion/main.tex": "9f21d52a688336ca16ceeec54ba33d8230465aa767b5503146b2c4a4364e748d",
   "docs/companion.html": "8843b83f5b9bcd2f70e076f5d2180487f0cbb88411182737e096f76fdf51899e",
-  "docs/index.html": "37fbe67b891472164e9fbd49ac2065999b417ff8502c614dbd0ce28e5580fede",
+  "docs/index.html": "6f526630a8196f924025eb2594165518db7be70ab977f21cc8d97f253ce43578",
   "docs/paper.html": "22d78441a240807006a5ee898a9eb386094f856d1bbfd1d322f29d50982a676a",
+  "docs/paper.pdf": "f7419909fbbc59b3d055191250325450f0f56af708e4a70e5203a74dc335bce3",
   "lean/Audit.lean": "2cc4e33f181b853885b33db122b32784d14162b6ec2ce9682dd5370af940a423",
   "lean/FORMALIZATION_BOUNDARY.md": "71bb7718328fac3b6f426c4e59ace55d634d5e4193df433e1de2cc1b982f503d",
   "lean/Langton.lean": "40898fe0b381f6a25790f3820497fe5b84cad0858f5c0154146dffb363df27f1",
@@ -46,7 +47,7 @@
   "results/period_exclusion_summary.json": "5d13a6ae9511350311003d458910190d7ed73e8021dc3cb704f51ca792b4a307",
   "results/standard_highway.json": "eae69afdd7f764b7cd024082523eca97b11be1390904f52555bcda2aa2b3e43e"
  },
- "release": "v1.0",
+ "release": "v1.0.1",
  "repository": "https://github.com/Atharva12456/langtons-ant-highway",
  "schema": "langtons-ant-highway-artifact-manifest"
 }
