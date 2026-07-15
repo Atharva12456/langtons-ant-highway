@@ -303,12 +303,32 @@ e_z=\begin{cases}\{(x,y-1),(x-1,y)\}, &amp; x+y\ \text{even},\\ \{(x-1,y-1),(x,y
 \end{equation}
 and \(H_B=\{e_z:z\in B\}\) is the finite black edge subgraph.</p>
 
+<figure style="margin:1.2em 0;text-align:center">
+<svg viewBox="0 0 360 90" width="360" style="max-width:100%;height:auto;color:var(--ink)" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-width="1.7">
+  <!-- crossing -->
+  <line x1="12" y1="66" x2="60" y2="18"/>
+  <line x1="12" y1="18" x2="60" y2="66"/>
+  <circle cx="36" cy="42" r="2.4" fill="currentColor"/>
+  <text x="36" y="86" text-anchor="middle" font-size="10" stroke="none" fill="currentColor">crossing at z</text>
+  <!-- white smoothing -->
+  <path d="M132 66 C 150 54, 150 30, 132 18"/>
+  <path d="M180 66 C 162 54, 162 30, 180 18"/>
+  <text x="156" y="86" text-anchor="middle" font-size="10" stroke="none" fill="currentColor">white: e_z absent</text>
+  <!-- black smoothing + Tait edge -->
+  <path d="M252 66 C 264 48, 288 48, 300 66"/>
+  <path d="M252 18 C 264 36, 288 36, 300 18"/>
+  <line x1="276" y1="30" x2="276" y2="54" stroke-dasharray="4 3"/>
+  <text x="276" y="86" text-anchor="middle" font-size="10" stroke="none" fill="currentColor">black: e_z present</text>
+</svg>
+<figcaption class="note" style="margin-top:.2em">The two smoothings of the frozen crossing at an ant cell \(z\): colour selects how the four incident frozen arcs reconnect, and the black smoothing is the occupied Tait edge \(e_z\) (dashed).</figcaption>
+</figure>
+
 <div class="thm" id="thm-conjugacy">
 <span class="hd">Theorem 4.1 (Boundary-loop conjugacy).</span>
 White and black at \(z\) are the two smoothings of the directed crossing. Hence the
 frozen routing loops are the boundary components of a regular neighbourhood of
-\(H_B\) together with untouched four-cycles; the ant traverses its current boundary
-loop, toggles \(e_z\), and each step merges two loops or splits one. This is an exact
+\(H_B\) together with untouched four-cycles; the ant advances along its current frozen
+boundary loop, toggles \(e_z\), and each step merges two loops or splits one. This is an exact
 conjugacy.
 </div>
 
@@ -390,10 +410,12 @@ four-corner condition suffices. Over \(\F_2\) the solutions are
 \(w=(-1)^{x+y}\) over \(A=\Z\) satisfies \(\eqref{eq:cocycle}\) but has no such \(F_q\).
 <em>Sufficiency for \(\Z/4\Z\).</em> The step relations give the diagonal increments
 \(F_N(x{+}1,y{+}1)-F_N(x,y)=-w(x,y)+w(x{+}1,y)\) and
-\(F_N(x{+}1,y{-}1)-F_N(x,y)=w(x,y{-}1)-w(x{+}1,y{-}1)\), defining \(F_N\) on each parity
-sublattice by integration. Around an elementary diamond these four increments sum to
-the four-corner expression \(\eqref{eq:cocycle}\), which vanishes, so the integration
-is path-independent and \(F_N\) is well defined; then \(F_S=F_N-2w\) and \(F_E,F_W\) by
+\(F_N(x{+}1,y{-}1)-F_N(x,y)=w(x,y{-}1)-w(x{+}1,y{-}1)\), defining \(F_N\) on each
+\(x{+}y\)-parity sublattice by integration. Modulo four, the circulation around an
+elementary diamond equals the negative of the sum of the four-corner expressions
+\(\eqref{eq:cocycle}\) based at \((x,y{-}1)\) and \((x{+}1,y{-}1)\) (they differ by
+\(4[w(x{+}1,y)+w(x{+}1,y{-}1)]\equiv0\)), so it vanishes and the integration is
+path-independent and \(F_N\) well defined; then \(F_S=F_N-2w\) and \(F_E,F_W\) by
 the step relations are consistent because \(4w=0\).
 </div>
 
@@ -463,8 +485,9 @@ No finite-support clean translator with nonzero drift exists.
 clean translator has \(\growth=0\), so its period \(N=2\#\turnR\) is even; since each
 step flips \(x+y\) parity, \(a+b\equiv N\equiv0\pmod2\), so the nonzero drift
 coordinate is even. After rotation/reflection write \(\drift=(L,0)\) with \(L&gt;0\)
-even&mdash;all the argument needs. Reversibility gives
-\(A_{nN+j}=A_j+n\drift\), \(p_{nN+j}=p_j+n\drift\). Quotient the bi-infinite trace by
+even&mdash;all the argument needs. Writing \(B_j,p_j\) for the black set and position at
+phase \(j\), reversibility gives
+\(B_{nN+j}=B_j+n\drift\), \(p_{nN+j}=p_j+n\drift\). Quotient the bi-infinite trace by
 \(\drift\) to a closed walk on the cylinder \(C_L=(\Z/L\Z)\times\Z\); \(L\) even makes
 the HV type descend. The <em>multiplicity</em> of an edge is its number of traversals
 by the projected one-period walk.</p>
@@ -691,9 +714,12 @@ even periods for positive growth: <em>(a)</em> complete enumeration through peri
 \(34,36,38,40\) (up to \(2.0\times10^{8}\) nodes; zero highways); <em>(c)</em>
 two-engine rank-audited searches at \(42,44,46,48\). At period \(48\) both engines
 visited the identical \(8{,}677{,}026{,}370\) nodes and \(451{,}962{,}870\) leaves over
-all \(2^{16}\) prefix ranks with no node cap; the residue engine rejected
-\(439{,}705{,}662\) leaves and applied the exact criterion to \(12{,}257{,}208\); both
-returned zero certificates with all per-rank counters in agreement.
+all \(2^{16}\) prefix ranks with no node cap; the reference engine applied the exact
+criterion to every leaf, while the residue engine rejected \(439{,}705{,}662\) leaves
+and applied it only to \(12{,}257{,}208\) survivors. Both returned zero certificates,
+and their per-rank node, leaf, and common legality-pruning counters agree; the
+reference engine's exhaustive outcome is the certificate of nonexistence and the
+residue engine is a cross-check.
 </div>
 
 <table class="data">
@@ -728,11 +754,12 @@ formulation that would also suffice is that the active boundary component at or 
 of the record has uniformly bounded size and shed components are never reabsorbed.
 </div>
 <p>Under either, the frontier window has finitely many states modulo translation,
-determinism forces periodicity, and Theorem 3.1 classifies the cycle. The easy routes
-fail: unboundedness permits an ever-enlarging two-dimensional region; no scalar Tait
-invariant is monotone (Remark 4.4); and local pumping is invalid because equal local
-cores may connect through distant territory, turning a merge into a split
-(Theorem 4.1).</p>
+determinism forces periodicity, and Theorem 3.1 classifies the cycle. We do not claim
+these are the only routes to a solution, but several easy attempts fail: unboundedness
+permits an ever-enlarging two-dimensional region; none of the natural scalar quantities
+or affine combinations of \((E,V,k,\beta)\) in Remark 4.4 is monotone; and local
+pumping is invalid because equal local cores may connect through distant territory,
+turning a merge into a split (Theorem 4.1).</p>
 <div class="rem" style="background:#f7eeef;border-left-color:#7a1f2b">
 <span class="hd">Problem 10.2 (Periodic classification).</span>
 Show that every positive-growth periodic trace admitted by finite support is the
@@ -807,17 +834,21 @@ build script accompany the paper <a href="#r10">[10]</a>.</p>
 
 <hr class="sec">
 <h2 id="appC">Appendix C. Computational methodology</h2>
-<p>The search space is the tree of legal prefixes. By Proposition 2.2 it suffices to
-search words beginning with \(\turnR\), and by Corollary 6.5 only positive-growth
-heading-reset words. A period-\(N\) search partitions the length-\(k\) prefix-rank
+<p>The search space is the tree of legal prefixes. Up to cyclic phase every
+positive-growth repeating trace has a representative beginning with \(\turnR\), so it
+suffices to search such words; by Corollary 6.5 only positive-growth heading-reset
+words are considered. A period-\(N\) search partitions the length-\(k\) prefix-rank
 interval \([0,2^{k-1})\) into disjoint worker intervals; each worker enumerates its
 subtree depth-first and applies Theorem 3.1 at every leaf. A complete exclusion
 requires every rank covered once, every shard complete with no node cap, empty hit
 lists, and aggregate counters equal to the per-rank sums. Two independent engines are
-run for periods \(42\)&ndash;\(48\); agreement of all per-rank counters is the
-cross-audit. The residue identity was validated by enumerating all \(524{,}286\) words
+run for periods \(42\)&ndash;\(48\): the reference engine establishes the exclusion by
+applying Theorem 3.1 to every leaf, and the residue engine (applying Theorem 7.1 first)
+is a cross-check whose identical node and leaf coverage confirms no realisable word was
+pruned. The residue identity was validated by enumerating all \(524{,}286\) words
 through length \(18\). Sources, per-shard records with SHA-256 manifests, and exact
-commands accompany the paper <a href="#r10">[10]</a>.</p>
+commands accompany the paper <a href="#r10">[10]</a>; the repository must be made public
+for these to be externally inspectable.</p>
 
 <hr class="sec">
 <h2 class="refs" id="refs">References</h2>

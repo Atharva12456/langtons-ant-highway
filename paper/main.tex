@@ -20,6 +20,7 @@
 \usepackage{enumitem}
 \usepackage{booktabs}
 \usepackage{xcolor}
+\usepackage{tikz}
 \usepackage{listings}
 \usepackage[margin=1in]{geometry}
 \usepackage[colorlinks=true,linkcolor=blue!55!black,citecolor=teal!60!black,
@@ -192,7 +193,8 @@ avoid a clash with the unrelated ``interlaced word'' of \cite{Lutfalla2025sidewa
 \item \textbf{Small-period exclusion} (Theorem~\ref{thm:periodexcl}): a two-engine,
 rank-audited exhaustive search excludes every finite-support periodic highway of
 nonzero drift and period at most $48$. Existing computational work enumerates highways
-that \emph{occur}; proving nonexistence below a period bound is new.
+that \emph{occur}; we are not aware of a prior exhaustive nonexistence result below a
+fixed period bound.
 \end{enumerate}
 
 Section~\ref{sec:criterion} also gives a decidable periodic-realisability criterion
@@ -391,13 +393,44 @@ e_z=\begin{cases}\{(x,y-1),(x-1,y)\}, & x+y\ \text{even},\\[2pt]
 \end{equation}
 Let $H_B=\{e_z:z\in B\}$ be the finite edge subgraph induced by the black cells.
 
+\begin{figure}[h]
+\centering
+\begin{tikzpicture}[scale=0.95,line width=0.9pt]
+  % crossing at z
+  \begin{scope}
+    \draw (-0.8,-0.8)--(0.8,0.8);
+    \draw (-0.8,0.8)--(0.8,-0.8);
+    \filldraw (0,0) circle (1.6pt);
+    \node at (0,-1.2) {\footnotesize crossing at $z$};
+  \end{scope}
+  % white smoothing: vertical arcs reconnect left/left, right/right (e_z absent)
+  \begin{scope}[xshift=3.6cm]
+    \draw (-0.8,-0.8) .. controls (-0.15,-0.35) and (-0.15,0.35) .. (-0.8,0.8);
+    \draw (0.8,-0.8)  .. controls (0.15,-0.35)  and (0.15,0.35)  .. (0.8,0.8);
+    \node at (0,-1.2) {\footnotesize white: $e_z\notin H_B$};
+  \end{scope}
+  % black smoothing: horizontal arcs; the Tait edge e_z is present (dashed)
+  \begin{scope}[xshift=7.2cm]
+    \draw (-0.8,-0.8) .. controls (-0.35,-0.15) and (0.35,-0.15) .. (0.8,-0.8);
+    \draw (-0.8,0.8)  .. controls (-0.35,0.15)  and (0.35,0.15)  .. (0.8,0.8);
+    \draw[dashed] (0,-0.42)--(0,0.42);
+    \node at (0,-1.2) {\footnotesize black: $e_z\in H_B$};
+  \end{scope}
+\end{tikzpicture}
+\caption{The two smoothings of the frozen crossing at an ant cell $z$. Colour selects
+which of the two ways the four incident frozen arcs reconnect; the black smoothing is
+the occupied Tait edge $e_z$ (dashed).}
+\label{fig:smoothing}
+\end{figure}
+
 \begin{theorem}[Boundary-loop conjugacy]\label{thm:conjugacy}
 White and black at $z$ are the two smoothings of the directed crossing at the Tait
-edge $e_z$. Consequently:
+edge $e_z$ \textup{(Figure~\ref{fig:smoothing})}. Consequently:
 \begin{enumerate}[label=\textup{(\alph*)}]
 \item the frozen routing loops are exactly the boundary components of a regular
 neighbourhood of $H_B$, together with the untouched four-cycles;
-\item the ant traverses its current boundary loop and then toggles the edge $e_z$; and
+\item the ant advances along its current frozen boundary loop and then toggles the
+edge $e_z$; and
 \item each step either merges two frozen loops into one or splits one into two.
 \end{enumerate}
 \end{theorem}
@@ -544,12 +577,13 @@ expresses $F_N$ by its diagonal increments
 F_N(x{+}1,y{+}1)-F_N(x,y)=-w(x,y)+w(x{+}1,y),\qquad
 F_N(x{+}1,y{-}1)-F_N(x,y)=w(x,y{-}1)-w(x{+}1,y{-}1),
 \end{equation}
-which define $F_N$ on each of the two parity sublattices by integration from a
-basepoint. The sum of the four increments around an elementary diamond
-$(x,y)\to(x{+}1,y{+}1)\to(x{+}2,y)\to(x{+}1,y{-}1)\to(x,y)$ telescopes, by
-\eqref{eq:Fdiag}, to exactly the four-corner sum \eqref{eq:cocycle} at $(x,y{-}1)$ and
-$(x{+}1,y{-}1)$; the four-corner condition makes it vanish, so the integration is
-path-independent and $F_N$ is well defined. Now set $F_S=F_N-2w$ and define $F_E,F_W$
+which define $F_N$ on each of the two $x{+}y$-parity sublattices by integration from a
+basepoint. Modulo four, the circulation of \eqref{eq:Fdiag} around the elementary
+diamond $(x,y)\to(x{+}1,y{+}1)\to(x{+}2,y)\to(x{+}1,y{-}1)\to(x,y)$ equals the negative
+of the sum of the four-corner expressions \eqref{eq:cocycle} based at $(x,y{-}1)$ and
+$(x{+}1,y{-}1)$ (the two differ by $4\,[w(x{+}1,y)+w(x{+}1,y{-}1)]\equiv0$); hence it
+vanishes by \eqref{eq:cocycle}, so the integration is path-independent and $F_N$ is
+well defined. Now set $F_S=F_N-2w$ and define $F_E,F_W$
 from $F_N$ by \eqref{eq:pot}; the two ways of reaching $F_S$ agree precisely because
 $4w=0$, so all four $F_q$ are consistent. Over $\F_2$ the solution space of
 \eqref{eq:cocycle} is the separable weights $\alpha(x)+\beta(y)$.
@@ -650,10 +684,11 @@ axis-aligned by Proposition~\ref{prop:laurent}. A clean translator has $\growth=
 its period $N=\#\turnR+\#\turnL=2\#\turnR$ is even; since each step changes $x+y$
 modulo $2$, the total displacement satisfies $a+b\equiv N\equiv0\pmod2$, so the
 nonzero drift coordinate is even. After a rotation and reflection write $\drift=(L,0)$
-with $L>0$ even---all that the argument below requires. Reversibility and translation
-covariance give, for all $n\in\Z$ and phases $j$,
+with $L>0$ even---all that the argument below requires. Writing $B_j,p_j$ for the black
+set and ant position at phase $j$ of one period, reversibility and translation
+covariance give, for all $n\in\Z$,
 \[
-A_{nN+j}=A_j+n\drift,\qquad p_{nN+j}=p_j+n\drift .
+B_{nN+j}=B_j+n\drift,\qquad p_{nN+j}=p_j+n\drift .
 \]
 Quotient the bi-infinite trace by translation through $\drift$ to obtain a closed
 walk on the cylinder $C_L=(\Z/L\Z)\times\Z$; because $L$ is even the HV type of
@@ -670,8 +705,8 @@ Let $z$ be a physical representative of $v$. Each phase $j$ with $p_j\in v+\Z\dr
 has a unique level $m_j$ with $p_j=z+m_j\drift$, and phase $j$ in period $-m_j$ visits
 $z$; conversely every visit to $z$ over the bi-infinite orbit arises once this way.
 Hence the visits to $v$ in one quotient period biject with the visits to $z$ over the
-translated bi-infinite orbit. At each fixed phase the black pattern is a finite
-translate of $A_0$, so $z$ is white for all sufficiently early and all sufficiently
+translated bi-infinite orbit. At phase $nN+j$ the black pattern is the finite translate
+$B_j+n\drift$, so $z$ is white for all sufficiently early and all sufficiently
 late times. Its turn sequence therefore alternates, begins with $\turnR$, ends with
 $\turnL$, and contains equally many of each.
 \end{proof}
@@ -831,18 +866,21 @@ Fix $a\neq0$, $\alpha$, and $w$ as in Lemma~\ref{lem:diag}. Restored heading giv
 $\growth\equiv0\pmod4$, so the period is even and $a+b$ is even; hence translation by
 $\drift$ preserves $\che$, and $w(z+\drift)=w(z)$. Let $\varepsilon=\operatorname{sgn}(a)$,
 and set $\sigma=\operatorname{sgn}(b)$ if $b\neq0$ and $\sigma=1$ if $b=0$. Move from
-$z$ to $z+\drift$ by $|a|$ diagonal steps of vector $(\varepsilon,\sigma)$ (using
-\eqref{eq:diag} for $\varepsilon=+1$ and its reverse for $\varepsilon=-1$), followed
-by the vertical displacement $(0,\,b-\sigma|a|)$, which is even because $a+b$ is even.
-Each diagonal step contributes $-\che\cdot(\alpha(x)+\alpha(x{+}1))$ by \eqref{eq:diag}
-(or its $(1,-1)$ analogue), while the vertical part contributes nothing by the
-$2$-periodicity of $F_N$ in $y$. As $x$ runs once through $\Z/|a|\Z$ the diagonal
-contributions
-telescope to $-2\che(z)\sum_{r}\alpha(r)$, giving the monodromy
+$z$ to $z+\drift$ by $|a|$ diagonal steps of vector $(\varepsilon,\sigma)$, followed by
+the vertical displacement $(0,\,b-\sigma|a|)$, which is even because $a+b$ is even. The
+uniform diagonal increment of $F_N$ (read off from \eqref{eq:diag} for
+$\varepsilon=+1$ and from its reverse for $\varepsilon=-1$) is
+\begin{equation}\label{eq:uniform}
+F_N(x+\varepsilon,y+\sigma)-F_N(x,y)=-\varepsilon\,\che(x,y)\bigl(\alpha(x)+\alpha(x+\varepsilon)\bigr),
+\end{equation}
+and $\che$ is constant along the path because $\varepsilon+\sigma$ is even; the
+vertical part contributes nothing by the $2$-periodicity of $F_N$ in $y$. As $x$ runs
+once through $\Z/|a|\Z$ each $\alpha(r)$ appears twice, so the increments telescope to
+$-2\varepsilon\,\che(z)\sum_{r}\alpha(r)$, giving the monodromy
 \begin{equation}\label{eq:monodromy}
 F_N(z+\drift)-F_N(z)\ \equiv\ 2\sum_{r\in\Z/|a|\Z}\alpha(r)\pmod4
 \end{equation}
-(using $-2\equiv2$). The three other headings satisfy the same relation: $F_S=F_N-2w$
+(since $-2\varepsilon\che(z)\equiv2\pmod4$ for either sign of $a$). The three other headings satisfy the same relation: $F_S=F_N-2w$
 and $F_E,F_W$ differ from $F_N$ by single applications of \eqref{eq:pot}, all of which
 are themselves $\drift$-periodic because $w$ is; so \eqref{eq:monodromy} holds with
 $F_q$ in place of $F_N$ for every $q$, and for either sign of $a$.
@@ -900,10 +938,10 @@ alignment nor the clean-packet reduction; it applies to every repeating trace an
 additionally fixes the drift--growth arithmetic. Independent computation supports the
 theorem in the ranges where it is testable (Appendix~\ref{app:repro}): the underlying
 toggle-charge identity \eqref{eq:conservation} was confirmed on all $172{,}092$
-heading-reset nonzero-drift words through length $18$, and the strand identity
-\eqref{eq:res-a} together with the bound \eqref{eq:P16} was confirmed on the standard
-highway, its powers, and its dihedral images---the smallest realisable nonzero-drift
-traces, since none of period at most $18$ exists.
+heading-reset nonzero-drift words through length $18$. The strand identity
+\eqref{eq:res-a} and the bound \eqref{eq:P16} were confirmed on the standard highway,
+its powers, and its dihedral images; the direct strand-level test is vacuous through
+length $18$ because no realisable nonzero-drift trace occurs in that range.
 
 %=======================================================================
 \section{Collision chains and the periodic touch graph}\label{sec:interlace}
@@ -1004,9 +1042,11 @@ with zero highways;
 \item two-engine, rank-by-rank audited searches at periods $42,44,46,48$. At the
 largest, period $48$, both engines visited the identical $8{,}677{,}026{,}370$ nodes
 and $451{,}962{,}870$ leaves over all $2^{16}$ prefix ranks with no node cap; the
-residue-pruned engine rejected the vast majority of leaves via
-Theorem~\ref{thm:residue} and applied the exact criterion to the survivors; both
-returned zero certificates, and all per-rank node, leaf, and prune counters agree.
+reference engine applied the exact criterion of Theorem~\ref{thm:criterion} to every
+leaf, and the residue-pruned engine applied it only to the survivors of
+Theorem~\ref{thm:residue}. Both returned zero certificates, and their per-rank node,
+leaf, and common legality-pruning counters agree; the reference engine's exhaustive
+outcome is the certificate of nonexistence, and the residue engine is a cross-check.
 (At period $46$ the two engines likewise agreed on $3{,}463{,}441{,}745$ nodes and
 $98{,}568{,}824$ leaves with zero certificates.)
 \end{enumerate}
@@ -1065,12 +1105,14 @@ behind an advancing frontier are never reabsorbed.
 
 Under either formulation the frontier window has finitely many states modulo
 translation, determinism forces eventual periodicity, and Theorem~\ref{thm:criterion}
-classifies the resulting cycle. No proof is known, and the following show why the easy
-routes fail: unboundedness (Theorem~\ref{thm:unbounded}) permits an orbit that keeps
-enlarging a two-dimensional region; no scalar Tait invariant is monotone
-(Remark~\ref{rem:nomonotone}); and a local pumping argument is invalid because equal
-local cores may connect through arbitrarily distant explored territory, turning a
-later merge into a split (Theorem~\ref{thm:conjugacy}).
+classifies the resulting cycle. We do not claim these are the only possible routes to a
+solution, but no proof along them is known, and the following show why several easy
+attempts fail: unboundedness (Theorem~\ref{thm:unbounded}) permits an orbit that keeps
+enlarging a two-dimensional region; none of the natural scalar quantities or affine
+combinations of $(E,V,k,\beta)$ considered in Remark~\ref{rem:nomonotone} is monotone;
+and a local pumping argument is invalid because equal local cores may connect through
+arbitrarily distant explored territory, turning a later merge into a split
+(Theorem~\ref{thm:conjugacy}).
 
 \begin{problem}[Periodic classification]\label{prob:periodic}
 Show that every positive-growth periodic trace admitted by finite support is the
