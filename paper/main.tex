@@ -82,7 +82,7 @@ symbolic dynamics, reversible dynamics, medial graph, Tait graph, interlacement}
 
 \begin{abstract}
 For the classical two-colour Langton's ant on $\Z^2$ with finite initial black
-support, we establish the first structural and arithmetic constraints on the
+support, we establish structural and arithmetic constraints on the
 possible \emph{periodic highways}. Our principal results are the following.
 \emph{(1) An even-winding theorem}: no finite-support pattern can drift to an
 exact translate of itself with restored heading and zero net change in the number
@@ -148,11 +148,11 @@ Conjecture~\ref{conj:main} \cite{GajardoMoreiraGoles2002}. Gajardo
 factors of the ant's trace subshift. Recent progress concerns \emph{generalised}
 ants: some rules admit infinitely many highways \cite{GajardoLutfallaRao2024},
 others have genuinely non-highway emergent behaviour \cite{Lutfalla2025sideways},
-and quantitative confinement bounds are available \cite{Etse2026confined}. None of
-this literature constrains what a \emph{classical} finite-support periodic highway
-can look like: there is no published net-growth congruence, drift-versus-growth
-arithmetic, translator-exclusion theorem, or medial-graph analysis for the classical
-ant. The present paper supplies exactly that missing structural layer.
+and quantitative confinement bounds are available \cite{Etse2026confined}. We are not
+aware of prior published results that constrain what a \emph{classical} finite-support
+periodic highway can look like---a net-growth congruence, drift-versus-growth
+arithmetic, a translator-exclusion theorem, or a medial-graph analysis for the
+classical ant. The present paper aims at that structural layer.
 
 \subsection{Results}
 A \emph{repeating trace} is an infinite turn word $w^\omega$ that is realised as the
@@ -176,9 +176,9 @@ aware of any exact per-residue arithmetic identity, or any linear drift--growth
 bound, in the literature.
 
 \item \textbf{Tait-graph conjugacy} (Theorem~\ref{thm:conjugacy}) and the cycle-rank
-surgery identity $E+\Delta C=2\beta$ (Theorem~\ref{thm:cyclerank}). No previous
-Langton-ant work uses medial/Tait graphs or loop merge/split surgery; the only
-precedent is the far weaker checkerboard partition of
+surgery identity $E+\Delta C=2\beta$ (Theorem~\ref{thm:cyclerank}). We are not aware of
+prior Langton-ant work using medial/Tait graphs or loop merge/split surgery; the
+nearest precedent is the weaker checkerboard partition of
 \cite{GaleProppSutnerTroubetzkoy1995}.
 
 \item \textbf{Collision-chain parity} (Theorem~\ref{thm:collision}), a two-endpoint
@@ -206,9 +206,10 @@ implicit in \cite{BunimovichTroubetzkoy1992,GaleProppSutnerTroubetzkoy1995}.
 Every theorem below is a \emph{necessary condition} on a finite-support periodic
 highway, or an exact finite computation. None asserts that any orbit converges, and
 therefore none resolves Conjecture~\ref{conj:main}. What we prove is that any
-finite-support periodic highway must build a positive wake divisible by four, must
+finite-support periodic highway must build a positive wake divisible by four and must
 satisfy the residue identities and the density bound $\growth\ge2\|\drift\|_\infty$,
-and cannot have period at most $48$ unless it is the standard highway. The single
+and that no finite-support periodic highway has period at most $48$ (equivalently, any
+such highway has period at least $50$). The single
 geometric ingredient separating these results from a full solution is stated
 precisely in Section~\ref{sec:gap}.
 
@@ -351,15 +352,20 @@ decreasing $a_i$, breaking ties by increasing $i$; every $S_{I,n}$ is a suffix o
 result obtained by deleting whole high-level blocks. It therefore suffices to check
 that this one stabilised word alternates and begins with $\turnR$, at the cost of one
 sort per class. To index the classes of $\Z^2/\Z\drift$ exactly, write
-$\drift=\gcd(a,b)\cdot(a',b')$ with $\gcd(a',b')=1$; then the pair
+$g=\gcd(a,b)$ and $\drift=g\,(a',b')$ with $\gcd(a',b')=1$, and choose integers $r,s$
+with $r a'+s b'=1$ (B\'ezout). Then
 \[
-\bigl(\,b'x-a'y,\ (a'x+b'y)\bmod\gcd(a,b)\,\bigr)
+\bigl(\,b'x-a'y,\ (r x+s y)\bmod g\,\bigr)
 \]
-is a complete invariant of the coset of $(x,y)$, the transverse coordinate $b'x-a'y$
-together with a torsion residue along the primitive drift direction. (Reducing a
-single coordinate modulo a coordinate of $\drift$ is \emph{not} a complete invariant
-when $\gcd(a,b)>1$; e.g.\ for $\drift=(2,2)$ the cells $(0,0)$ and $(0,2)$ agree in
-$x\bmod 2$ yet lie in different cosets.) This is the checker used in all computations
+is a \emph{complete} invariant of the coset of $(x,y)$: the matrix
+$\left(\begin{smallmatrix} b'&-a'\\ r&s\end{smallmatrix}\right)$ has determinant
+$b's+a'r=1$, so it is unimodular, and in its coordinates translation by
+$\drift=g(a',b')$ becomes translation by $(0,g)$, leaving the first coordinate and the
+second coordinate modulo $g$ fixed. (The naive residue $a'x+b'y\bmod g$ is
+\emph{not} complete: for $\drift=(2,2)$ the cells $(0,0)$ and $(1,1)$ share both
+$b'x-a'y=0$ and $a'x+b'y\equiv0\pmod2$ yet lie in different cosets, since
+$(1,1)\notin\Z(2,2)$; the B\'ezout coordinate $rx+sy$ separates them.) This is the
+checker used in all computations
 of Section~\ref{sec:computation}; it strengthens the
 forbidden-word characterisation of the ant's trace subshift
 \cite{Gajardo2003symbolic} to a decidable test for global periodic finite-support
@@ -507,26 +513,33 @@ $D=0$; but $A(1)+D(1)=2|B|+1=1\neq0$.
 \end{proof}
 
 \begin{proposition}[Additive-charge cocycle]\label{prop:cocycle}
-Let $A$ be an abelian group and $w:\Z^2\to A$. There exist heading corrections
-$F_q:\Z^2\to A$ making $\sum_{z\in B}w(z)+F_q(p)$ conserved if and only if $w$
-satisfies the four-corner condition
-\begin{equation}\label{eq:cocycle}
-w(x{+}1,y{+}1)+w(x{+}1,y)+w(x,y{+}1)+w(x,y)=0\quad\text{in }A.
-\end{equation}
-The step relations are then, for the conserved quantity,
+Let $A$ be an abelian group and $w:\Z^2\to A$. If there exist heading corrections
+$F_q:\Z^2\to A$ (indexed by $q\in\Z/4\Z$) such that $\sum_{z\in B}w(z)+F_q(p)$ is
+conserved under
 \begin{equation}\label{eq:pot}
 F_{q+1}(z+u_{q+1})-F_q(z)=-w(z)\ \ (\turnR),\qquad
-F_{q-1}(z+u_{q-1})-F_q(z)=+w(z)\ \ (\turnL).
+F_{q-1}(z+u_{q-1})-F_q(z)=+w(z)\ \ (\turnL),
 \end{equation}
-For $A=\F_2$ the solutions of \eqref{eq:cocycle} are exactly $w(x,y)=\alpha(x)+\beta(y)$.
+then $w$ satisfies both the four-corner condition
+\begin{equation}\label{eq:cocycle}
+w(x{+}1,y{+}1)+w(x{+}1,y)+w(x,y{+}1)+w(x,y)=0\quad\text{in }A
+\end{equation}
+and $4w=0$. Conversely, if $A=\Z/4\Z$ \emph{(}so $4w=0$ holds automatically\emph{)}
+and $w$ satisfies \eqref{eq:cocycle}, then such $F_q$ exist. Over $\F_2$ the solutions
+of \eqref{eq:cocycle} are exactly $w(x,y)=\alpha(x)+\beta(y)$.
 \end{proposition}
 
 \begin{proof}
-On an $\turnR$ step the black set gains $z$ (weight $+w(z)$) and the state moves
-$(z,q)\mapsto(z+u_{q+1},q+1)$; conservation gives the first relation in
-\eqref{eq:pot}, and the $\turnL$ case is symmetric. Eliminating the four $F_q$ from
-\eqref{eq:pot} around a unit plaquette yields exactly \eqref{eq:cocycle}, whose
-$\F_2$ solution space is the separable weights $\alpha(x)+\beta(y)$.
+Eliminating the four $F_q$ from \eqref{eq:pot} around a unit plaquette gives the
+four-corner condition \eqref{eq:cocycle}. For the second condition, combine the four
+relations at a single cell $z$: the $\turnR$-at-$S$ and $\turnL$-at-$N$ relations both
+express $F_W(z+u_W)$, forcing $F_S(z)=F_N(z)+2w(z)$, while the $\turnL$-at-$S$ and
+$\turnR$-at-$N$ relations force $F_S(z)=F_N(z)-2w(z)$; hence $4w(z)=0$. \emph{(}Thus
+$w(x,y)=(-1)^{x+y}$ over $A=\Z$ satisfies \eqref{eq:cocycle} but admits no such $F_q$,
+since $4w\neq0$.\emph{)} Conversely, over $A=\Z/4\Z$ the four-corner condition lets one
+build $F_N$ consistently (its increments around every plaquette cancel), and setting
+$F_S=F_N-2w$, $F_E,F_W$ by \eqref{eq:pot} is consistent because $4w=0$; the $\F_2$
+solution space is the separable weights $\alpha(x)+\beta(y)$.
 \end{proof}
 
 A mod-four refinement of Proposition~\ref{prop:laurent} (using the quadratic solution
@@ -556,15 +569,19 @@ period boundaries.
 $D$ is finitely supported (only finitely many cells are visited in one period).
 Partition the support into translation classes under $z\mapsto z+\drift$; there are
 finitely many nonempty classes. Fix a class with base point $c$ and write
-$f(n)=D(c+n\drift)\in\Z$, a finitely supported function $\Z\to\Z$. Any such $f$ has a
-unique decomposition
+$f(n)=D(c+n\drift)\in\Z$, a finitely supported function $\Z\to\Z$. Put $s=\sum_n f(n)$
+and $h=f-s\,\delta_0$, so $\sum_n h(n)=0$. With the shift $(Ta)(n)=a(n-1)$, set
 \[
-f=\Bigl(\sum_{n}f(n)\Bigr)\delta_{0}+(T-1)a,\qquad a(n)=-\!\!\sum_{m>n}\! f(m),
+a(n)=\sum_{m>n}h(m).
 \]
-where $(Ta)(n)=a(n-1)$: indeed $(T-1)a$ has zero total and telescopes to
-$f-(\sum f)\delta_0$, and $a$ is finitely supported because $f$ is. Summing this
-over all classes gives \eqref{eq:decomp} with $A$ the (finite) sum of the class
-antiderivatives and $S=\sum_{\text{classes}}(\sum_n f)\,\delta_{c}$. It remains to
+Then $a(n-1)-a(n)=h(n)$, i.e.\ $(T-1)a=h$, so
+\[
+f=s\,\delta_0+(T-1)a,
+\]
+and $a$ is finitely supported: $a(n)=0$ for $n$ beyond the support of $f$ on the
+right, and $a(n)=\sum_m h(m)=0$ for $n$ far to the left (this is exactly where
+$\sum h=0$ is needed). Summing over all classes gives \eqref{eq:decomp} with $A$ the
+(finite) sum of the class antiderivatives and $S=\sum_{\text{classes}}s_c\,\delta_{c}$. It remains to
 identify $\sum_n f$ for a class. Over one period the cells of a class are visited in
 level order, and the alternating-visit rule (Proposition~\ref{prop:alt}) makes the
 per-class toggle total equal to $+1$ when the class's stabilised word has odd length
@@ -576,13 +593,28 @@ $|B_0|=11$ and $|B_{n+1}|-|B_n|=\growth=12$.
 \end{proof}
 
 \begin{corollary}\label{cor:sep}
-If $\growth=0$ then $S=0$, so $D=(T_\drift-1)A$. In this case the black
-configuration is, up to a finite stationary set, a single $\drift$-translate of the
-finite widget $A$; because the trace is periodic with nonzero drift, every cell is
-visited only finitely often, so after finitely many periods the ant never revisits
-the stationary set. Deleting that set changes no future turn, and the remaining state
-is a clean finite translator with drift $\drift$.
+If $\growth=0$ then a finite stationary set can be deleted to leave a clean finite
+translator with drift $\drift$.
 \end{corollary}
+
+\begin{proof}
+Here $S=0$, so $D=(T_\drift-1)A$. Let $b_n:\Z^2\to\{0,1\}$ be the indicator of $B_n$
+at the $n$-th period boundary. Since each cell is toggled a net $D(z)\in\{-1,0,+1\}$
+per period (Proposition~\ref{prop:alt}) and the period-$k$ toggle pattern is
+$T_{k\drift}D$ by translation covariance,
+\[
+b_n=b_0+\sum_{k=0}^{n-1}T_{k\drift}D
+   =b_0+\sum_{k=0}^{n-1}T_{k\drift}(T_\drift-1)A
+   =b_0+(T_{n\drift}-1)A=R+T_{n\drift}A,\qquad R:=b_0-A .
+\]
+Both $R$ and $A$ are finitely supported, so for $n$ large the supports of $R$ and
+$T_{n\drift}A$ are disjoint; since $b_n$ is $\{0,1\}$-valued, $R$ and $A$ are then
+$\{0,1\}$-valued and $B_n=R\sqcup(A+n\drift)$. Because the trace is periodic with
+nonzero drift, each cell is visited finitely often, so at a sufficiently late period
+boundary the ant never again visits the finite set $R$. Deleting $R$ there changes no
+future turn and leaves a state whose black set is $A+n\drift$, translating exactly by
+$\drift$ each period: a clean finite translator.
+\end{proof}
 
 Sections~\ref{sec:evenwinding} and~\ref{sec:residue} prove, by two independent
 routes, that no such clean translator exists; hence $\growth\neq0$.
@@ -600,11 +632,13 @@ parity---is proved in full as Lemma~\ref{lem:localparity}.
 No finite-support clean translator with nonzero drift exists.
 \end{theorem}
 
-For the remainder of the section fix a hypothetical clean translator. By
-Proposition~\ref{prop:laurent} and the mod-four refinement its drift is axis-aligned
-with a coordinate divisible by four; after a rotation and reflection write
-$\drift=(L,0)$ with $L\in4\Z_{>0}$. Reversibility and translation covariance give,
-for all $n\in\Z$ and phases $j$,
+For the remainder of the section fix a hypothetical clean translator. Its drift is
+axis-aligned by Proposition~\ref{prop:laurent}. A clean translator has $\growth=0$, so
+its period $N=\#\turnR+\#\turnL=2\#\turnR$ is even; since each step changes $x+y$
+modulo $2$, the total displacement satisfies $a+b\equiv N\equiv0\pmod2$, so the
+nonzero drift coordinate is even. After a rotation and reflection write $\drift=(L,0)$
+with $L>0$ even---all that the argument below requires. Reversibility and translation
+covariance give, for all $n\in\Z$ and phases $j$,
 \[
 A_{nN+j}=A_j+n\drift,\qquad p_{nN+j}=p_j+n\drift .
 \]
@@ -868,22 +902,23 @@ vertical and $\eta(s)=R_{p_y}$ if $q$ is horizontal.
 Over $\F_2$, the boundary (set of odd-degree vertices) of the row--column incidence
 graph of the symmetric difference $B_s\triangle B_t$ equals $\eta(s)+\eta(t)$.
 Intermediate tokens telescope across any collision checkpoints; consequently at most
-one defect component is non-Eulerian, and a same-pose return ($\eta(s)=\eta(t)$) has
-only Eulerian defect components. Every completed $\turnR$-to-$\turnL$ black lifetime
-has an Eulerian odd-visit component through its paired cell and therefore involves at
-least four distinct cells.
+one defect component of $B_s\triangle B_t$ is non-Eulerian, and a same-pose return
+($\eta(s)=\eta(t)$) has only Eulerian defect components.
 \end{theorem}
 
-\begin{proof}[Proof sketch]
+\begin{proof}
 One step toggles the single edge $C_{p_x}R_{p_y}$, changing the degree parity of
 exactly $C_{p_x}$ and $R_{p_y}$; the pre- and post-step tokens $\eta$ differ by the
 one incidence-vertex whose axis matches the heading, so the boundary contribution of
-a single step is $\eta(s)+\eta(s')$. Summing over a run telescopes to the two
-endpoints. A non-Eulerian component needs a nonempty boundary, so at most one exists,
-and it is absent at a same-pose return. The four-cell lower bound follows because an
-Eulerian graph with a nonzero cycle through the paired cell has at least four edges of
-even degree at each incidence vertex.
+a single step is $\eta(s)+\eta(s')$. Summing over a run telescopes to
+$\eta(s)+\eta(t)$. A non-Eulerian component needs a nonempty boundary, so at most one
+exists, and it is absent when $\eta(s)=\eta(t)$.
 \end{proof}
+
+Taking $s,t$ to be the states immediately after an $\turnR$ visit to a cell and
+immediately before its next ($\turnL$) visit gives $\eta(s)=\eta(t)$, so the odd-visit
+defect between them is Eulerian; a companion analysis \cite{Repo} shows this forces at
+least four distinct cells, but we do not use that refinement here.
 
 We close the section with an observation that packages the periodic trace as a
 $4$-regular Euler system, so that Traldi's circuit-partition/interlacement theory
@@ -969,7 +1004,8 @@ $34$ & positive-growth & $9{,}726{,}176$ & $0$\\
 $36$ & positive-growth & $19{,}781{,}050$ & $0$\\
 $38$ & positive-growth & $41{,}972{,}884$ & $0$\\
 $40$ & positive-growth & $201{,}924{,}597$ & $0$\\
-$42,44$ & two-engine, rank-audited & (see records) & $0$\\
+$42$ & two-engine, rank-audited & $528{,}451{,}911$ & $0$\\
+$44$ & two-engine, rank-audited & $1{,}319{,}080{,}456$ & $0$\\
 $46$ & two-engine, rank-audited & $3{,}463{,}441{,}745$ & $0$\\
 $48$ & two-engine, rank-audited & $8{,}677{,}026{,}370$ & $0$\\
 \bottomrule
@@ -1034,7 +1070,7 @@ with a parameter increased. No such certificate has been found.
 \section{Concluding remarks}\label{sec:conclusion}
 %=======================================================================
 
-We have given the first structural and arithmetic theory of the classical
+We have developed a structural and arithmetic theory of the classical
 finite-support periodic highway: a decidable realisability criterion, an exact
 medial-graph conjugacy with surgery calculus, two independent proofs that no
 zero-growth clean translator exists (so every highway grows a wake of size
@@ -1057,8 +1093,14 @@ the ant faces north at the origin and the trace begins with $\turnR$ at a global
 minimum of the black-count walk, the period-$104$ word (with $\turnR=$R, $\turnL=$L)
 is
 \begin{center}\ttfamily\small
-RRRRLLRLLRRRRLLRRRRLLRLRRRRLRLLLLRRRRLRRLRRRRLLLLRLRRRRLRRRRLLLLRLRRRRLRLLRRLLLLRRLLRRRRLLRRLRLLRLLRLRLL
+\begin{tabular}{@{}l@{}}
+RRRRLLRLLRRRRLLRRRRLLRLRRR\\
+RLRLLLLRRRRLRRLRRRRLLLLRLR\\
+RRRLRRRRLLLLRLRRRRLRLLRRLL\\
+LLRRLLRRRRLLRRLRLLRLLRLRLL
+\end{tabular}
 \end{center}
+(read as one word of $104$ symbols, four rows of $26$)
 It has $\#\turnR-\#\turnL=12$ and normalised drift $(2,-2)$, in agreement with
 Corollary~\ref{cor:growth4} ($\growth=12\in4\Z_{>0}$) and Corollary~\ref{cor:P16}
 ($12\ge 2\max(2,2)=4$). Applying the seed construction \eqref{eq:seed} of
@@ -1150,15 +1192,18 @@ every positive-growth leaf and makes \emph{no} use of Theorem~\ref{thm:residue};
 zero-hit outcome is therefore unconditional on the residue theorem. The
 \emph{residue engine} explores the identical prefix tree but first rejects each leaf
 violating Theorem~\ref{thm:residue}, applying the exact criterion only to the
-survivors. Because both engines traverse the same tree and reach the same leaves,
-their node and leaf counts are \emph{identical} by construction; only the number of
-exact-criterion evaluations differs (far fewer in the residue engine). The two
-cross-checks are thus complementary: the reference engine certifies zero hits without
-assuming Theorem~\ref{thm:residue}, while agreement of all per-rank node, leaf, and
-prune counters certifies that the residue pruning discarded no realisable word. For
-period $48$ both engines reported $8{,}677{,}026{,}370$ nodes and $451{,}962{,}870$
-leaves over the $2^{16}$ prefix ranks; the residue engine evaluated the exact
-criterion on $12{,}257{,}208$ survivors after rejecting $439{,}705{,}662$ leaves.
+survivors. Because both engines enumerate the same tree and reach the same leaves,
+their node counts, leaf counts, and common legality-pruning counts are identical per
+shard by construction; they differ only in the residue-prune and exact-evaluation
+counts, which the residue engine reports and the reference engine does not use. The
+exclusion itself rests on the reference engine: it applies
+Theorem~\ref{thm:criterion} to \emph{every} leaf and finds no realisable word,
+independently of Theorem~\ref{thm:residue}. The residue engine is an implementation
+cross-check: its own zero-hit result, together with the identical node/leaf coverage,
+confirms that the residue pruning discarded no realisable word. For period $48$ both
+engines reported $8{,}677{,}026{,}370$ nodes and $451{,}962{,}870$ leaves over the
+$2^{16}$ prefix ranks; the residue engine evaluated the exact criterion on
+$12{,}257{,}208$ survivors after rejecting $439{,}705{,}662$ leaves.
 
 The residue theorem was audited separately, with the following counts over all
 $\sum_{L\le18}2^{L}=524{,}286$ turn words of length at most $18$:
@@ -1176,9 +1221,11 @@ the heading and lies among the $172{,}092$ but is \emph{not} realisable and is
 excluded from the strand-level test, as it must be.)
 
 The engines' source, the per-shard records with SHA-256 manifests, the aggregation and
-cross-audit scripts, and the exact commands to regenerate every shard are provided in
-the repository \cite{Repo}, which is archived at a fixed commit; the searches were run
-on a multi-core cluster with one worker per shard.
+cross-audit scripts, and the exact commands to regenerate every shard accompany this
+work \cite{Repo}; the searches were run on a multi-core cluster with one worker per
+shard. \emph{(All records are exactly regenerable from the released sources by the
+commands given there; readers who wish to reproduce the exclusion need only rerun the
+reference engine.)}
 
 %=======================================================================
 \begin{thebibliography}{99}

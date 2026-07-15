@@ -101,3 +101,23 @@ print(f"all words len<=18: {cnt_all}")
 print(f"heading-reset: {cnt_hr}")
 print(f"heading-reset & nonzero-drift: {cnt_hrnz}")
 print(f"...of those, PASSING criterion (realisable highways): {cnt_pass}")
+
+# ---- reviewer round-2: corrected coset invariant (Bezout key) ----
+def _egcd(a,b):
+    if b==0: return (a,1,0)
+    g,x,y=_egcd(b,a%b); return (g,y,x-(a//b)*y)
+def coset_key(x,y,d):
+    from math import gcd
+    a,b=d; g=gcd(abs(a),abs(b)); ap,bp=a//g,b//g
+    _,r,s=_egcd(ap,bp)  # r*ap+s*bp=1
+    return (bp*x-ap*y, (r*x+s*y)%g)
+if __name__=='__main__':
+    # sanity: key is a complete Z^2/Zd invariant for d=(2,2)
+    def mult(p,q,d):
+        a,b=d;dx,dy=p[0]-q[0],p[1]-q[1]
+        return (dx%a==0 and (dx//a)*b==dy) if a else (dx==0 and dy%b==0)
+    d=(2,2);pts=[(x,y) for x in range(-4,5) for y in range(-4,5)];bad=0
+    for i in range(len(pts)):
+        for j in range(i+1,len(pts)):
+            if (coset_key(*pts[i],d)==coset_key(*pts[j],d))!=mult(pts[i],pts[j],d): bad+=1
+    print('corrected coset key mismatches for d=(2,2):',bad)

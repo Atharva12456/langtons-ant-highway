@@ -68,14 +68,14 @@ window.MathJax = {
 <strong>Scope.</strong> Every result below is a necessary condition on a
 finite-support <em>periodic highway</em>, or an exact finite computation. None
 asserts that any orbit converges, so none resolves the (open) highway conjecture.
-What is new is the first arithmetic/topological theory of what a classical
+The aim is an arithmetic/topological theory of what a classical
 finite-support highway can look like.
 </div>
 
 <div class="abstract">
 <span class="lbl">Abstract.</span>
 For the classical two-colour Langton&rsquo;s ant on \(\Z^2\) with finite initial
-black support, we establish the first structural and arithmetic constraints on the
+black support, we establish structural and arithmetic constraints on the
 possible <em>periodic highways</em>. <em>(1) An even-winding theorem</em>: no
 finite-support pattern can drift to an exact translate of itself with restored
 heading and zero net change in the number of black cells; consequently every
@@ -142,9 +142,9 @@ finite time cutoff can settle Conjecture&nbsp;1.1 <a href="#r4">[4]</a>. Gajardo
 <a href="#r5">[5]</a> characterises the forbidden factors of the ant&rsquo;s trace
 subshift. Recent progress concerns <em>generalised</em> ants: some admit infinitely
 many highways <a href="#r3">[3]</a>, others have non-highway behaviour
-<a href="#r7">[7]</a>, and confinement bounds are known <a href="#r2">[2]</a>. None
-of this constrains what a <em>classical</em> finite-support periodic highway can look
-like; this paper supplies that missing layer.</p>
+<a href="#r7">[7]</a>, and confinement bounds are known <a href="#r2">[2]</a>. We are
+not aware of prior results constraining what a <em>classical</em> finite-support
+periodic highway can look like; this paper aims at that layer.</p>
 
 <h3>1.2. Results</h3>
 <p>A <em>repeating trace</em> is an infinite turn word \(w^\omega\) realised by a
@@ -163,8 +163,8 @@ positivity is new.</li>
 bound \(\growth\ge2\max(|a|,|b|)\) (Corollary 7.3). No exact per-residue identity or
 linear drift&ndash;growth bound appears in the literature.</li>
 <li><strong>Tait-graph conjugacy</strong> (Theorem 4.1) and cycle-rank surgery
-\(E+\Delta C=2\beta\) (Theorem 4.2). No previous Langton-ant work uses medial/Tait
-graphs.</li>
+\(E+\Delta C=2\beta\) (Theorem 4.2). We are not aware of prior Langton-ant work using
+medial/Tait graphs.</li>
 <li><strong>Collision-chain parity</strong> (Theorem 8.1). We additionally record,
 building on Traldi&rsquo;s circuit-partition/interlacement theory
 <a href="#r9">[9]</a>,<a href="#r8">[8]</a>, a rank computation for the periodic
@@ -372,20 +372,24 @@ covariance gives \(A=X^aA\); in the integral domain \(a\neq0\Rightarrow A=0\),
 
 <div class="thm" id="prop-cocycle">
 <span class="hd">Proposition 5.3 (Additive-charge cocycle).</span>
-For an abelian group \(A\), a weight \(w:\Z^2\to A\) admits heading corrections
-\(F_q\) making \(\sum_{z\in B}w(z)+F_q(p)\) conserved iff the four-corner condition
+For an abelian group \(A\) and \(w:\Z^2\to A\), heading corrections \(F_q\) (with the
+step relations on \(\turnR\): \(F_{q+1}(z+u_{q+1})-F_q(z)=-w(z)\), on \(\turnL\):
+\(F_{q-1}(z+u_{q-1})-F_q(z)=+w(z)\)) making \(\sum_{z\in B}w(z)+F_q(p)\) conserved
+exist <em>only if</em> \(w\) satisfies the four-corner condition
 \begin{equation}\label{eq:cocycle}
 w(x{+}1,y{+}1)+w(x{+}1,y)+w(x,y{+}1)+w(x,y)=0\ \text{in }A
 \end{equation}
-holds.
-The step relations are then, on \(\turnR\), \(F_{q+1}(z+u_{q+1})-F_q(z)=-w(z)\), and on
-\(\turnL\), \(F_{q-1}(z+u_{q-1})-F_q(z)=+w(z)\). Over \(\F_2\) the solutions are
+<em>and</em> \(4w=0\). Conversely, when \(A=\Z/4\Z\) (so \(4w=0\) is automatic) the
+four-corner condition suffices. Over \(\F_2\) the solutions are
 \(w(x,y)=\alpha(x)+\beta(y)\).
 </div>
 <div class="proof"><span class="hd">Proof.</span>
-On an \(\turnR\) step the black set gains \(z\) and the state moves
-\((z,q)\mapsto(z+u_{q+1},q+1)\); conservation gives the first relation, and \(\turnL\)
-is symmetric. Eliminating the \(F_q\) around a plaquette yields \(\eqref{eq:cocycle}\).
+Eliminating the \(F_q\) around a plaquette yields \(\eqref{eq:cocycle}\). Combining the
+four relations at a single cell \(z\) gives both \(F_S(z)=F_N(z)+2w(z)\) and
+\(F_S(z)=F_N(z)-2w(z)\), hence \(4w(z)=0\); e.g. \(w=(-1)^{x+y}\) over \(A=\Z\)
+satisfies \(\eqref{eq:cocycle}\) but has no such \(F_q\). Over \(\Z/4\Z\) the
+four-corner condition lets one build \(F_N\), and \(4w=0\) makes \(F_S=F_N-2w\)
+consistent.
 </div>
 
 <p>A mod-four refinement (using the quadratic solution \(Q(x,y)=x^2+2xy\) of
@@ -410,9 +414,11 @@ stabilised class). For the standard word \(\growth=12\) and \(|B_n|=11+12n\).
 <div class="proof"><span class="hd">Proof.</span>
 Partition the finite support of \(D\) into translation classes under
 \(z\mapsto z+\drift\). For a class with base \(c\), write \(f(n)=D(c+n\drift)\), a
-finitely supported \(f:\Z\to\Z\); then \(f=(\sum_n f)\,\delta_0+(T-1)a\) with
-\(a(n)=-\sum_{m&gt;n}f(m)\) (the second term has zero total and telescopes to
-\(f-(\sum f)\delta_0\), and \(a\) is finite because \(f\) is). Summing over classes
+finitely supported \(f:\Z\to\Z\). Put \(s=\sum_n f(n)\) and \(h=f-s\,\delta_0\)
+(so \(\sum_n h=0\)), and set \(a(n)=\sum_{m&gt;n}h(m)\). Then
+\(a(n-1)-a(n)=h(n)\), i.e. \((T-1)a=h\) with \((Ta)(n)=a(n-1)\), so
+\(f=s\,\delta_0+(T-1)a\); and \(a\) is finitely supported because \(\sum h=0\) makes
+it vanish far to the left as well as far to the right. Summing over classes
 gives \(\eqref{eq:decomp}\) with \(A\) the sum of the class antiderivatives. The
 per-class total \(\sum_n f\) is \(+1\) for an odd class and \(0\) for an even one (by
 the alternating-visit rule), so \(S\) is a sum of \(\growth\) unit masses, one per
@@ -421,10 +427,19 @@ odd class, and \(\growth=\#\turnR-\#\turnL\). The standard-word figures follow f
 </div>
 <div class="thm" id="cor-sep">
 <span class="hd">Corollary 5.5 (Separation).</span>
-If \(\growth=0\) then \(S=0\), so \(D=(T_\drift-1)A\). Since the trace is periodic
-with nonzero drift, every cell is visited only finitely often, so after finitely many
-periods the ant never revisits a fixed finite stationary set; deleting that set
-changes no future turn and leaves a clean finite translator with drift \(\drift\).
+If \(\growth=0\) a finite stationary set can be deleted to leave a clean finite
+translator with drift \(\drift\).
+<div class="proof" style="margin-top:.5em"><span class="hd">Proof.</span>
+Here \(S=0\), so \(D=(T_\drift-1)A\). Let \(b_n\) be the \(\{0,1\}\) indicator of
+\(B_n\) at the \(n\)-th period boundary. Each cell is toggled a net
+\(D(z)\in\{-1,0,1\}\) per period and the period-\(k\) pattern is \(T_{k\drift}D\), so
+\[ b_n=b_0+\sum_{k=0}^{n-1}T_{k\drift}(T_\drift-1)A=b_0+(T_{n\drift}-1)A=R+T_{n\drift}A,\quad R:=b_0-A. \]
+For large \(n\) the supports of \(R\) and \(T_{n\drift}A\) are disjoint; since \(b_n\)
+is \(\{0,1\}\)-valued, \(R\) and \(A\) are too, and \(B_n=R\sqcup(A+n\drift)\). As the
+trace is periodic with nonzero drift, each cell is visited finitely often, so at a
+late period boundary the ant never revisits \(R\); deleting \(R\) changes no future
+turn and leaves the black set \(A+n\drift\), a clean translator.
+</div>
 </div>
 <p>By Corollary 5.5, a \(\growth=0\) trace reduces to a clean translator, which
 §§6&ndash;7 prove impossible by two independent routes; hence \(\growth\neq0\).</p>
@@ -439,8 +454,11 @@ proved in full as Lemma 6.4.</p>
 No finite-support clean translator with nonzero drift exists.
 </div>
 
-<p>Fix a hypothetical clean translator; by Proposition 5.2 and the mod-four refinement
-write \(\drift=(L,0)\) with \(L\in4\Z_{&gt;0}\). Reversibility gives
+<p>Fix a hypothetical clean translator. Its drift is axis-aligned (Proposition 5.2). A
+clean translator has \(\growth=0\), so its period \(N=2\#\turnR\) is even; since each
+step flips \(x+y\) parity, \(a+b\equiv N\equiv0\pmod2\), so the nonzero drift
+coordinate is even. After rotation/reflection write \(\drift=(L,0)\) with \(L&gt;0\)
+even&mdash;all the argument needs. Reversibility gives
 \(A_{nN+j}=A_j+n\drift\), \(p_{nN+j}=p_j+n\drift\). Quotient the bi-infinite trace by
 \(\drift\) to a closed walk on the cylinder \(C_L=(\Z/L\Z)\times\Z\); \(L\) even makes
 the HV type descend. The <em>multiplicity</em> of an edge is its number of traversals
@@ -607,17 +625,20 @@ row&ndash;column incidence graph; to a state \(s=(p,q)\) assign \(\eta(s)=C_{p_x
 <span class="hd">Theorem 8.1 (Two-endpoint collision-chain parity).</span>
 Over \(\F_2\), the boundary of the incidence graph of \(B_s\triangle B_t\) equals
 \(\eta(s)+\eta(t)\); intermediate tokens telescope, so at most one defect component is
-non-Eulerian and a same-pose return has only Eulerian defect components. Every
-completed \(\turnR\)-to-\(\turnL\) black lifetime has an Eulerian odd-visit component
-through its paired cell and hence involves at least four distinct cells.
+non-Eulerian and a same-pose return (\(\eta(s)=\eta(t)\)) has only Eulerian defect
+components.
 </div>
-<div class="proof"><span class="hd">Proof sketch.</span>
+<div class="proof"><span class="hd">Proof.</span>
 One step toggles the single edge \(C_{p_x}R_{p_y}\), flipping the degree parity of
 exactly \(C_{p_x}\) and \(R_{p_y}\); the pre/post tokens differ by the incidence-vertex
 whose axis matches the heading, so a single step contributes \(\eta(s)+\eta(s')\) to
-the boundary. Summing telescopes to the two endpoints. A non-Eulerian component needs
-nonempty boundary, so at most one exists, absent at a same-pose return.
+the boundary. Summing telescopes to \(\eta(s)+\eta(t)\). A non-Eulerian component needs
+nonempty boundary, so at most one exists, absent when \(\eta(s)=\eta(t)\).
 </div>
+<p>Taking \(s,t\) to be the states just after an \(\turnR\) visit and just before the
+next \(\turnL\) visit to a cell gives \(\eta(s)=\eta(t)\), so the odd-visit defect
+between them is Eulerian; a companion analysis shows this forces at least four distinct
+cells, but we do not use that refinement here.</p>
 
 <p>We close with an observation, stated as such rather than a theorem because a
 self-contained development of the touch-graph formalism is lengthy; that development,
@@ -672,7 +693,8 @@ returned zero certificates with all per-rank counters in agreement.
 <tr><td>36</td><td>positive-growth</td><td>19,781,050</td><td>0</td></tr>
 <tr><td>38</td><td>positive-growth</td><td>41,972,884</td><td>0</td></tr>
 <tr><td>40</td><td>positive-growth</td><td>201,924,597</td><td>0</td></tr>
-<tr><td>42, 44</td><td>two-engine, rank-audited</td><td>(see records)</td><td>0</td></tr>
+<tr><td>42</td><td>two-engine, rank-audited</td><td>528,451,911</td><td>0</td></tr>
+<tr><td>44</td><td>two-engine, rank-audited</td><td>1,319,080,456</td><td>0</td></tr>
 <tr><td>46</td><td>two-engine, rank-audited</td><td>3,463,441,745</td><td>0</td></tr>
 <tr><td>48</td><td>two-engine, rank-audited</td><td>8,677,026,370</td><td>0</td></tr>
 </table>
@@ -714,7 +736,7 @@ resolution needs a single-tour chronology theorem for unbounded period. A
 
 <hr class="sec">
 <h2 id="s11">11. Concluding remarks</h2>
-<p>We have given the first structural and arithmetic theory of the classical
+<p>We have developed a structural and arithmetic theory of the classical
 finite-support periodic highway: a decidable realisability criterion, an exact
 medial-graph conjugacy, two independent proofs that no zero-growth clean translator
 exists (so every highway grows a wake of size \(\in4\Z_{&gt;0}\)), the lower bound
