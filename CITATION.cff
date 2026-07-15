@@ -28,5 +28,7 @@ keywords:
   - Tait graph
   - interlacement
   - Lean
-repository-code: "https://github.com/USERNAME/langtons-ant-highway"
+repository-code: "https://github.com/Atharva12456/langtons-ant-highway"
+url: "https://github.com/Atharva12456/langtons-ant-highway/releases/tag/v1.0"
+version: "v1.0"
 license: CC-BY-4.0
