@@ -1,6 +1,14 @@
 # Langton's Ant: Structural Constraints on Finite-Support Periodic Highways
 
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.21381637.svg)](https://doi.org/10.5281/zenodo.21381637)
+[![License: MIT](https://img.shields.io/badge/code-MIT-blue.svg)](LICENSE)
+[![Paper: CC BY 4.0](https://img.shields.io/badge/paper-CC%20BY%204.0-lightgrey.svg)](https://creativecommons.org/licenses/by/4.0/)
+
 **Author:** Atharva Jillhewar
+
+📄 **[Read the paper (PDF)](https://atharva12456.github.io/langtons-ant-highway/paper.pdf)** ·
+🌐 **[Project page](https://atharva12456.github.io/langtons-ant-highway/)** ·
+📌 **Cite:** [`10.5281/zenodo.21381637`](https://doi.org/10.5281/zenodo.21381637)
 
 This repository accompanies two papers on the **finite-support highway conjecture**
 for Langton's ant, together with the exact search code, the result records, and a
@@ -150,7 +158,12 @@ certified.
 See [`CITATION.cff`](CITATION.cff). Suggested:
 
 > A. Jillhewar, *New Structural and Arithmetic Constraints on Finite-Support Periodic
-> Highways of Langton's Ant*, preprint, 2026.
+> Highways of Langton's Ant*, preprint, 2026. Supplementary code, data and Lean
+> formalization: Zenodo, doi:[10.5281/zenodo.21381637](https://doi.org/10.5281/zenodo.21381637).
+
+The DOI above is the **concept DOI**: it always resolves to the latest archived
+release. To pin an exact version, use that release's own DOI (e.g. `v1.0.1` is
+[`10.5281/zenodo.21381638`](https://doi.org/10.5281/zenodo.21381638)).
 
 ## License
 

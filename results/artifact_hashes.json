@@ -1,12 +1,13 @@
 {
  "algorithm": "SHA-256",
+ "concept_doi": "10.5281/zenodo.21381637",
  "files": {
   ".gitattributes": "8682456e24d24a41825df24e5566301d5973810a6548a76b9f666abb9e7a5583",
   ".gitignore": "da6537c96e712841a4084dfd1b2951b78cba382c06e7452e7dacaa8d4ecadd53",
   ".zenodo.json": "8f6a16144c80de72056c29d4be7f504b3a28df55bf2dd77923ef949ea6d146b8",
-  "CITATION.cff": "ebf792ab3854669bfdabe2e67b405a35855a8a677fdd473b68c232c4cd85c17d",
+  "CITATION.cff": "a2061f91be7df6e36454d4f47e972be3837d804d9dfc077d2ab00fb43b4f9903",
   "LICENSE": "7446fce42965d4d78ff503919d9c652a9511adece5950f1ff0e062f5db4050ef",
-  "README.md": "897405c069238cf5e2f50f133554da1636426cdf9e263e146b40b32178a78a1f",
+  "README.md": "12f5014d5faae2d244e3a8cc3945b17a92049856feec79fa4faf958b20aea4eb",
   "code/README.md": "3aa4ffe829209f3f05c533e602115d10adfe2847ee8d454fd3faf15b35ded806",
   "code/java/HammingStandard.java": "a02cc3297d8f608a5115bc84d11dbac54d979ee51bc50118c2bdb77b673dc8a9",
   "code/java/PositiveGrowthResidueSearch.java": "859a5c683898375cd8e94637cdbb50824b59eb88f83e6876e225c82c8c421b17",
@@ -19,11 +20,11 @@
   "code/python/verify_collision_tokens.py": "f576da97315e91b20844981799c38715dcd9ab73a4d58a42c3c4d2c7fff05998",
   "code/python/verify_monodromy_diamond.py": "f74e725cee81c456aae3afb45d10fd959184dc99aed706ae542307524b8e3bde",
   "code/python/verify_standard_highway.py": "cf43650bd5920e27ecfcc9dca69cfad0e32c0ac3454c9f2e8d2b180071a99c65",
-  "companion/main.tex": "9f21d52a688336ca16ceeec54ba33d8230465aa767b5503146b2c4a4364e748d",
+  "companion/main.tex": "05d8f35c3ee3db7a6e4342c24c0bdd48b374567a01aafc6ab389a79e7c106ac4",
   "docs/companion.html": "8843b83f5b9bcd2f70e076f5d2180487f0cbb88411182737e096f76fdf51899e",
   "docs/index.html": "6f526630a8196f924025eb2594165518db7be70ab977f21cc8d97f253ce43578",
   "docs/paper.html": "22d78441a240807006a5ee898a9eb386094f856d1bbfd1d322f29d50982a676a",
-  "docs/paper.pdf": "f7419909fbbc59b3d055191250325450f0f56af708e4a70e5203a74dc335bce3",
+  "docs/paper.pdf": "7f660f0bb329c922c1459b8b3e18f458516de3ecdc020cee5e7e3623fa4e8a9c",
   "lean/Audit.lean": "2cc4e33f181b853885b33db122b32784d14162b6ec2ce9682dd5370af940a423",
   "lean/FORMALIZATION_BOUNDARY.md": "71bb7718328fac3b6f426c4e59ace55d634d5e4193df433e1de2cc1b982f503d",
   "lean/Langton.lean": "40898fe0b381f6a25790f3820497fe5b84cad0858f5c0154146dffb363df27f1",
@@ -39,7 +40,7 @@
   "lean/lake-manifest.json": "649e4be92941e73ae71d12ee45e220ef801b134572ddd305a39ca81914a76c9e",
   "lean/lakefile.lean": "7c486d45c9234f4bc23fee64928366e9d8d1393af71bea954cd16c2934cf7057",
   "lean/lean-toolchain": "2773c517aa90b66ea8a2c52bddddf84393157797f8341be0df45294fff7fd32e",
-  "paper/main.tex": "519f1ad1a73b313addd37c4d42d1e53f8a7589869e20790299ff1ed61c430671",
+  "paper/main.tex": "dc3851a0a3fb61c02a6e5d92992b15f79067e1517b90a960531cb2aaf5a0eccb",
   "research-notes/compute_handoff.md": "f03ca2d895e426e5c7aa734ed0f304a22b4250c4fd8fa7caae43f45f1e2116bf",
   "research-notes/highway_research_note.md": "413b9dd4255573813c1092d2abffcfa6ded61f8453fc6bd2ba4ddbf431311939",
   "research-notes/proof_journal.md": "625f66763717be38ec032ad719e2c16775c39bba1c3bd74d469d7533dda3583b",
@@ -47,7 +48,7 @@
   "results/period_exclusion_summary.json": "5d13a6ae9511350311003d458910190d7ed73e8021dc3cb704f51ca792b4a307",
   "results/standard_highway.json": "eae69afdd7f764b7cd024082523eca97b11be1390904f52555bcda2aa2b3e43e"
  },
- "release": "v1.0.1",
+ "release": "v1.0.2",
  "repository": "https://github.com/Atharva12456/langtons-ant-highway",
  "schema": "langtons-ant-highway-artifact-manifest"
 }

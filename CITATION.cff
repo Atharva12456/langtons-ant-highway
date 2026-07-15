@@ -29,6 +29,14 @@ keywords:
   - interlacement
   - Lean
 repository-code: "https://github.com/Atharva12456/langtons-ant-highway"
-url: "https://github.com/Atharva12456/langtons-ant-highway/releases/tag/v1.0"
-version: "v1.0"
+url: "https://atharva12456.github.io/langtons-ant-highway/"
+version: "v1.0.1"
+doi: "10.5281/zenodo.21381637"
+identifiers:
+  - type: doi
+    value: "10.5281/zenodo.21381637"
+    description: "Concept DOI — always resolves to the latest archived release."
+  - type: doi
+    value: "10.5281/zenodo.21381638"
+    description: "Version DOI — pins release v1.0.1."
 license: CC-BY-4.0
