@@ -82,12 +82,13 @@ heading and zero net change in the number of black cells; consequently every
 finite-support periodic highway must build a wake whose net black growth is a
 strictly positive multiple of four. <em>(2) A signed mod-four wake-residue
 identity</em>: the checkerboard-signed strand bases sum to \(2\pmod 4\) in each
-residue class of every nonzero drift coordinate, whence the sharp bound
+residue class of every nonzero drift coordinate, whence the lower bound
 \(\growth\ge 2\max(|a|,|b|)\). <em>(3) A Tait-graph conjugacy</em> with a cycle-rank
 surgery identity \(E+\Delta C=2\beta\). <em>(4) A two-endpoint collision-chain
-parity theorem</em> and a <em>touch-graph interlacement rank formula</em>. <em>(5) A
+parity theorem</em> (and, building on Traldi&rsquo;s interlacement theory, a
+touch-graph rank computation for the periodic trace). <em>(5) A
 two-engine, rank-audited exhaustive computation</em> excluding every finite-support
-periodic highway of nonzero drift and period at most \(48\). We also give a decidable
+periodic highway of nonzero drift and period at most \(48\), so any nonstandard periodic highway must have even period at least \(50\). We also give a decidable
 periodic-realisability criterion with an explicit finite seed. The algebraic core is
 machine-checked in Lean&nbsp;4. Every result is a necessary condition on a
 finite-support periodic highway or an exact finite computation; none resolves the
@@ -105,7 +106,7 @@ supply.
 <li><a href="#s5">Additive charges and clean translators</a></li>
 <li><a href="#s6">The even-winding theorem</a></li>
 <li><a href="#s7">The signed mod-four wake-residue theorem</a></li>
-<li><a href="#s8">Collision chains and touch-graph interlacement</a></li>
+<li><a href="#s8">Collision chains and the periodic touch graph</a></li>
 <li><a href="#s9">Small-period exclusion</a></li>
 <li><a href="#s10">The remaining gap</a></li>
 <li><a href="#s11">Concluding remarks</a></li>
@@ -158,15 +159,17 @@ translator with nonzero drift exists; hence every periodic highway has
 \(\growth\in4\Z_{&gt;0}\) (Corollary 6.5). Bunimovich&ndash;Troubetzkoy excludes only
 <em>bounded</em> repeatable orbits; a zero-growth glider is unbounded, so the strict
 positivity is new.</li>
-<li><strong>Signed mod-four wake-residue identity</strong> (Theorem 7.1) and the sharp
+<li><strong>Signed mod-four wake-residue identity</strong> (Theorem 7.1) and the lower
 bound \(\growth\ge2\max(|a|,|b|)\) (Corollary 7.3). No exact per-residue identity or
-sharp drift&ndash;growth bound appears in the literature.</li>
+linear drift&ndash;growth bound appears in the literature.</li>
 <li><strong>Tait-graph conjugacy</strong> (Theorem 4.1) and cycle-rank surgery
 \(E+\Delta C=2\beta\) (Theorem 4.2). No previous Langton-ant work uses medial/Tait
 graphs.</li>
-<li><strong>Collision-chain parity</strong> (Theorem 8.1) and the <strong>touch-graph
-interlacement rank</strong> formula (Theorem 8.2), built on Traldi&rsquo;s machinery
-<a href="#r9">[9]</a>,<a href="#r8">[8]</a>.</li>
+<li><strong>Collision-chain parity</strong> (Theorem 8.1). We additionally record,
+building on Traldi&rsquo;s circuit-partition/interlacement theory
+<a href="#r9">[9]</a>,<a href="#r8">[8]</a>, a rank computation for the periodic
+touch graph (Observation 8.2); a self-contained treatment is deferred to the
+companion report.</li>
 <li><strong>Small-period exclusion</strong> (Theorem 9.1): a two-engine, rank-audited
 search excludes every finite-support periodic highway of nonzero drift and period at
 most \(48\).</li>
@@ -263,7 +266,7 @@ class \(I\): <em>(i)</em> every \(S_{I,n}\) with \(\min_I a_i\le n\le\max_I a_i\
 alternates strictly, and <em>(ii)</em> the stabilised word \(S_{I,\max_I a_i}\) begins
 with \(\turnR\). Then an explicit finite black seed is
 \begin{equation}\label{eq:seed}
-B=\bigl\{\,b_I+n\drift:\ n<\textstyle\max_I a_i\ \text{and}\ S_{I,n}\ \text{begins with}\ \turnL\,\bigr\}.
+B=\bigl\{\,b_I+n\drift:\ \textstyle\min_I a_i\le n<\max_I a_i\ \text{and}\ S_{I,n}\ \text{begins with}\ \turnL\,\bigr\}.
 \end{equation}
 </div>
 <div class="proof"><span class="hd">Proof.</span>
@@ -369,11 +372,12 @@ covariance gives \(A=X^aA\); in the integral domain \(a\neq0\Rightarrow A=0\),
 
 <div class="thm" id="prop-cocycle">
 <span class="hd">Proposition 5.3 (Additive-charge cocycle).</span>
-A weight \(w:\Z^2\to\Z/m\Z\) admits heading corrections \(F_q\) making
-\(\sum_{z\in B}w(z)+F_q(p)\) conserved iff \(mw=0\) and
+For an abelian group \(A\), a weight \(w:\Z^2\to A\) admits heading corrections
+\(F_q\) making \(\sum_{z\in B}w(z)+F_q(p)\) conserved iff the four-corner condition
 \begin{equation}\label{eq:cocycle}
-w(x{+}1,y{+}1)+w(x{+}1,y)+w(x,y{+}1)+w(x,y)=0\pmod m .
+w(x{+}1,y{+}1)+w(x{+}1,y)+w(x,y{+}1)+w(x,y)=0\ \text{in }A
 \end{equation}
+holds.
 The step relations are then, on \(\turnR\), \(F_{q+1}(z+u_{q+1})-F_q(z)=-w(z)\), and on
 \(\turnL\), \(F_{q-1}(z+u_{q-1})-F_q(z)=+w(z)\). Over \(\F_2\) the solutions are
 \(w(x,y)=\alpha(x)+\beta(y)\).
@@ -401,11 +405,29 @@ D=S+(T_\drift-1)A,\qquad S=\sum_{i=1}^{\growth}\delta_{c_i},
 \end{equation}
 where \((T_\drift A)(z)=A(z-\drift)\), \(A\) is a finite moving widget, and
 \(c_1,\dots,c_\growth\) are the bases of the \(\growth\) growing strands (one per odd
-stabilised class). For the standard word: a \(2\)-cell residue, an \(11\)-cell widget,
-\(12\) strands, and \(|B_n|=13+12n\).
+stabilised class). For the standard word \(\growth=12\) and \(|B_n|=11+12n\).
 </div>
-<p>If \(\growth=0\) then \(S=0\); after the residue separates, deleting it leaves a
-clean translator, impossible by §§6&ndash;7.</p>
+<div class="proof"><span class="hd">Proof.</span>
+Partition the finite support of \(D\) into translation classes under
+\(z\mapsto z+\drift\). For a class with base \(c\), write \(f(n)=D(c+n\drift)\), a
+finitely supported \(f:\Z\to\Z\); then \(f=(\sum_n f)\,\delta_0+(T-1)a\) with
+\(a(n)=-\sum_{m&gt;n}f(m)\) (the second term has zero total and telescopes to
+\(f-(\sum f)\delta_0\), and \(a\) is finite because \(f\) is). Summing over classes
+gives \(\eqref{eq:decomp}\) with \(A\) the sum of the class antiderivatives. The
+per-class total \(\sum_n f\) is \(+1\) for an odd class and \(0\) for an even one (by
+the alternating-visit rule), so \(S\) is a sum of \(\growth\) unit masses, one per
+odd class, and \(\growth=\#\turnR-\#\turnL\). The standard-word figures follow from
+\(|B_0|=11\) and \(|B_{n+1}|-|B_n|=12\).
+</div>
+<div class="thm" id="cor-sep">
+<span class="hd">Corollary 5.5 (Separation).</span>
+If \(\growth=0\) then \(S=0\), so \(D=(T_\drift-1)A\). Since the trace is periodic
+with nonzero drift, every cell is visited only finitely often, so after finitely many
+periods the ant never revisits a fixed finite stationary set; deleting that set
+changes no future turn and leaves a clean finite translator with drift \(\drift\).
+</div>
+<p>By Corollary 5.5, a \(\growth=0\) trace reduces to a clean translator, which
+§§6&ndash;7 prove impossible by two independent routes; hence \(\growth\neq0\).</p>
 
 <hr class="sec">
 <h2 id="s6">6. The even-winding theorem</h2>
@@ -520,8 +542,8 @@ for every \(r\in\Z/|a|\Z\),
 
 <div class="thm" id="lem-diag">
 <span class="hd">Lemma 7.2 (Diagonal increment).</span>
-Fix \(a\neq0\), \(\alpha:\Z/|a|\Z\to\Z/4\Z\), and \(w(x,y)=\che(x,y)\alpha(x)\). Then
-\(4w=0\) and \(\eqref{eq:cocycle}\) hold, so potentials \(F_q\) exist, and
+Fix \(a\neq0\), \(\alpha:\Z/|a|\Z\to\Z/4\Z\), and \(w(x,y)=\che(x,y)\alpha(x)\), valued
+in \(\Z/4\Z\). Then \(w\) satisfies \(\eqref{eq:cocycle}\), so potentials \(F_q\) exist, and
 \begin{equation}\label{eq:diag}
 F_N(x{+}1,y{+}1)-F_N(x,y)=-\che(x,y)\bigl(\alpha(x)+\alpha(x{+}1)\bigr),
 \end{equation}
@@ -529,7 +551,7 @@ while \(F_N\) is \(2\)-periodic in \(y\).
 </div>
 <div class="proof"><span class="hd">Proof.</span>
 Since \(\che(x{+}1,y{+}1)=\che(x,y)\) and \(\che(x{+}1,y)=\che(x,y{+}1)=-\che(x,y)\),
-the four-corner sum vanishes and \(4w=0\); so \(F_q\) exist. Compose the \(\turnR\)
+the four-corner sum vanishes; so \(F_q\) exist by Proposition 5.3. Compose the \(\turnR\)
 step at \((x,y)\) heading \(N\) with the \(\turnL\) step at \((x{+}1,y)\) heading
 \(E\): adding
 \(F_E(x{+}1,y)-F_N(x,y)=-w(x,y)\) and \(F_N(x{+}1,y{+}1)-F_E(x{+}1,y)=w(x{+}1,y)\)
@@ -562,13 +584,21 @@ and even; so each residue class mod \(|a|\) has \(\ge2\) bases, giving
 \(\growth\ge2|a|\), and symmetrically \(\growth\ge2|b|\). If \(\growth=0\) some class
 is empty while \(\drift\neq0\), a contradiction.
 </div>
+<div class="rem"><span class="hd">Remark (not sharp).</span> The bound is a genuine lower
+bound but is not claimed attained by a chronological highway: the standard highway has
+\(\growth=12\) against \(2\max(2,2)=4\). Equality holds for the static aggregate
+edge-flow profiles satisfying the residue identity, but whether any is realised by a
+single ant tour is a chronology question left open in §10.</div>
 <p>Unlike the even-winding argument, Theorem 7.1 uses neither axis alignment nor the
-clean-packet reduction. The identities were verified on all \(172{,}092\) heading-reset
-nonzero-drift words through length \(18\) and on the standard highway and its dihedral
-images (Appendix C).</p>
+clean-packet reduction. Independent computation supports it where testable
+(Appendix C): the underlying toggle-charge identity holds on all \(172{,}092\)
+heading-reset nonzero-drift words through length \(18\), while the strand identity and
+the bound \(\growth\ge2\max(|a|,|b|)\)&mdash;statements about <em>realisable</em>
+traces, of which none of period \(\le18\) exists&mdash;are confirmed on the standard
+highway, its powers, and its dihedral images.</p>
 
 <hr class="sec">
-<h2 id="s8">8. Collision chains and touch-graph interlacement</h2>
+<h2 id="s8">8. Collision chains and the periodic touch graph</h2>
 <p>Encode a finite cell set as edges \((x,y)\mapsto C_xR_y\) of the bipartite
 row&ndash;column incidence graph; to a state \(s=(p,q)\) assign \(\eta(s)=C_{p_x}\) if
 \(q\) is vertical, \(R_{p_y}\) if horizontal.</p>
@@ -589,23 +619,27 @@ the boundary. Summing telescopes to the two endpoints. A non-Eulerian component 
 nonempty boundary, so at most one exists, absent at a same-pose return.
 </div>
 
-<p>Pair every stabilised \(\turnR\) with its following \(\turnL\) into a \(4\)-valent
-temporal vertex; wake \(\turnR\) events become degree-two \(H/V\) switches. Suppressing
-the switches yields a connected \(4\)-regular Euler system, and Traldi&rsquo;s modified
-interlacement rows span the cycle space of the contracted touch graph
-<a href="#r9">[9]</a>,<a href="#r8">[8]</a>.</p>
+<p>We close with an observation, stated as such rather than a theorem because a
+self-contained development of the touch-graph formalism is lengthy; that development,
+with full definitions and proofs, is deferred to the companion report, and we use here
+only its numerical output.</p>
 
-<div class="thm" id="thm-touchgraph">
-<span class="hd">Theorem 8.2 (Touch-graph interlacement rank).</span>
-Let \(m\) be the number of paired lifetimes, \(c\) the closed \(H/V\) smoothing
-circuits, and \(\kappa\) the cycles in the wake-edge subgraph \(W\). Then
-\(\dim Z(T)=m-c+1\), \(\dim Z(T/W)=m-c-\kappa+1\), and \(0\to Z(W)\to Z(T)\to Z(T/W)\to0\).
-The lifetime rows span \(Z(T/W)\) but have codimension \(\le\kappa\) in \(Z(T)\); on the
-standard trace \(m=46,c=5,\kappa=1\), projected rank \(41\), boundary rank \(42\).
+<div class="thm" id="obs-touchgraph">
+<span class="hd">Observation 8.2 (Periodic touch-graph rank).</span>
+Pair every stabilised \(\turnR\) with its following \(\turnL\) into a \(4\)-valent
+temporal vertex; the wake \(\turnR\) events become degree-two \(H/V\) switches, whose
+suppression yields a connected \(4\)-regular Euler system, to which Traldi&rsquo;s
+circuit-partition/interlacement theory <a href="#r9">[9]</a>,<a href="#r8">[8]</a>
+applies. With \(m\) paired lifetimes, \(c\) closed \(H/V\) smoothing circuits, and
+\(\kappa\) cycles in the wake-edge subgraph \(W\),
+\(\dim Z(T)=m-c+1\), \(\dim Z(T/W)=m-c-\kappa+1\), and \(0\to Z(W)\to Z(T)\to Z(T/W)\to0\);
+the lifetime rows span \(Z(T/W)\) with codimension \(\le\kappa\) in \(Z(T)\). On the
+standard trace one computes \(m=46,c=5,\kappa=1\), projected rank \(41\), boundary rank \(42\).
 </div>
-<p>Ordinary circuit-nullity closes the contracted graph but cannot supply the missing
-\(\kappa\)-dimensional wake-cycle restriction; at fixed \(\growth=4\) an explicit
-family has \(c\to\infty\), so no bound depending only on \(\growth\) exists.</p>
+<p>Ordinary circuit-nullity closes the contracted graph but does not by itself supply
+the \(\kappa\)-dimensional wake-cycle restriction; at fixed \(\growth=4\) an explicit
+abstract family has \(c\to\infty\), so no bound depending only on \(\growth\) follows
+from the graph theory alone.</p>
 
 <hr class="sec">
 <h2 id="s9">9. Small-period exclusion</h2>
@@ -614,8 +648,10 @@ engines are used: a reference implementation of Theorem 3.1, and a residue-prune
 engine using Corollary 6.5 and Theorem 7.1. Both accept the standard word.</p>
 
 <div class="thm" id="thm-periodexcl">
-<span class="hd">Theorem 9.1 (No short-period highway other than \(104\)).</span>
+<span class="hd">Theorem 9.1 (No periodic highway of period at most \(48\)).</span>
 No finite-support periodic highway of nonzero drift has period at most \(48\).
+Consequently any nonstandard finite-support periodic highway has even period at least
+\(50\) (periods \(50,52,\dots,102\) are not addressed here).
 </div>
 <div class="proof"><span class="hd">Verification.</span>
 Odd periods restore no heading, and Corollary 6.5 excludes zero growth, so we search
@@ -671,7 +707,7 @@ Show that every positive-growth periodic trace admitted by finite support is the
 standard period-\(104\) trace up to symmetry and phase.
 </div>
 <p>At \(\growth=4\) the residue skeletons (Theorem 7.1) and touch-graph rank
-(Theorem 8.2) leave unbounded free parameters, and explicit heading-reset countermodels
+(Observation 8.2) leave unbounded free parameters, and explicit heading-reset countermodels
 satisfy every incidence/residue condition yet fail the cross-period criterion. A
 resolution needs a single-tour chronology theorem for unbounded period. A
 <em>disproof</em> would exhibit an infinite certificate; none has been found.</p>
@@ -681,7 +717,7 @@ resolution needs a single-tour chronology theorem for unbounded period. A
 <p>We have given the first structural and arithmetic theory of the classical
 finite-support periodic highway: a decidable realisability criterion, an exact
 medial-graph conjugacy, two independent proofs that no zero-growth clean translator
-exists (so every highway grows a wake of size \(\in4\Z_{&gt;0}\)), the sharp bound
+exists (so every highway grows a wake of size \(\in4\Z_{&gt;0}\)), the lower bound
 \(\growth\ge2\|\drift\|_\infty\), a collision-chain parity theorem and a touch-graph
 rank formula, and an exhaustive exclusion of all periodic highways of period at most
 \(48\). The algebraic cores are machine-checked in Lean&nbsp;4. The outstanding
@@ -695,10 +731,15 @@ full solution must still supply.</p>
 \(\turnR\) at a global minimum of the black-count walk, the period-\(104\) word is</p>
 <div class="seedbox">RRRRLLRLLRRRRLLRRRRLLRLRRRRLRLLLLRRRRLRRLRRRRLLLLRLRRRRLRRRRLLLLRLRRRRLRLLRRLLLLRRLLRRRRLLRRLRLLRLLRLRLL</div>
 <p>with \(\#\turnR-\#\turnL=12\) and drift \((2,-2)\), consistent with Corollary 6.5
-(\(12\in4\Z_{&gt;0}\)) and Corollary 7.3 (\(12\ge2\max(2,2)\)). Applying Theorem 3.1
-gives the \(13\)-cell black seed
-\[ \begin{aligned}&(-6,0),(-5,0),(-5,1),(-4,0),(-4,2),(-3,-1),(-3,2),\\&(-2,-1),(-2,1),(-1,1),(0,0),(0,1),(0,2),\end{aligned} \]
-which with a north-facing ant at the origin produces the highway immediately.</p>
+(\(12\in4\Z_{&gt;0}\)) and Corollary 7.3 (\(12\ge2\max(2,2)\)). Applying the seed
+construction of Theorem 3.1 to this exact word (in this exact phase and orientation)
+gives the \(11\)-cell black seed
+\[ \begin{aligned}&(-2,-2),(-2,-1),(-1,0),(0,1),(1,-2),(1,1),\\&(2,-2),(2,0),(3,-1),(3,0),(4,0),\end{aligned} \]
+which with a north-facing ant at the origin produces the exact word above immediately,
+restoring the north heading and translating by \((2,-2)\). (Both the word and this seed
+were verified by direct simulation. The phase obtained by cyclically shifting this word
+by \(100\) symbols begins with \(\turnL\) and has drift \((-2,2)\), and is generated by
+a different, \(13\)-cell seed; the two phases must not be interchanged.)</p>
 
 <hr class="sec">
 <h2 id="appB">Appendix B. Lean 4 formalization</h2>
@@ -762,8 +803,8 @@ Math. Theor. Comput. Sci. (2003). doi:10.46298/dmtcs.2312.</li>
 <li id="r6">D. Gale, J. Propp, S. Sutherland, S. Troubetzkoy. <em>Further travels with my
 ant.</em> Math. Intelligencer 17 (1995), no. 3, 48&ndash;56.</li>
 <li id="r7">V.&nbsp;H. Lutfalla. <em>Sideways on the highways.</em> arXiv:2505.05426 (2025).</li>
-<li id="r8">L. Traldi. <em>The transition matroid of a 4-regular graph.</em> arXiv:1204.0482 (2012).</li>
-<li id="r9">L. Traldi. <em>Binary nullity, Euler circuits and interlacement graphs.</em> arXiv:1607.04233 (2016).</li>
+<li id="r8">L. Traldi. <em>Interlacement in 4-regular graphs: a new approach using nonsymmetric matrices.</em> arXiv:1204.0482 (2012).</li>
+<li id="r9">L. Traldi. <em>Circuit partitions and signed interlacement in 4-regular graphs.</em> arXiv:1607.04233 (2016).</li>
 <li id="r10">A. Jillhewar. <em>Langton&rsquo;s ant: structural constraints, exact searches,
 and a Lean formalization</em> (supplementary code, data, and Lean project). GitHub
 repository, 2026.</li>

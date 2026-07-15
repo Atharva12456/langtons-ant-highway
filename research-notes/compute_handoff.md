@@ -209,8 +209,8 @@ Script SHA-256: e0b063427e30428c8d43b09bd8621bcf0456ee87c3292a721ff7025653f780e1
 8. work\directed_pose_discrepancy_audit.md — independent paper and Lean audit of the signed lifetime theorem.
 9. work\lean_langton\FORMALIZATION_BOUNDARY.md — exact current Lean assumptions and derived layers.
 
-All project material is organized under:
-
-    C:\Users\athar\Downloads\langston ant proof
-
-The old generated Documents workspace is intentionally empty because the Codex desktop process retains a handle to that directory.
+All project material is organized under the project root directory. Paths beginning
+with `work/` and `outputs/` in this note are relative to that root. In this public
+repository the corresponding sources live under `code/`, `lean/`, and `results/`;
+the bulk search-shard data referenced here is regenerable via the commands in the
+top-level `README.md`.

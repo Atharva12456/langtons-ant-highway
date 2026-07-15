@@ -157,4 +157,4 @@ See [`CITATION.cff`](CITATION.cff). Suggested:
 
 ## Acknowledgements
 
-Large exact searches were run on the George Mason University computing clusters.
+Large exact searches were run on a high-performance computing cluster.
