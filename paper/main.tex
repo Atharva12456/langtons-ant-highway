@@ -191,8 +191,8 @@ avoid a clash with the unrelated ``interlaced word'' of \cite{Lutfalla2025sidewa
 
 \item \textbf{Small-period exclusion} (Theorem~\ref{thm:periodexcl}): a two-engine,
 rank-audited exhaustive search excludes every finite-support periodic highway of
-nonzero drift and period at most $48$. Existing computation enumerates highways that
-\emph{occur}; proving non-existence below a period bound is new.
+nonzero drift and period at most $48$. Existing computational work enumerates highways
+that \emph{occur}; proving nonexistence below a period bound is new.
 \end{enumerate}
 
 Section~\ref{sec:criterion} also gives a decidable periodic-realisability criterion
@@ -530,16 +530,29 @@ of \eqref{eq:cocycle} are exactly $w(x,y)=\alpha(x)+\beta(y)$.
 \end{proposition}
 
 \begin{proof}
-Eliminating the four $F_q$ from \eqref{eq:pot} around a unit plaquette gives the
-four-corner condition \eqref{eq:cocycle}. For the second condition, combine the four
-relations at a single cell $z$: the $\turnR$-at-$S$ and $\turnL$-at-$N$ relations both
-express $F_W(z+u_W)$, forcing $F_S(z)=F_N(z)+2w(z)$, while the $\turnL$-at-$S$ and
-$\turnR$-at-$N$ relations force $F_S(z)=F_N(z)-2w(z)$; hence $4w(z)=0$. \emph{(}Thus
+\emph{Necessity.} Eliminating the four $F_q$ from \eqref{eq:pot} around a unit
+plaquette gives the four-corner condition \eqref{eq:cocycle}. For $4w=0$, combine the
+four relations at a single cell $z$: the $\turnR$-at-$S$ and $\turnL$-at-$N$ relations
+both express $F_W(z+u_W)$, forcing $F_S(z)=F_N(z)+2w(z)$, while the $\turnL$-at-$S$ and
+$\turnR$-at-$N$ relations force $F_S(z)=F_N(z)-2w(z)$; hence $4w(z)=0$. Thus
 $w(x,y)=(-1)^{x+y}$ over $A=\Z$ satisfies \eqref{eq:cocycle} but admits no such $F_q$,
-since $4w\neq0$.\emph{)} Conversely, over $A=\Z/4\Z$ the four-corner condition lets one
-build $F_N$ consistently (its increments around every plaquette cancel), and setting
-$F_S=F_N-2w$, $F_E,F_W$ by \eqref{eq:pot} is consistent because $4w=0$; the $\F_2$
-solution space is the separable weights $\alpha(x)+\beta(y)$.
+since $4w\neq0$.
+
+\emph{Sufficiency for $A=\Z/4\Z$.} Composing pairs of relations in \eqref{eq:pot}
+expresses $F_N$ by its diagonal increments
+\begin{equation}\label{eq:Fdiag}
+F_N(x{+}1,y{+}1)-F_N(x,y)=-w(x,y)+w(x{+}1,y),\qquad
+F_N(x{+}1,y{-}1)-F_N(x,y)=w(x,y{-}1)-w(x{+}1,y{-}1),
+\end{equation}
+which define $F_N$ on each of the two parity sublattices by integration from a
+basepoint. The sum of the four increments around an elementary diamond
+$(x,y)\to(x{+}1,y{+}1)\to(x{+}2,y)\to(x{+}1,y{-}1)\to(x,y)$ telescopes, by
+\eqref{eq:Fdiag}, to exactly the four-corner sum \eqref{eq:cocycle} at $(x,y{-}1)$ and
+$(x{+}1,y{-}1)$; the four-corner condition makes it vanish, so the integration is
+path-independent and $F_N$ is well defined. Now set $F_S=F_N-2w$ and define $F_E,F_W$
+from $F_N$ by \eqref{eq:pot}; the two ways of reaching $F_S$ agree precisely because
+$4w=0$, so all four $F_q$ are consistent. Over $\F_2$ the solution space of
+\eqref{eq:cocycle} is the separable weights $\alpha(x)+\beta(y)$.
 \end{proof}
 
 A mod-four refinement of Proposition~\ref{prop:laurent} (using the quadratic solution
@@ -816,12 +829,15 @@ increments over a closed square shows $F_N(x,y{+}2)=F_N(x,y)$.
 \begin{proof}[Proof of Theorem~\ref{thm:residue}]
 Fix $a\neq0$, $\alpha$, and $w$ as in Lemma~\ref{lem:diag}. Restored heading gives
 $\growth\equiv0\pmod4$, so the period is even and $a+b$ is even; hence translation by
-$\drift$ preserves $\che$, and $w(z+\drift)=w(z)$. Write $\drift=(a,b)$ and move from
-$z$ to $z+\drift$ along $a$ diagonal $(1,\operatorname{sgn} b)$-steps followed by the
-remaining vertical displacement; each diagonal step contributes
-$-\che\cdot(\alpha(x)+\alpha(x{+}1))$ by \eqref{eq:diag} (or its $(1,-1)$ analogue),
-and the vertical displacement is even, contributing nothing by the $2$-periodicity of
-$F_N$ in $y$. As $x$ runs once through $\Z/|a|\Z$ the diagonal contributions
+$\drift$ preserves $\che$, and $w(z+\drift)=w(z)$. Let $\varepsilon=\operatorname{sgn}(a)$,
+and set $\sigma=\operatorname{sgn}(b)$ if $b\neq0$ and $\sigma=1$ if $b=0$. Move from
+$z$ to $z+\drift$ by $|a|$ diagonal steps of vector $(\varepsilon,\sigma)$ (using
+\eqref{eq:diag} for $\varepsilon=+1$ and its reverse for $\varepsilon=-1$), followed
+by the vertical displacement $(0,\,b-\sigma|a|)$, which is even because $a+b$ is even.
+Each diagonal step contributes $-\che\cdot(\alpha(x)+\alpha(x{+}1))$ by \eqref{eq:diag}
+(or its $(1,-1)$ analogue), while the vertical part contributes nothing by the
+$2$-periodicity of $F_N$ in $y$. As $x$ runs once through $\Z/|a|\Z$ the diagonal
+contributions
 telescope to $-2\che(z)\sum_{r}\alpha(r)$, giving the monodromy
 \begin{equation}\label{eq:monodromy}
 F_N(z+\drift)-F_N(z)\ \equiv\ 2\sum_{r\in\Z/|a|\Z}\alpha(r)\pmod4
@@ -915,10 +931,15 @@ $\eta(s)+\eta(t)$. A non-Eulerian component needs a nonempty boundary, so at mos
 exists, and it is absent when $\eta(s)=\eta(t)$.
 \end{proof}
 
-Taking $s,t$ to be the states immediately after an $\turnR$ visit to a cell and
-immediately before its next ($\turnL$) visit gives $\eta(s)=\eta(t)$, so the odd-visit
-defect between them is Eulerian; a companion analysis \cite{Repo} shows this forces at
-least four distinct cells, but we do not use that refinement here.
+This yields a four-cell lower bound on completed lifetimes. Take $s$ immediately after
+an $\turnR$ visit to $z=(x,y)$ and $t$ immediately before its next ($\turnL$) visit.
+Then $z$ is black at both times, so its edge $C_xR_y$ is absent from $G:=B_s\triangle
+B_t$; and since one state is horizontal at $z$ and the other vertical, the tokens are
+the two ends of that edge, $\eta(s)+\eta(t)=C_x+R_y$. By Theorem~\ref{thm:collision},
+$\partial G=C_x+R_y$, so $C_x$ and $R_y$ are joined in $G$ by a path avoiding the edge
+$C_xR_y$; in the simple bipartite incidence graph such a path has at least three edges.
+Adjoining $C_xR_y$ closes a cycle of length at least four, so the completed
+$\turnR$-to-$\turnL$ lifetime involves at least four distinct cells.
 
 We close the section with an observation that packages the periodic trace as a
 $4$-regular Euler system, so that Traldi's circuit-partition/interlacement theory
@@ -1036,10 +1057,10 @@ gap.
 
 \begin{problem}[Bounded retreat / bounded active core]\label{prob:retreat}
 Show that for every finite-support initial configuration there is a time after which
-the ant stays within a bounded corridor behind its record frontier; equivalently in
-the Tait picture, that the active boundary component at or ahead of the current record
-has uniformly bounded size and that components shed behind an advancing frontier are
-never reabsorbed.
+the ant stays within a bounded corridor behind its record frontier. A stronger
+Tait-graph formulation that would also suffice is that the active boundary component at
+or ahead of the current record has uniformly bounded size and that components shed
+behind an advancing frontier are never reabsorbed.
 \end{problem}
 
 Under either formulation the frontier window has finitely many states modulo
@@ -1100,8 +1121,8 @@ RRRLRRRRLLLLRLRRRRLRLLRRLL\\
 LLRRLLRRRRLLRRLRLLRLLRLRLL
 \end{tabular}
 \end{center}
-(read as one word of $104$ symbols, four rows of $26$)
-It has $\#\turnR-\#\turnL=12$ and normalised drift $(2,-2)$, in agreement with
+(read as one word of $104$ symbols, four rows of $26$). It has
+$\#\turnR-\#\turnL=12$ and normalised drift $(2,-2)$, in agreement with
 Corollary~\ref{cor:growth4} ($\growth=12\in4\Z_{>0}$) and Corollary~\ref{cor:P16}
 ($12\ge 2\max(2,2)=4$). Applying the seed construction \eqref{eq:seed} of
 Theorem~\ref{thm:criterion} to this exact word (in this exact phase and orientation)
@@ -1175,9 +1196,12 @@ theorem. The project and a build script accompany the paper \cite{Repo}.
 \section{Computational methodology and reproducibility}\label{app:repro}
 %=======================================================================
 
-The periodic search space is the tree of legal prefixes. By
-Proposition~\ref{prop:alt} it suffices to search words beginning with $\turnR$, and by
-Corollary~\ref{cor:growth4} only positive-growth heading-reset words. To distribute a
+The periodic search space is the tree of legal prefixes. Up to cyclic phase, every
+positive-growth repeating trace has a representative beginning with $\turnR$ (a
+realisable trace restarted at a later state remains realisable, and a positive-growth
+word contains an $\turnR$), so it suffices to search words beginning with $\turnR$;
+by Corollary~\ref{cor:growth4} only positive-growth heading-reset words need be
+considered. To distribute a
 period-$N$ search, the half-open interval of length-$k$ prefix ranks $[0,2^{k-1})$ is
 partitioned into disjoint worker intervals; each worker performs a depth-first
 enumeration of its subtree, applying the exact criterion of

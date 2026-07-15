@@ -384,12 +384,17 @@ four-corner condition suffices. Over \(\F_2\) the solutions are
 \(w(x,y)=\alpha(x)+\beta(y)\).
 </div>
 <div class="proof"><span class="hd">Proof.</span>
-Eliminating the \(F_q\) around a plaquette yields \(\eqref{eq:cocycle}\). Combining the
-four relations at a single cell \(z\) gives both \(F_S(z)=F_N(z)+2w(z)\) and
-\(F_S(z)=F_N(z)-2w(z)\), hence \(4w(z)=0\); e.g. \(w=(-1)^{x+y}\) over \(A=\Z\)
-satisfies \(\eqref{eq:cocycle}\) but has no such \(F_q\). Over \(\Z/4\Z\) the
-four-corner condition lets one build \(F_N\), and \(4w=0\) makes \(F_S=F_N-2w\)
-consistent.
+<em>Necessity.</em> Eliminating the \(F_q\) around a plaquette yields
+\(\eqref{eq:cocycle}\). Combining the four relations at a single cell \(z\) gives both
+\(F_S(z)=F_N(z)+2w(z)\) and \(F_S(z)=F_N(z)-2w(z)\), hence \(4w(z)=0\); e.g.
+\(w=(-1)^{x+y}\) over \(A=\Z\) satisfies \(\eqref{eq:cocycle}\) but has no such \(F_q\).
+<em>Sufficiency for \(\Z/4\Z\).</em> The step relations give the diagonal increments
+\(F_N(x{+}1,y{+}1)-F_N(x,y)=-w(x,y)+w(x{+}1,y)\) and
+\(F_N(x{+}1,y{-}1)-F_N(x,y)=w(x,y{-}1)-w(x{+}1,y{-}1)\), defining \(F_N\) on each parity
+sublattice by integration. Around an elementary diamond these four increments sum to
+the four-corner expression \(\eqref{eq:cocycle}\), which vanishes, so the integration
+is path-independent and \(F_N\) is well defined; then \(F_S=F_N-2w\) and \(F_E,F_W\) by
+the step relations are consistent because \(4w=0\).
 </div>
 
 <p>A mod-four refinement (using the quadratic solution \(Q(x,y)=x^2+2xy\) of
@@ -635,10 +640,15 @@ whose axis matches the heading, so a single step contributes \(\eta(s)+\eta(s')\
 the boundary. Summing telescopes to \(\eta(s)+\eta(t)\). A non-Eulerian component needs
 nonempty boundary, so at most one exists, absent when \(\eta(s)=\eta(t)\).
 </div>
-<p>Taking \(s,t\) to be the states just after an \(\turnR\) visit and just before the
-next \(\turnL\) visit to a cell gives \(\eta(s)=\eta(t)\), so the odd-visit defect
-between them is Eulerian; a companion analysis shows this forces at least four distinct
-cells, but we do not use that refinement here.</p>
+<p>This gives a four-cell lower bound. Take \(s\) just after an \(\turnR\) visit to
+\(z=(x,y)\) and \(t\) just before its next \(\turnL\) visit. Then \(z\) is black at
+both times, so its edge \(C_xR_y\) is absent from \(G:=B_s\triangle B_t\); and since one
+state is horizontal at \(z\) and the other vertical, \(\eta(s)+\eta(t)=C_x+R_y\). By
+Theorem 8.1, \(\partial G=C_x+R_y\), so \(C_x\) and \(R_y\) are joined in \(G\) by a
+path avoiding \(C_xR_y\); in the simple bipartite incidence graph that path has at
+least three edges, and adjoining \(C_xR_y\) closes a cycle of length at least four.
+Hence the completed \(\turnR\)-to-\(\turnL\) lifetime involves at least four distinct
+cells.</p>
 
 <p>We close with an observation, stated as such rather than a theorem because a
 self-contained development of the touch-graph formalism is lengthy; that development,
@@ -713,9 +723,9 @@ Theorem 9.1 is a lower bound on the minimal period of any nonstandard highway.</
 <div class="rem" style="background:#f7eeef;border-left-color:#7a1f2b">
 <span class="hd">Problem 10.1 (Bounded retreat / bounded active core).</span>
 Show that for every finite-support configuration there is a time after which the ant
-stays within a bounded corridor behind its record frontier; equivalently, that the
-active boundary component at or ahead of the record has uniformly bounded size and
-shed components are never reabsorbed.
+stays within a bounded corridor behind its record frontier. A stronger Tait-graph
+formulation that would also suffice is that the active boundary component at or ahead
+of the record has uniformly bounded size and shed components are never reabsorbed.
 </div>
 <p>Under either, the frontier window has finitely many states modulo translation,
 determinism forces periodicity, and Theorem 3.1 classifies the cycle. The easy routes
