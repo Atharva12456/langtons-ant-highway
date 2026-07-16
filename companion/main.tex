@@ -76,7 +76,8 @@ identity, which further yields the strand-density bound $\growth\ge
 finite-support periodic highway has net black growth a positive multiple of
 four. On the computational side we give an exact finite black seed for the
 standard highway, certify all $512$ centered $3\times3$ patterns, and exclude by
-two independently implemented, rank-audited exhaustive searches every
+a rank-audited exhaustive search---using no consequence of the residue identity, and
+applying the exact criterion to every positive-growth nonzero-drift leaf---every
 finite-support periodic highway of nonzero drift and period at most $48$. We
 delimit precisely the single geometric gap---a bounded-retreat / bounded active
 core lemma---that separates these results from a full solution, record the
@@ -412,15 +413,43 @@ edges; each $104$-step period sheds a separate $13$-vertex, $12$-edge tree while
 reproducing the active core translated by $(-2,2)$, and total cycle rank remains
 $2$.
 
-\begin{remark}[No monotone invariant]\label{rem:nomonotone}
-Active-loop length, its signed area/orientation, $E$, $V$, $k$ and $\beta$ all
-fail to be monotone, with explicit failures on the blank orbit: at step $4$ the
-active loop drops from length $20$ to $4$; at time $14$ the active loop is a
-\emph{counter}clockwise four-cycle; during one mature period the cycle rank takes
-every value in $\{1,\dots,5\}$. Exact compact states realise both signs of every
-independent local change vector in $(E,V,k,\beta)$, so no nonconstant affine
-combination of these four quantities is universally monotone.
-\end{remark}
+\begin{proposition}[No monotone affine invariant]\label{rem:nomonotone}
+No nonconstant affine combination of $(E,V,k,\beta)$ is monotone along the blank
+orbit. In particular the active-loop length, its signed area/orientation, and each
+of $E$, $V$, $k$, $\beta$ separately fail to be monotone, with explicit failures on
+the blank orbit: at step $4$ the active loop drops from length $20$ to $4$; at time
+$14$ the active loop is a \emph{counter}clockwise four-cycle; during one mature
+period the cycle rank takes every value in $\{1,\dots,5\}$.
+\end{proposition}
+
+\begin{proof}
+Since $\beta=E-V+k$ identically, $aE+bV+ck+d\beta+e=(a+d)E+(b-d)V+(c+d)k+e$: the
+affine combinations of $(E,V,k,\beta)$ are exactly those of $(E,V,k)$, nonconstant
+precisely when $\lambda:=(a+d,\,b-d,\,c+d)\neq0$. One step flips one cell, hence
+inserts or deletes exactly one Tait edge $e_z=\{u,v\}$; insertion has exactly four
+cases, and deletion negates each:
+\begin{center}
+\begin{tabular}{@{}lcc@{}}
+\toprule
+insertion of $e_z=\{u,v\}$ & $(\Delta E,\Delta V,\Delta k)$ & $\Delta\beta$\\
+\midrule
+$u,v$ both new & $(1,2,1)$ & $0$\\
+exactly one of $u,v$ new & $(1,1,0)$ & $0$\\
+$u,v$ both old, distinct components & $(1,0,-1)$ & $0$\\
+$u,v$ both old, same component & $(1,0,0)$ & $1$\\
+\bottomrule
+\end{tabular}
+\end{center}
+So every increment lies in
+$S_0=\pm\{(1,2,1),(1,1,0),(1,0,-1),(1,0,0)\}$, and $\beta$ rises exactly when the
+inserted edge closes a cycle. All eight members of $S_0$ occur on the blank orbit
+within $12{,}000$ steps. $S_0$ is centrally symmetric by construction and contains
+the independent $(1,1,0),(1,0,-1),(1,0,0)$, so it spans $\mathbb{R}^3$. Given
+$\lambda\neq0$, spanning yields $v\in S_0$ with $\lambda\cdot v>0$ (replace $v$ by
+$-v$ if needed), while $\lambda\cdot(-v)<0$ and $-v$ is realised too: $\lambda$
+rises at one step and falls at another. Equivalently $0$ is interior to
+$\operatorname{conv}S_0$. See \texttt{verify\_nomonotone.py}.
+\end{proof}
 
 %=======================================================================
 \section{Charges and clean-translator restrictions}\label{sec:charges}
@@ -864,17 +893,21 @@ verification proceeds by:
 \begin{enumerate}[label=\textup{(\alph*)}]
 \item a complete legal-trace enumeration through period $32$ ($46{,}185{,}421$
 feasible nodes, $32$ prefix shards);
-\item exact positive-growth searches at periods $34,36,38,40$ (respectively
-$9{,}726{,}176$; $19{,}781{,}050$; $41{,}972{,}884$; $201{,}924{,}597$ nodes;
-zero hits), using Corollary~\ref{cor:growth4} to skip zero growth;
-\item two-engine, rank-by-rank audited searches at periods $42$, $44$, $46$, $48$;
-odd periods restore no heading. At period $48$ the two engines visited the same
-$8{,}677{,}026{,}370$ nodes and $451{,}962{,}870$ leaves over all $2^{16}$ prefix
-ranks with no node cap; the second engine's signed-residue prune
-(Theorem~\ref{thm:residue}) rejected the bulk of the leaves and applied the exact
-criterion to the survivors; both found zero certificates, and all per-rank counters
-agree. (Period $46$ likewise gave $3{,}463{,}441{,}745$ nodes with zero
-certificates.)
+\item rank-by-rank audited positive-growth searches at periods $34,\dots,48$ with the
+\emph{independent} engine, which uses no consequence of Theorem~\ref{thm:residue} and
+applies the exact criterion to \emph{every} positive-growth nonzero-drift leaf, using
+Corollary~\ref{cor:growth4} to skip zero growth; odd periods restore no heading. The
+node/leaf counts are $40{,}418{,}033/6{,}989{,}418$ at period $34$;
+$108{,}995{,}287/18{,}928{,}333$ at $36$; $293{,}763{,}689/51{,}386{,}767$ at $38$;
+$791{,}801{,}484/139{,}000{,}900$ at $40$; $2{,}133{,}302{,}151/376{,}781{,}423$ at
+$42$; $5{,}748{,}138{,}964/1{,}018{,}293{,}035$ at $44$;
+$15{,}483{,}269{,}352/2{,}757{,}152{,}898$ at $46$; and
+$41{,}710{,}394{,}384/7{,}446{,}719{,}550$ at $48$, over all $2^{16}$ prefix ranks
+with no node cap. The exact criterion was evaluated at every one of those leaves and
+returned zero certificates at every period; every rank is covered exactly once.
+Strand-pruned and residue-pruned variants, which do assume
+Theorem~\ref{thm:residue}/\ref{cor:P16}, return zero certificates on the strictly
+smaller trees they explore and serve as cross-checks only.
 \end{enumerate}
 Together with Corollary~\ref{cor:growth4} (which excludes zero growth at every
 period) this excludes every finite-support periodic highway of period at most
@@ -920,7 +953,8 @@ No proof is known, and the following honest obstructions show why:
 \item Unboundedness (Theorem~\ref{thm:unbdd}) and fixed-domain escape do not
 imply bounded retreat: an orbit may keep enlarging a two-dimensional region while
 escaping every fixed box.
-\item No single scalar Tait invariant is monotone (Remark~\ref{rem:nomonotone}).
+\item No nonconstant affine combination of $(E,V,k,\beta)$---in particular no single
+scalar Tait invariant among them---is monotone (Proposition~\ref{rem:nomonotone}).
 \item A local pumping argument is invalid: equal local cores can be joined
 through different distant connectivity, changing a later merge into a split
 (Theorem~\ref{thm:conjugacy}). A valid finite-state proof must first establish

@@ -41,7 +41,7 @@ period-104 highway.*
 | 2 | **Signed mod-four wake-residue identity** — checker-signed strand bases sum to `2 (mod 4)` in each drift residue class, giving the strand-density lower bound `g ≥ 2·max(|a|,|b|)`. (A lower bound, not claimed attained: the standard highway has `g = 12` against a bound of `4`.) | `paper/` §7 |
 | 3 | **Tait-graph conjugacy** + cycle-rank surgery identity `E + ΔC = 2β`. | `paper/` §4 |
 | 4 | **Two-endpoint collision-chain parity** + touch-graph interlacement rank formula. | `paper/` §8 |
-| 5 | **Exhaustive exclusion of every finite-support periodic highway of period ≤ 48** (two independent engines, rank-by-rank cross-audited, `hits = 0`). | `paper/` §9, `results/` |
+| 5 | **Exhaustive exclusion of every finite-support periodic highway of period ≤ 48** — rank-by-rank audited, `hits = 0`, and *assuming no consequence of result 2*: the exact criterion is applied to every positive-growth nonzero-drift leaf. | `paper/` §9, `results/` |
 | 6 | **Decidable periodic-realisability criterion** with an explicit finite seed. | `paper/` §3 |
 
 The algebraic cores of results (1) and (2) are **machine-checked in Lean 4**
@@ -100,22 +100,31 @@ Requires a standard TeX distribution (TeX Live / MiKTeX) with `amsart`, `amsmath
 
 ## Reproducing the search results
 
-The exclusion of periodic highways of period ≤ 48 is produced by two independent
-engines. The **full per-rank shard records are large (~150 MB) and are not committed**;
-`results/period_exclusion_summary.json` holds the aggregated totals, and the commands
-below regenerate everything exactly.
+The exclusion of periodic highways of period ≤ 48 is certified by the **independent
+engine**, which assumes no consequence of the signed mod-four wake-residue theorem
+(paper, Theorem 7.1) and applies the exact criterion to *every* positive-growth
+nonzero-drift leaf. Two faster variants that do assume that theorem are kept as
+cross-checks; because they prune at the node level they explore a strictly smaller
+tree, so their counters are **not** expected to match the independent engine's.
+
+The **complete per-rank shard records are committed** (compressed, the full set is a
+few MB); `results/period_exclusion_summary.json` holds the aggregated totals, and the
+commands below regenerate everything exactly. The whole exclusion runs in a few
+core-hours on a laptop — no cluster or special allocation is required.
 
 ```bash
-# Compile both engines
-javac -d build/original code/java/PositiveGrowthSearch.java
-javac -d build/residue  code/java/PositiveGrowthResidueSearch.java
+# Compile the engines
+javac -d build/indep    code/java/PositiveGrowthSearchIndep.java   # certifies the result
+javac -d build/original code/java/PositiveGrowthSearch.java        # strand-pruned cross-check
+javac -d build/residue  code/java/PositiveGrowthResidueSearch.java # residue-pruned cross-check
 
 # One shard of a period-48 search (rank interval [START, STOP) of 2^16 length-17 prefixes)
-java -cp build/original PositiveGrowthSearch \
+java -cp build/indep PositiveGrowthSearchIndep \
      --period 48 --prefix-length 17 --rank-start 0 --rank-stop 4096 \
      --deficit-depths 0 --output shard_00.json
+# Every record of this engine carries "residue_theorem_used": false.
 
-# The residue-pruned engine (Theorem 7.1) — same arguments, must agree rank-by-rank
+# The pruned variants (conditional on Theorem 7.1) — same arguments
 java -cp build/residue PositiveGrowthResidueSearch \
      --period 48 --prefix-length 17 --rank-start 0 --rank-stop 4096 \
      --deficit-depths 0 --output shard_00_res.json
@@ -173,4 +182,8 @@ release. To pin an exact version, use that release's own DOI (e.g. `v1.0.1` is
 
 ## Acknowledgements
 
-Large exact searches were run on a high-performance computing cluster.
+The exact searches were run on a single workstation (Intel Core i5-1334U, 10 physical
+cores, 16 GB RAM, Windows 11 build 26200; Eclipse Temurin OpenJDK 25.0.1+8; CPython
+3.13.14) — one JVM per shard, at most 12 concurrent shards. No cluster or special
+allocation was used, and the full exclusion reproduces in a few core-hours on
+commodity hardware.

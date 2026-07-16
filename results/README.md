@@ -1,26 +1,68 @@
 # Results
 
-Small, human-readable summaries of the exact computations. The **full per-rank shard
-records are large (~150 MB) and are intentionally not committed**; they are exactly
-regenerable with the commands in the top-level `README.md` and `../code/README.md`.
+Small, human-readable summaries of the exact computations. The **complete per-rank
+shard records are archived** with the release (compressed, the full set is a few MB);
+they are also exactly regenerable with the commands in the top-level `README.md` and
+`../code/README.md`.
 
 ## Files
 
 ### `period_exclusion_summary.json`
 Aggregated totals of the exhaustive periodic-highway searches. For every period up to
-48 the number of highways found is **0**. Highlights:
+48 the number of highways found is **0**.
 
-- **Period ≤ 32:** complete legal-trace enumeration, 46,185,421 feasible nodes.
-- **Periods 34–40:** exact positive-growth searches, up to ~2.0×10⁸ nodes each.
-- **Periods 42, 44, 46, 48:** two independent engines, rank-by-rank cross-audited.
-  At period 48 both engines visited the identical **8,677,026,370 nodes** and
-  **451,962,870 leaves** over all 2¹⁶ prefix ranks, with **0 highways**; the
-  residue-pruned engine rejected 439,705,662 leaves via the residue identity and
-  applied the exact criterion to the remaining 12,257,208 — with all per-rank
-  counters in agreement.
+**What certifies the result.** The counts below are the output of the **independent
+engine** (`../code/java/PositiveGrowthSearchIndep.java`), which uses **no consequence
+of the signed mod-four wake-residue theorem** (paper, Theorem 7.1) and applies the
+exact realisability criterion (paper, Theorem 3.1) to **every** positive-growth
+nonzero-drift leaf. Its zero-hit outcome therefore does not depend on Theorem 7.1.
+It does still assume Corollary 6.5 (growth is a positive multiple of four), which
+comes from the even-winding theorem — that is what reduces the problem to positive
+growth in the first place.
+
+| Period | Nodes | Leaves | Criterion evaluations | Highways |
+|-------:|------------------:|-----------------:|-----------------:|:-:|
+| ≤ 32 | 46,185,421 | — | — | 0 |
+| 34 | 40,418,033 | 6,989,418 | 6,989,418 | 0 |
+| 36 | 108,995,287 | 18,928,333 | 18,928,333 | 0 |
+| 38 | 293,763,689 | 51,386,767 | 51,386,767 | 0 |
+| 40 | 791,801,484 | 139,000,900 | 139,000,900 | 0 |
+| 42 | 2,133,302,151 | 376,781,423 | 376,781,423 | 0 |
+| 44 | 5,748,138,964 | 1,018,293,035 | 1,018,293,035 | 0 |
+| 46 | 15,483,269,352 | 2,757,152,898 | 2,757,152,898 | 0 |
+| **48** | **41,710,394,384** | **7,446,719,550** | **7,446,719,550** | **0** |
+
+The *criterion evaluations* column equals the *leaves* column at every period: no leaf
+is discarded unexamined. Every prefix rank is covered exactly once, every shard reports
+completion with no node cap, and aggregate counters equal the per-rank sums — all
+checked mechanically by `../../work/aggregate_indep.py`. The ≤ 32 row is a complete
+legal-trace enumeration, which applies no growth or endpoint pruning and is
+residue-free by construction.
+
+> **Node counts are not comparable across different prefix lengths**, since the search
+> tree is counted from the prefix depth downwards. Compare engines only at the same
+> prefix length.
+
+**Cross-checks (conditional, not certificates).** The strand-pruned engine
+(`PositiveGrowthSearch.java`, assumes Corollary 7.3) and the residue-pruned engine
+(`PositiveGrowthResidueSearch.java`, assumes Theorem 7.1) return zero certificates on
+the strictly smaller trees they explore. Because Corollary 7.3 prunes at the *node*
+level, their leaf counts are **subsets** of the independent engine's and are *not*
+expected to match. At period 46:
+
+| engine | assumes Thm 7.1 | leaves reached | criterion evaluations |
+|---|:-:|---:|---:|
+| independent (certifies) | **no** | 2,757,152,898 | 2,757,152,898 |
+| strand-pruned | yes | 98,568,824 | 98,568,824 |
+| residue-pruned | yes | 98,568,824 | 6,132,192 |
+
+This also yields evidence **for** Corollary 7.3: the independent engine reaches the
+leaves P16 discards — 6,994,756,680 of them at period 48 — and finds no realisable word
+among them, so within this range the pruning discarded nothing.
 
 **Conclusion:** no finite-support periodic highway of nonzero drift and period ≤ 48
-exists (other than, at period 104, the standard highway itself).
+exists. Any nonstandard periodic highway therefore has even period ≥ 50. (The standard
+highway has period 104; periods 50–102 are not addressed.)
 
 ### `standard_highway.json`
 The standard highway in exact form, recorded in **two normalizations of the same
@@ -36,7 +78,18 @@ highway** (do not interchange their seeds):
 Blank-orbit onset step is `9977`. Both seeds were verified by direct simulation
 (`../code/python/verify_standard_highway.py`).
 
+### `artifact_hashes.json`
+SHA-256 of every tracked file in the repository.
+
+## Environment
+
+The searches ran on a single workstation, **not a cluster**: Intel Core i5-1334U
+(10 physical cores, 12 logical), 16 GB RAM, Windows 11 build 26200, Eclipse Temurin
+OpenJDK 25.0.1+8, one JVM per shard, ≤ 12 concurrent shards; Python verifier on CPython
+3.13.14. Period 48 — the largest job — is ~52,000 core-seconds, a few core-hours on this
+machine. **No cluster or special allocation is required to reproduce the exclusion.**
+
 ## Regenerating the full records
 See the top-level `README.md` (§ *Reproducing the search results*). Each shard is an
-independent job; a complete exclusion is the union of shards covering every prefix
-rank exactly once, with matching counters across the two engines.
+independent job; a complete exclusion is the union of shards covering every prefix rank
+exactly once, with the independent engine's hit lists all empty.

@@ -5,3 +5,6 @@
 *.pdf binary
 *.png binary
 *.jpg binary
+*.tar.gz binary
+*.gz binary
+*.zip binary

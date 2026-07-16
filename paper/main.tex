@@ -97,15 +97,19 @@ coordinate, whence the lower bound $\growth\ge 2\max(|a|,|b|)$ tying growth
 $\growth$ to drift $(a,b)$. \emph{(3) A Tait-graph conjugacy}: the ant is exactly
 conjugate to edge-toggling on a medial (Tait) graph, with a cycle-rank surgery
 identity $E+\Delta C=2\beta$. \emph{(4) A two-endpoint collision-chain parity
-theorem} (and, building on Traldi's interlacement theory, a touch-graph rank
-computation for the periodic trace). \emph{(5) A two-engine, rank-audited exhaustive
-computation} excluding every finite-support periodic highway of nonzero drift and
-period at most $48$, so that any nonstandard periodic highway must have even period
-at least $50$. We also
+theorem}. \emph{(5) A rank-audited exhaustive
+computation}---which assumes no consequence of~(2), and applies the exact criterion
+below to every positive-growth nonzero-drift leaf---excluding every finite-support
+periodic highway of nonzero drift and period at most $48$, so that any nonstandard
+periodic highway must have even period at least $50$. We also
 give a decidable periodic-realisability criterion with an explicit finite seed,
-strengthening the forbidden-word program for the ant's trace subshift. The
-algebraic core of the even-winding and residue theorems is machine-checked in Lean
-$4$. Every result is a necessary condition on a finite-support periodic highway or
+strengthening the forbidden-word program for the ant's trace subshift. Selected
+finite algebraic identities used in the proofs---among them the parity telescope
+underlying the even-winding theorem and the mod-four monodromy and fiber
+computations underlying the residue theorem---are machine-checked in Lean $4$; the
+geometric reductions and the trace-certificate interface remain informal, so neither
+theorem is asserted as an end-to-end Lean result. Every result is a necessary
+condition on a finite-support periodic highway or
 an exact finite computation; none resolves the (open) convergence conjecture, and
 we delimit precisely what a solution must still supply.
 \end{abstract}
@@ -144,9 +148,11 @@ standard period-$104$ highway.
 The rigorous facts about the classical ant are few. Every trajectory is
 \emph{unbounded} (Bunimovich--Troubetzkoy \cite{BunimovichTroubetzkoy1992}; the
 underlying checkerboard/parity structure is already in Gale--Propp--Sutherland--Troubetzkoy
-\cite{GaleProppSutnerTroubetzkoy1995}). Prediction problems for the ant are
-computationally universal and undecidable, so no finite time cutoff can settle
-Conjecture~\ref{conj:main} \cite{GajardoMoreiraGoles2002}. Gajardo
+\cite{GaleProppSutnerTroubetzkoy1995}). The ant is computationally universal, and
+associated prediction problems are undecidable, on suitable infinite backgrounds
+\cite{GajardoMoreiraGoles2002}; we draw no inference from this about
+Conjecture~\ref{conj:main}, which concerns finite configurations, beyond the evident
+point that no finite cutoff exhausts an infinite range. Gajardo
 \cite{Gajardo2003symbolic} gives an algebraic characterisation of the forbidden
 factors of the ant's trace subshift. Recent progress concerns \emph{generalised}
 ants: some rules admit infinitely many highways \cite{GajardoLutfallaRao2024},
@@ -192,9 +198,12 @@ Traldi's circuit-partition/interlacement theory
 latter is deferred to the companion report \cite{Repo}. (We say ``touch graph'' to
 avoid a clash with the unrelated ``interlaced word'' of \cite{Lutfalla2025sideways}.)
 
-\item \textbf{Small-period exclusion} (Theorem~\ref{thm:periodexcl}): a two-engine,
-rank-audited exhaustive search excludes every finite-support periodic highway of
-nonzero drift and period at most $48$. Existing computational work enumerates highways
+\item \textbf{Small-period exclusion} (Theorem~\ref{thm:periodexcl}): a rank-audited
+exhaustive search excludes every finite-support periodic highway of nonzero drift and
+period at most $48$. The search assumes no consequence of the residue theorem and
+applies the criterion to every positive-growth nonzero-drift leaf, so the exclusion
+does not depend on Section~\ref{sec:residue}; faster variants that do assume it agree.
+Existing computational work enumerates highways
 that do occur; we are not aware of a prior exhaustive nonexistence result below a
 fixed period bound.
 \end{enumerate}
@@ -508,21 +517,63 @@ Theorem~\ref{thm:conjugacy}(c).
 
 \begin{proposition}[Advanced records are bridges]\label{prop:record}
 Once a bounding-box record lies outside the finite initial support, its first visit
-is white, and a new east/north/west/south record turns south/east/north/west. In the
+is white, and a new east, north, west, or south record causes the ant to turn south,
+east, north, or west, respectively. In the
 Tait graph the corresponding edge has a previously untouched endpoint, hence is a
 bridge. Therefore sufficiently advanced record creation never raises $\beta$; any
 unbounded production of cycle rank occurs strictly inside already-explored territory.
 \end{proposition}
 
-\begin{remark}[No monotone invariant]\label{rem:nomonotone}
-The active-loop length, its signed area, $E$, $V$, $k$, and $\beta$ all fail to be
-monotone, with explicit counterexamples on the blank orbit (e.g.\ the active loop
-drops from length $20$ to $4$ at step $4$; the cycle rank takes every value in
-$\{1,\dots,5\}$ during one mature period). Compact states realise both signs of every
-independent local change of $(E,V,k,\beta)$, so no nonconstant affine combination of
-these four quantities is universally monotone. This rules out the most direct
-potential-function proofs of Conjecture~\ref{conj:main}.
-\end{remark}
+\begin{proposition}[No monotone affine invariant]\label{rem:nomonotone}
+No nonconstant affine combination of $(E,V,k,\beta)$ is monotone along the blank
+orbit. In particular the active-loop length, its signed area, and each of $E$, $V$,
+$k$, $\beta$ separately fail to be monotone (e.g.\ the active loop drops from length
+$20$ to $4$ at step $4$, and the cycle rank takes every value in $\{1,\dots,5\}$
+during one mature period). This rules out the most direct potential-function proofs
+of Conjecture~\ref{conj:main}.
+\end{proposition}
+
+\begin{proof}
+Since $\beta=E-V+k$ identically,
+$aE+bV+ck+d\beta+e=(a+d)E+(b-d)V+(c+d)k+e$, so the affine combinations of
+$(E,V,k,\beta)$ are exactly those of $(E,V,k)$, and such a combination is nonconstant
+precisely when $\lambda:=(a+d,\,b-d,\,c+d)\in\mathbb{R}^3$ is nonzero.
+
+One step flips one cell, hence inserts or deletes exactly one Tait edge
+$e_z=\{u,v\}$. Insertion admits exactly four cases, according to how many endpoints of
+$e_z$ already meet an edge of $H_B$ and, when both do, whether they lie in a common
+component; deletion reverses each. This is a complete case list, not a sample:
+\begin{center}
+\begin{tabular}{@{}lcc@{}}
+\toprule
+insertion of $e_z=\{u,v\}$ & $(\Delta E,\Delta V,\Delta k)$ & $\Delta\beta$\\
+\midrule
+$u,v$ both new & $(1,2,1)$ & $0$\\
+exactly one of $u,v$ new & $(1,1,0)$ & $0$\\
+$u,v$ both old, distinct components & $(1,0,-1)$ & $0$\\
+$u,v$ both old, same component & $(1,0,0)$ & $1$\\
+\bottomrule
+\end{tabular}
+\end{center}
+Hence every increment lies in
+\begin{equation}\label{eq:evkdeltas}
+S_0=\pm\bigl\{(1,2,1),\,(1,1,0),\,(1,0,-1),\,(1,0,0)\bigr\},
+\end{equation}
+and, incidentally, $\beta$ rises exactly when the inserted edge closes a cycle and is
+unchanged otherwise. All eight members of $S_0$ are realised on the blank orbit---every
+state of which is compact---within the first $12{,}000$ steps, so the realised
+increment set is exactly $S_0$.
+
+Now $S_0$ is centrally symmetric by construction, since deleting an edge negates the
+increment of inserting it, and $S_0$ contains the linearly independent
+$(1,1,0),(1,0,-1),(1,0,0)$, so $\operatorname{span}S_0=\mathbb{R}^3$. Let
+$\lambda\neq0$. Spanning gives $v\in S_0$ with $\lambda\cdot v\neq0$; replacing $v$ by
+$-v\in S_0$ if necessary, $\lambda\cdot v>0$, while $\lambda\cdot(-v)<0$ and $-v$ is
+realised as well. Hence $\lambda$ strictly increases at one step of the orbit and
+strictly decreases at another, so it is monotone in neither direction. Equivalently,
+$0$ lies in the interior of $\operatorname{conv}S_0$. The realisability witnesses are
+reproduced by \texttt{verify\_nomonotone.py} (Appendix~\ref{app:repro}).
+\end{proof}
 
 %=======================================================================
 \section{Additive charges and clean translators}\label{sec:charges}
@@ -1035,12 +1086,20 @@ of Section~\ref{sec:gap}.
 %=======================================================================
 
 All searches are exact: integer coordinates, exact finite sets, and no probabilistic
-equality tests. Two independently implemented engines are used---a reference
-implementation of the criterion of Theorem~\ref{thm:criterion}, and a compiled
-depth-first search that additionally prunes with Corollary~\ref{cor:growth4} and the
-residue identity of Theorem~\ref{thm:residue}. Both engines positively accept the
-standard word. The methodology, per-shard records, and cross-audit are described in
-Appendix~\ref{app:repro}.
+equality tests. Three search variants are used. The \emph{independent engine} uses no
+consequence of Theorem~\ref{thm:residue} and applies the exact criterion of
+Theorem~\ref{thm:criterion} to every positive-growth nonzero-drift leaf; its zero-hit
+outcome is what certifies Theorem~\ref{thm:periodexcl} below, and that certification
+is unconditional on the residue theorem. The \emph{strand-pruned} and
+\emph{residue-pruned} variants additionally prune with Corollary~\ref{cor:P16} and
+with the full identity of Theorem~\ref{thm:residue} respectively; they are faster, and
+their agreement with the independent engine is reported as a cross-check. All three
+accept the standard word. We stress that the three variants share one enumeration
+framework, one normalisation, and one representation, so their mutual agreement is a
+consistency check and not implementation independence; a separate verifier, written
+from the statement of Theorem~\ref{thm:criterion} with a different class construction,
+is described in Appendix~\ref{app:repro}. The methodology, per-shard records, and
+cross-audit are described there as well.
 
 \begin{theorem}[No periodic highway of period at most $48$]\label{thm:periodexcl}
 No finite-support periodic highway of nonzero drift has period at most $48$.
@@ -1055,45 +1114,58 @@ $0\bmod4$), and Corollary~\ref{cor:growth4} excludes zero growth at every period
 it suffices to search even periods for positive-growth traces. The evidence is:
 \begin{enumerate}[label=\textup{(\alph*)}]
 \item a complete enumeration of the legal trace tree through period $32$
-($46{,}185{,}421$ feasible nodes over $32$ prefix shards; zero highways);
-\item exact positive-growth searches at periods $34,36,38,40$, visiting respectively
-$9{,}726{,}176$, $19{,}781{,}050$, $41{,}972{,}884$, and $201{,}924{,}597$ nodes,
-with zero highways;
-\item two-engine, rank-by-rank audited searches at periods $42,44,46,48$. At the
-largest, period $48$, both engines visited the identical $8{,}677{,}026{,}370$ nodes
-and $451{,}962{,}870$ leaves over all $2^{16}$ prefix ranks with no node cap; the
-reference engine applied the exact criterion of Theorem~\ref{thm:criterion} to every
-leaf, and the residue-pruned engine applied it only to the survivors of
-Theorem~\ref{thm:residue}. Both returned zero certificates, and their per-rank node,
-leaf, and common legality-pruning counters agree; the reference engine's exhaustive
-outcome is the certificate of nonexistence, and the residue engine is a cross-check.
-(At period $46$ the two engines likewise agreed on $3{,}463{,}441{,}745$ nodes and
-$98{,}568{,}824$ leaves with zero certificates.)
+($46{,}185{,}421$ feasible nodes over $32$ prefix shards; zero highways). This
+enumeration applies no growth or endpoint pruning and is residue-free by construction;
+independently, a brute-force Python verifier (Appendix~\ref{app:repro}) reproduces the
+exclusion over \emph{all} $2^{18}$ words of length at most $18$;
+\item rank-audited positive-growth searches at periods $34,\dots,48$ with the
+independent engine, which uses no consequence of Theorem~\ref{thm:residue} and applies
+the exact criterion of Theorem~\ref{thm:criterion} to \emph{every} positive-growth
+nonzero-drift leaf. At the largest, period $48$, it visited $41{,}710{,}394{,}384$
+nodes and reached $7{,}446{,}719{,}550$ such leaves over all $2^{16}$ prefix ranks with
+no node cap, evaluated the exact criterion at every one of them, and returned zero
+certificates. Every prefix rank is covered exactly once, every shard reports
+completion, and the aggregate counters equal the sums of the per-rank counters
+(Table~\ref{tab:excl}).
 \end{enumerate}
+The zero-hit outcome of the independent engine is the certificate of nonexistence, and
+it does not assume Theorem~\ref{thm:residue}. The strand-pruned and residue-pruned
+engines of Appendix~\ref{app:repro}, which do assume it, return zero certificates on
+the strictly smaller trees they explore; that agreement is a cross-check only. It is,
+however, evidence \emph{for} Corollary~\ref{cor:P16}: the independent engine reaches
+the leaves P16 discards---at period $48$, $6{,}994{,}756{,}680$ of them---and finds no
+realisable word among them, so within this range the pruning discarded nothing.
 Table~\ref{tab:excl} summarises. Together these exclude every finite-support periodic
 highway of nonzero drift and period at most $48$.
 \end{proof}
 
 \begin{table}[h]
 \centering
-\begin{tabular}{@{}llrr@{}}
+\begin{tabular}{@{}lrrrr@{}}
 \toprule
-Period & Method & Nodes & Highways \\
+Period & Nodes & Leaves & Criterion evaluations & Highways \\
 \midrule
-$\le 32$ & complete legal enumeration & $46{,}185{,}421$ & $0$\\
-$34$ & positive-growth & $9{,}726{,}176$ & $0$\\
-$36$ & positive-growth & $19{,}781{,}050$ & $0$\\
-$38$ & positive-growth & $41{,}972{,}884$ & $0$\\
-$40$ & positive-growth & $201{,}924{,}597$ & $0$\\
-$42$ & two-engine, rank-audited & $528{,}451{,}911$ & $0$\\
-$44$ & two-engine, rank-audited & $1{,}319{,}080{,}456$ & $0$\\
-$46$ & two-engine, rank-audited & $3{,}463{,}441{,}745$ & $0$\\
-$48$ & two-engine, rank-audited & $8{,}677{,}026{,}370$ & $0$\\
+$\le 32$ & $46{,}185{,}421$ & --- & --- & $0$\\
+$34$ & $40{,}418{,}033$      & $6{,}989{,}418$      & $6{,}989{,}418$      & $0$\\
+$36$ & $108{,}995{,}287$     & $18{,}928{,}333$     & $18{,}928{,}333$     & $0$\\
+$38$ & $293{,}763{,}689$     & $51{,}386{,}767$     & $51{,}386{,}767$     & $0$\\
+$40$ & $791{,}801{,}484$     & $139{,}000{,}900$    & $139{,}000{,}900$    & $0$\\
+$42$ & $2{,}133{,}302{,}151$ & $376{,}781{,}423$    & $376{,}781{,}423$    & $0$\\
+$44$ & $5{,}748{,}138{,}964$ & $1{,}018{,}293{,}035$& $1{,}018{,}293{,}035$& $0$\\
+$46$ & $15{,}483{,}269{,}352$& $2{,}757{,}152{,}898$& $2{,}757{,}152{,}898$& $0$\\
+$48$ & $41{,}710{,}394{,}384$& $7{,}446{,}719{,}550$& $7{,}446{,}719{,}550$& $0$\\
 \bottomrule
 \end{tabular}
 \caption{Exhaustive exclusion of finite-support periodic highways of nonzero drift.
-Each entry is complete over its parameter range with no node cap; the period-$46$ and
-$48$ rows are cross-validated by two independent engines whose per-rank counters agree.}
+All rows from period $34$ up are the output of the \emph{independent} engine, which
+assumes no consequence of Theorem~\ref{thm:residue}; the ``criterion evaluations''
+column equals the leaf column, i.e.\ the exact criterion of
+Theorem~\ref{thm:criterion} is applied to every positive-growth nonzero-drift leaf,
+with no leaf discarded unexamined. Each entry is complete over its parameter range
+with no node cap, and every prefix rank is covered exactly once. The period-$\le32$
+row is a complete legal-trace enumeration, which applies no growth or endpoint pruning
+and is residue-free by construction. Node counts are not comparable across different
+prefix lengths (Appendix~\ref{app:repro}).}
 \label{tab:excl}
 \end{table}
 
@@ -1103,9 +1175,11 @@ four of it fails the criterion: all $5{,}356$ distance-two and $4{,}598{,}126$
 distance-four mutations are excluded. Odd Hamming distance cannot restore the heading.
 \end{proposition}
 
-By \cite{GajardoMoreiraGoles2002}, no finite period bound can settle
-Conjecture~\ref{conj:main}; Theorem~\ref{thm:periodexcl} is therefore a lower bound on
-the minimal period of any nonstandard highway, not a proof of the conjecture.
+A finite-period exclusion does not by itself establish eventual convergence for
+arbitrary finite initial configurations: Theorem~\ref{thm:periodexcl} bounds the
+minimal period of any nonstandard highway from below, but Conjecture~\ref{conj:main}
+quantifies over all finite configurations and all periods, and no finite computation
+of the present kind exhausts that range.
 
 %=======================================================================
 \section{The remaining gap}\label{sec:gap}
@@ -1129,7 +1203,7 @@ classifies the resulting cycle. We do not claim these are the only possible rout
 solution, but no proof along them is known, and the following show why several easy
 attempts fail: unboundedness (Theorem~\ref{thm:unbounded}) permits an orbit that keeps
 enlarging a two-dimensional region; none of the natural scalar quantities or affine
-combinations of $(E,V,k,\beta)$ considered in Remark~\ref{rem:nomonotone} is monotone;
+combinations of $(E,V,k,\beta)$ is monotone (Proposition~\ref{rem:nomonotone});
 and a local pumping argument is invalid because equal local cores may connect through
 arbitrarily distant explored territory, turning a later merge into a split
 (Theorem~\ref{thm:conjugacy}).
@@ -1272,24 +1346,79 @@ rank be covered exactly once, that every shard report completion with no node ca
 that the aggregate node, leaf, and prune counters equal the sums of the per-rank
 counters.
 
-Two independent engines are run for the period $42$--$48$ certifications. The
-\emph{reference engine} applies the exact criterion of Theorem~\ref{thm:criterion} to
-every positive-growth leaf and makes \emph{no} use of Theorem~\ref{thm:residue}; its
-zero-hit outcome is therefore unconditional on the residue theorem. The
-\emph{residue engine} explores the identical prefix tree but first rejects each leaf
-violating Theorem~\ref{thm:residue}, applying the exact criterion only to the
-survivors. Because both engines enumerate the same tree and reach the same leaves,
-their node counts, leaf counts, and common legality-pruning counts are identical per
-shard by construction; they differ only in the residue-prune and exact-evaluation
-counts, which the residue engine reports and the reference engine does not use. The
-exclusion itself rests on the reference engine: it applies
-Theorem~\ref{thm:criterion} to \emph{every} leaf and finds no realisable word,
-independently of Theorem~\ref{thm:residue}. The residue engine is an implementation
-cross-check: its own zero-hit result, together with the identical node/leaf coverage,
-confirms that the residue pruning discarded no realisable word. For period $48$ both
-engines reported $8{,}677{,}026{,}370$ nodes and $451{,}962{,}870$ leaves over the
-$2^{16}$ prefix ranks; the residue engine evaluated the exact criterion on
-$12{,}257{,}208$ survivors after rejecting $439{,}705{,}662$ leaves.
+\subsection*{What certifies the exclusion, and what merely cross-checks it}
+
+Three variants are run for the period $42$--$48$ certifications. It matters exactly
+which pruning rule each one assumes, so we spell this out.
+
+The \emph{independent engine} (\texttt{PositiveGrowthSearchIndep.java}) uses only
+rules that are free of Theorem~\ref{thm:residue}: the cyclic normalisation above,
+same-cell alternation (Proposition~\ref{prop:alt}), the growth congruence of
+Corollary~\ref{cor:growth4} (a consequence of the even-winding theorem of
+Section~\ref{sec:evenwinding}, not of the residue theorem), and $L_1$ endpoint
+reachability to a nonzero drift. It applies the exact
+criterion of
+Theorem~\ref{thm:criterion} to \emph{every} positive-growth nonzero-drift leaf. Its
+zero-hit outcome is the certificate of Theorem~\ref{thm:periodexcl}, and that
+certificate is unconditional on Theorem~\ref{thm:residue}. It is, however,
+conditional on Corollary~\ref{cor:growth4}; we make no claim that the search is
+unconditional on the even-winding theorem, which is what reduces the problem to
+positive growth in the first place.
+
+The \emph{strand-pruned engine} (\texttt{PositiveGrowthSearch.java}) additionally
+contracts endpoint reachability to the P16 square of Corollary~\ref{cor:P16} and
+rejects leaves violating $\growth\ge2\max(|a|,|b|)$. The \emph{residue-pruned engine}
+(\texttt{PositiveGrowthResidueSearch.java}) adds the full identity of
+Theorem~\ref{thm:residue}. Both are therefore \emph{conditional} on the residue
+theorem, and neither can certify Theorem~\ref{thm:periodexcl} on its own. Because
+Corollary~\ref{cor:P16} prunes at the node level, the strand-pruned and
+residue-pruned engines do not merely discard leaves: they never reach them, which is
+why their reported leaf counts are smaller than the independent engine's rather than
+equal to them, and why their agreement on node counts is a statement about the
+P16-contracted tree only.
+
+An earlier version of this paper described the strand-pruned engine as making no use
+of Theorem~\ref{thm:residue} and as applying Theorem~\ref{thm:criterion} to every
+leaf. That was incorrect on both counts: it prunes with Corollary~\ref{cor:P16}, and
+its ``every leaf'' quantifier ranged only over the leaves surviving that pruning.
+Period $46$ measures the gap. The independent engine reaches $2{,}757{,}152{,}898$
+leaves and evaluates the criterion at each; the strand-pruned engine reaches
+$98{,}568{,}824$, i.e.\ $3.6\%$ of them, and the residue-pruned engine evaluates the
+criterion on $6{,}132{,}192$, i.e.\ $0.22\%$. The $2{,}658{,}584{,}074$ leaves the
+strand-pruned engine never reaches are exactly the ones a residue-free certificate
+must inspect. The independent engine was written to remove the assumption entirely,
+and every period-exclusion count reported here is its output.
+
+Finally, the three variants share one enumeration framework, one normalisation, one
+representation, and one exact-criterion routine, so a shared bug would affect all
+three identically; their agreement is a consistency check, not implementation
+independence. To test the criterion itself we use a separate verifier
+(\texttt{verify\_criterion\_indep.py}) written from the statement of
+Theorem~\ref{thm:criterion} rather than from the Java source: it builds translation
+classes by explicit pairwise membership tests and union-find instead of the Java's
+arithmetic reduction and global sort, and it evaluates the \emph{literal} criterion,
+checking every $S_{I,n}$ for $\min_I a_i\le n\le\max_I a_i$ rather than the single
+stabilised word that Remark~\ref{rem:onesort} licenses---so it also exercises
+Remark~\ref{rem:onesort}, which the Java engines assume. On the $172{,}092$
+heading-reset nonzero-drift words of length at most $18$ enumerated below, the literal
+criterion and the one-sort shortcut agree on every word, with zero disagreements; both
+accept the standard period-$104$ word, and the Java binary agrees with the Python
+verifier on every word sampled directly from it. For period at most $18$ this is a
+genuine end-to-end cross-language replication: the Python verifier brute-forces all
+$2^{18}$ words with no pruning whatsoever and independently reproduces the exclusion.
+Beyond that length brute force is infeasible and the check is confined to the
+criterion, which is the component a shared bug would most plausibly corrupt.
+
+One further assumption of the engines is worth isolating, since it is what makes the
+search exhaustive. The engines never test the heading directly; they test
+$\growth\equiv0\pmod4$. These agree by Lemma~\ref{lem:invariant}, but the lemma as
+usually stated gives only the forward implication, and it is the \emph{converse} the
+search relies on: a word rejected for $\growth\not\equiv0$ must genuinely fail to
+reset the heading, or a candidate would be silently skipped. Both directions follow
+from $q_t-b_t\equiv q_0-b_0$, and we confirmed the equivalence by enumeration over all
+$524{,}286$ words of length at most $18$: the heading-resetting words number
+$174{,}762$, and so do the words with $\growth\equiv0\pmod4$, with no exceptions in
+either direction.
 
 The residue theorem was audited separately, with the following counts over all
 $\sum_{L\le18}2^{L}=524{,}286$ turn words of length at most $18$:
@@ -1306,13 +1435,26 @@ particular a word such as $\turnR\turnL$, with drift $(1,1)$ and growth $0$, res
 the heading and lies among the $172{,}092$ but is \emph{not} realisable and is
 excluded from the strand-level test, as it must be.)
 
+\subsection*{Environment and archived records}
+
+The searches reported here were run on a single workstation, not on a cluster: one
+Intel Core i5-1334U (10 physical cores, 12 logical, $1.3$\,GHz base) with $16$\,GB of
+RAM under Windows~$11$ (build $26200$), on Eclipse Temurin OpenJDK $25.0.1{+}8$
+(64-bit Server VM), with one JVM per shard and at most $12$ concurrent shards; the
+Python verifier ran on CPython $3.13.14$. The period-$48$ run of the independent
+engine is the largest single job and completes in a few core-hours on this machine,
+so the exclusion is reproducible on commodity hardware without special allocation.
+
 The engines' source, an SHA-256 manifest of every released artifact, the aggregation
 and cross-audit scripts, and the exact commands to regenerate every shard are publicly
-available in the accompanying repository \cite{Repo} at the tagged release
-\texttt{v1.0}; the searches were run on a multi-core cluster with one worker per shard.
-\emph{(All records are exactly regenerable from the released sources by the commands
-given there; readers who wish to reproduce the exclusion need only rerun the reference
-engine.)}
+available in the accompanying repository \cite{Repo}. The \emph{complete} per-rank
+shard records for every reported search---each rank's node, leaf, prune, and
+exact-evaluation counters, its wall time, and its hit list---are archived with the
+paper rather than left to be regenerated: compressed, the full set is a few megabytes.
+The archive also carries the aggregation output, the rank-coverage verification (every
+rank covered exactly once, no shard reporting a node cap), the per-rank comparison
+between the independent and pruned engines, the exact commands, and the environment
+strings above.
 
 %=======================================================================
 \begin{thebibliography}{99}

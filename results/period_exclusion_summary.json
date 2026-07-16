@@ -1,87 +1,198 @@
 {
-  "description": "Exhaustive exclusion of finite-support periodic highways of nonzero drift for Langton's ant. 'hits'=0 for every period means NO periodic highway of that period exists other than (for period 104) the standard one. Odd periods cannot restore the heading and are excluded analytically.",
-  "generated": "2026-07-14",
+  "schema": "langton-period-exclusion-v2",
+  "description": "Exhaustive exclusion of finite-support periodic highways of nonzero drift for Langton's ant. The certifying engine is the INDEPENDENT engine, which assumes no consequence of the signed mod-four wake-residue theorem (paper Thm 7.1) and applies the exact realisability criterion (paper Thm 3.1) to every positive-growth nonzero-drift leaf. 'highways'=0 at every period means no periodic highway of that period exists. Odd periods restore no heading and are excluded analytically.",
+  "certifying_engine": "PositiveGrowthSearchIndep.java",
+  "residue_theorem_assumed": false,
+  "also_assumes": [
+    "cyclic-minimum normalisation (cycle lemma)",
+    "alternating visits (paper Prop. 2.2)",
+    "heading/black-count invariant (paper Lem. 2.3): heading reset <=> growth = 0 mod 4",
+    "growth is a positive multiple of four (paper Cor. 6.2, from the even-winding theorem -- NOT from the residue theorem)"
+  ],
+  "environment": {
+    "python": "3.13.14",
+    "platform": "Windows-11-10.0.26200-SP0",
+    "processor": "Intel64 Family 6 Model 186 Stepping 3, GenuineIntel",
+    "java": "openjdk version \"25.0.1\" 2025-10-21 LTS\nOpenJDK Runtime Environment Temurin-25.0.1+8 (build 25.0.1+8-LTS)\nOpenJDK 64-Bit Server VM Temurin-25.0.1+8 (build 25.0.1+8-LTS, mixed mode, sharing)"
+  },
+  "engine_sha256": {
+    "PositiveGrowthSearchIndep.java": "f04663f4a6e4bbc574e97cc68f9b514a5ae62ce3f585862b8c69bd88cb10e57c"
+  },
   "periods": {
     "<=32": {
       "method": "complete legal trace enumeration",
       "nodes": 46185421,
-      "hits": 0,
-      "note": "32 prefix shards; covers all periods up to 32"
+      "highways": 0,
+      "note": "32 prefix shards; covers all periods up to 32; no growth or endpoint pruning, hence residue-free by construction"
     },
     "34": {
-      "method": "exact positive-growth search",
-      "hits": 0,
-      "nodes": 9726176
+      "method": "exhaustive positive-growth search, residue-theorem-free",
+      "prefix_length": 10,
+      "rank_count": 512,
+      "ranks_covered_exactly_once": true,
+      "independent_engine": {
+        "nodes": 40418033,
+        "leaves": 6989418,
+        "p3_checks": 6989418,
+        "exact_criterion_applied_to": "every positive-growth nonzero-drift leaf",
+        "hits": 0,
+        "core_seconds": 17.825,
+        "shards": 47
+      },
+      "highways": 0
     },
     "36": {
-      "method": "exact positive-growth search",
-      "hits": 0,
-      "nodes": 19781050
+      "method": "exhaustive positive-growth search, residue-theorem-free",
+      "prefix_length": 11,
+      "rank_count": 1024,
+      "ranks_covered_exactly_once": true,
+      "independent_engine": {
+        "nodes": 108995287,
+        "leaves": 18928333,
+        "p3_checks": 18928333,
+        "exact_criterion_applied_to": "every positive-growth nonzero-drift leaf",
+        "hits": 0,
+        "core_seconds": 47.653,
+        "shards": 47
+      },
+      "highways": 0
     },
     "38": {
-      "method": "exact positive-growth search",
-      "hits": 0,
-      "nodes": 41972884
+      "method": "exhaustive positive-growth search, residue-theorem-free",
+      "prefix_length": 12,
+      "rank_count": 2048,
+      "ranks_covered_exactly_once": true,
+      "independent_engine": {
+        "nodes": 293763689,
+        "leaves": 51386767,
+        "p3_checks": 51386767,
+        "exact_criterion_applied_to": "every positive-growth nonzero-drift leaf",
+        "hits": 0,
+        "core_seconds": 277.019,
+        "shards": 48
+      },
+      "highways": 0
     },
     "40": {
-      "method": "exact positive-growth search",
-      "hits": 0,
-      "nodes": 201924597
+      "method": "exhaustive positive-growth search, residue-theorem-free",
+      "prefix_length": 13,
+      "rank_count": 4096,
+      "ranks_covered_exactly_once": true,
+      "independent_engine": {
+        "nodes": 791801484,
+        "leaves": 139000900,
+        "p3_checks": 139000900,
+        "exact_criterion_applied_to": "every positive-growth nonzero-drift leaf",
+        "hits": 0,
+        "core_seconds": 624.814,
+        "shards": 48
+      },
+      "highways": 0
+    },
+    "42": {
+      "method": "exhaustive positive-growth search, residue-theorem-free",
+      "prefix_length": 14,
+      "rank_count": 8192,
+      "ranks_covered_exactly_once": true,
+      "independent_engine": {
+        "nodes": 2133302151,
+        "leaves": 376781423,
+        "p3_checks": 376781423,
+        "exact_criterion_applied_to": "every positive-growth nonzero-drift leaf",
+        "hits": 0,
+        "core_seconds": 1922.117,
+        "shards": 12
+      },
+      "highways": 0
+    },
+    "44": {
+      "method": "exhaustive positive-growth search, residue-theorem-free",
+      "prefix_length": 15,
+      "rank_count": 16384,
+      "ranks_covered_exactly_once": true,
+      "independent_engine": {
+        "nodes": 5748138964,
+        "leaves": 1018293035,
+        "p3_checks": 1018293035,
+        "exact_criterion_applied_to": "every positive-growth nonzero-drift leaf",
+        "hits": 0,
+        "core_seconds": 13251.843,
+        "shards": 12
+      },
+      "highways": 0,
+      "strand_pruned_engine_conditional_on_thm71": {
+        "nodes": 1319080456,
+        "leaves": 67839409,
+        "p3_checks": 67839409,
+        "hits": 0,
+        "note": "prunes with Cor. 7.3 at node level; explores a strictly smaller tree, so its leaf set is a SUBSET of the independent engine's -- counters are not expected to match"
+      },
+      "residue_pruned_engine_conditional_on_thm71": {
+        "nodes": 1319080456,
+        "leaves": 67839409,
+        "p3_checks": 2788995,
+        "hits": 0
+      }
     },
     "46": {
-      "method": "two-engine, rank-audited exhaustive search",
+      "method": "exhaustive positive-growth search, residue-theorem-free",
       "prefix_length": 16,
       "rank_count": 32768,
-      "original_engine": {
+      "ranks_covered_exactly_once": true,
+      "independent_engine": {
+        "nodes": 15483269352,
+        "leaves": 2757152898,
+        "p3_checks": 2757152898,
+        "exact_criterion_applied_to": "every positive-growth nonzero-drift leaf",
+        "hits": 0,
+        "core_seconds": 12000.686,
+        "shards": 12
+      },
+      "highways": 0,
+      "strand_pruned_engine_conditional_on_thm71": {
         "nodes": 3463441745,
         "leaves": 98568824,
+        "p3_checks": 98568824,
         "hits": 0,
-        "complete_shards": 16
+        "note": "prunes with Cor. 7.3 at node level; explores a strictly smaller tree, so its leaf set is a SUBSET of the independent engine's -- counters are not expected to match"
       },
-      "residue_engine": {
+      "residue_pruned_engine_conditional_on_thm71": {
         "nodes": 3463441745,
         "leaves": 98568824,
         "p3_checks": 6132192,
-        "residue_prunes": 92436632,
-        "hits": 0,
-        "complete_shards": 16
-      },
-      "engines_agree_on_nodes": true,
-      "engines_agree_on_leaves": true,
-      "hits": 0
+        "hits": 0
+      }
     },
     "48": {
-      "method": "two-engine, rank-audited exhaustive search",
+      "method": "exhaustive positive-growth search, residue-theorem-free",
       "prefix_length": 17,
       "rank_count": 65536,
-      "original_engine": {
+      "ranks_covered_exactly_once": true,
+      "independent_engine": {
+        "nodes": 41710394384,
+        "leaves": 7446719550,
+        "p3_checks": 7446719550,
+        "exact_criterion_applied_to": "every positive-growth nonzero-drift leaf",
+        "hits": 0,
+        "core_seconds": 51856.023,
+        "shards": 96
+      },
+      "highways": 0,
+      "strand_pruned_engine_conditional_on_thm71": {
         "nodes": 8677026370,
         "leaves": 451962870,
+        "p3_checks": 451962870,
         "hits": 0,
-        "complete_shards": 16
+        "note": "prunes with Cor. 7.3 at node level; explores a strictly smaller tree, so its leaf set is a SUBSET of the independent engine's -- counters are not expected to match"
       },
-      "residue_engine": {
+      "residue_pruned_engine_conditional_on_thm71": {
         "nodes": 8677026370,
         "leaves": 451962870,
         "p3_checks": 12257208,
-        "residue_prunes": 439705662,
-        "hits": 0,
-        "complete_shards": 16
-      },
-      "engines_agree_on_nodes": true,
-      "engines_agree_on_leaves": true,
-      "hits": 0
-    },
-    "42": {
-      "method": "two-engine, rank-audited (see records)",
-      "hits": 0,
-      "note": "complete records in project data; residue+original engines agree"
-    },
-    "44": {
-      "method": "two-engine, rank-audited (see records)",
-      "hits": 0,
-      "note": "complete records in project data; residue+original engines agree"
+        "hits": 0
+      }
     }
   },
-  "conclusion": "No finite-support periodic highway of nonzero drift and period <= 48 exists."
+  "conclusion": "No finite-support periodic highway of nonzero drift has period <= 48. Any nonstandard periodic highway therefore has even period >= 50. The standard highway has period 104; periods 50..102 are not addressed.",
+  "all_checks_passed": true
 }
