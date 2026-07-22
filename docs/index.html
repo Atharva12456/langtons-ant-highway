@@ -32,29 +32,30 @@
 <body>
 <div class="wrap">
 
-<h1>Structural Constraints on Finite-Support Periodic Highways of Langton&rsquo;s Ant</h1>
-<div class="sub">Exact structural &amp; arithmetic results, an exhaustive small-period exclusion, and a Lean 4 formalization.</div>
+<h1>Finite-Support Periodic Highways of Langton&rsquo;s Ant: Necessary Conditions, Transverse Exclusions, and Exact Search</h1>
+<div class="sub">Exact structural results, all-period narrow-width exclusions, audited search, and Lean 4 certificates.</div>
 <div class="author">Atharva Jillhewar</div>
 
 <div class="status">
 <strong>Status.</strong> The highway conjecture is <strong>open</strong>. This project
 does not prove or disprove it; it establishes necessary conditions on any
-finite-support periodic highway and excludes short-period ones exhaustively.
+finite-support periodic highway, excludes diagonal transverse widths two and four
+at every period, and excludes short-period ones exhaustively.
 </div>
 
 <h2>Read the papers</h2>
 <div class="cards">
 <a class="card" href="paper.pdf">
   <div class="t">📄 Paper (PDF) &rarr;</div>
-  <div class="d">The main paper, 18 pages, with full proofs. Compiled from <code>paper/main.tex</code>.</div>
+  <div class="d">The current main paper, 24 pages, with proofs and explicit computer-assisted boundaries. Compiled from <code>paper/main.tex</code>.</div>
 </a>
 <a class="card" href="paper.html">
-  <div class="t">Paper &rarr; (HTML)</div>
-  <div class="d">Same paper, web-readable version.</div>
+  <div class="t">Accessible paper summary &rarr;</div>
+  <div class="d">Current scope and links to the canonical PDF and LaTeX source.</div>
 </a>
 <a class="card" href="companion.html">
-  <div class="t">Companion report &rarr; (HTML)</div>
-  <div class="d">The complete ledger of results (P1&ndash;P31), reductions, and open problems.</div>
+  <div class="t">Companion report summary &rarr;</div>
+  <div class="d">Current technical-report scope and links; the main PDF is the submission document.</div>
 </a>
 <a class="card" href="../paper/main.tex">
   <div class="t">Paper LaTeX source &rarr;</div>
@@ -67,39 +68,47 @@ finite-support periodic highway and excludes short-period ones exhaustively.
 </div>
 
 <h2>The results in one paragraph</h2>
-<p>Langton&rsquo;s ant, from any finite black configuration, is conjectured to eventually
-build the period-104 &ldquo;highway.&rdquo; We prove that any finite-support periodic
+<p>For any finite black configuration, it is conjectured that after some time the
+ant&rsquo;s future path and turn trace agree with the period-104 highway, up to lattice
+translation, quarter-turn rotation, and cyclic phase; inert debris outside the future
+path may remain. We prove that any finite-support periodic
 highway must satisfy strong constraints: it cannot be a zero-growth glider (the
 <strong>even-winding theorem</strong>), so it always grows a wake of net size a positive
 multiple of four; its checker-signed wake bases obey an exact <strong>mod-four residue
-identity</strong>, giving the sharp bound <em>g</em> &ge; 2&nbsp;max(|a|,|b|) between
+identity</strong>, giving the bound <em>g</em> &ge; 2&nbsp;max(|a|,|b|) between
 growth and drift; the dynamics is exactly conjugate to <strong>edge-toggling on a Tait
-graph</strong> with a cycle-rank surgery law; and an exhaustive two-engine, rank-audited
-computation shows there is <strong>no periodic highway of period &le; 48</strong> other
-than the standard one. The algebraic core is machine-checked in Lean&nbsp;4.</p>
+graph</strong> with a cycle-rank surgery law. For diagonal drift, extremal-line
+rigidity gives permanent guard rails; transverse widths two and four are impossible
+at every period. The width-four theorem uses a 12-edge blank-column graph certified
+by two independent exact enumerators, with its rank consequence checked in Lean.
+Finally, an exhaustive residue-theorem-free,
+rank-audited computation shows there is <strong>no finite-support periodic highway of
+nonzero drift and period &le; 48</strong>. Selected algebraic kernels are machine-checked
+in Lean&nbsp;4; the complete geometric theorems are not formalized end to end.</p>
 
 <h2>Exhaustive small-period exclusion</h2>
 <table>
 <tr><th>Period</th><th>Method</th><th>Nodes searched</th><th>Highways found</th></tr>
-<tr><td>&le; 32</td><td>complete enumeration</td><td>46,185,421</td><td>0</td></tr>
-<tr><td>34&ndash;40</td><td>positive-growth</td><td>up to 2.0&times;10&#8312;</td><td>0</td></tr>
-<tr><td>42&ndash;46</td><td>two-engine, audited</td><td>up to 3.5&times;10&#8313;</td><td>0</td></tr>
-<tr><td>48</td><td>two-engine, audited</td><td>8,677,026,370</td><td>0</td></tr>
+<tr><td>&le; 32</td><td>first-R cyclic-phase enumeration</td><td>46,185,480</td><td>0</td></tr>
+<tr><td>34&ndash;40</td><td>residue-free variant</td><td>up to 791,801,484</td><td>0</td></tr>
+<tr><td>42&ndash;46</td><td>residue-free variant, audited</td><td>up to 15,483,269,352</td><td>0</td></tr>
+<tr><td>48</td><td>residue-free variant, audited</td><td>41,710,394,384</td><td>0</td></tr>
 </table>
 
 <h2>What remains open</h2>
 <ul>
-<li>A <strong>bounded-retreat / bounded-active-core lemma</strong>: that the ant eventually
-stays in a bounded corridor behind its frontier.</li>
+<li>A <strong>bounded-active-core lemma</strong>: after translation, one finite window must
+contain the ant and every cell or Tait-boundary component capable of influencing the
+future; everything outside it must be permanently inert.</li>
 <li>A <strong>single-tour chronology theorem</strong> classifying positive-growth periodic
-traces for unbounded period.</li>
+traces for unbounded period, including widths six and eight and non-diagonal drift.</li>
 </ul>
 <p>These, and not the arithmetic constraints proved here, are what a full solution of the
 conjecture must still supply.</p>
 
 <div class="foot">
 &copy; 2026 Atharva Jillhewar. Code &amp; Lean under MIT; papers under CC BY 4.0.
-Large searches run on a high-performance computing cluster.
+The reported searches ran on one workstation; see the paper and archived records.
 </div>
 
 </div>

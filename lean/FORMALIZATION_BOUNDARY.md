@@ -45,6 +45,10 @@ exact finite ant trace plus a sharply stated normalized-orbit interface.
     strand/fiber identification, the delta-alpha sum, and the old conserved
     decomposition field are all constructed.  In particular, the old widget
     decomposition is not retained as an assumption.
+14. `StabilizedP3Word.toOrbitEndpointData`: from a nonempty nonincreasing list of
+    P3 orbit levels in a finite covering window, Lean constructs the alternating
+    stabilized word, its first positive strand, the balanced endpoint list, and the
+    binary widget scan required by `OrbitEndpointData`.
 
 ## Still explicit assumptions
 
@@ -53,11 +57,9 @@ The remaining interface is now `NormalizedTrace` plus
 
 - an exact repeated trace, including its period, drift, restored heading, and a
   drift-orbit address for every actual kernel phase;
-- for each orbit, a finite level window covering all its exact phase toggles and
-  equality of the endpoint coefficient list with the mechanically aggregated
-  toggle list;
-- the endpoint normal-form conditions: after removing the first positive
-  strand endpoint, the coefficient sum is zero and its prefix scan is binary;
+- for each orbit, a finite level window and a stabilized P3 level word whose entries
+  are nonincreasing and covered by that window, together with the geometric theorem
+  identifying the word's aggregate toggles with the actual phase toggles;
 - a physical lifted path whose residue sequence is exactly one closed traversal
   of `finRange n`;
 - the local potential-increment identity along every consecutive path edge;
@@ -66,8 +68,32 @@ The remaining interface is now `NormalizedTrace` plus
 
 The finite widget, periodic residue weight, fiber identification, alpha labels,
 closed alpha cycle, and certificate conservation equation are then derived.
-What is still missing is a theorem producing the normalized endpoint conditions
-and the lifted potential geometry from every relevant clean translator, followed
+What is still missing is a theorem extracting the stabilized P3 level word and
+the lifted potential geometry from every relevant periodic trace, followed
 by an entrance theorem taking every finite initial coloring to such a
-translator.  Consequently neither P22/P16 nor the universal highway conjecture
+finite-support periodic-highway tail.  Consequently neither P22/P16 nor the
+universal highway conjecture
 is claimed as an unconditional Lean theorem.
+
+## Width-four crossing-graph boundary (21 July 2026)
+
+`Langton/WidthFourCrossing.lean` records the twelve all-white
+blank-column compatibility edges and proves, by an explicit rank, that every edge
+strictly decreases rank and no four-edge chain exists. This checks acyclicity of the
+finite table without `sorry`, `admit`, or a custom axiom.
+
+The crucial completeness bridge is not yet formalised: derive from the actual ant
+rule, the five-bit column encoding, and extremal singleton rigidity that **every**
+exact pair of adjacent far-tail crossing sequences is one of those twelve edges.
+That bridge is supplied by
+`code/python/width4_crossing_graph.py`, whose unbounded finite-state generator reaches
+22 entry states, finds no entry-state cycle, and agrees with a pairwise enumeration
+through sequence length 25, and by the independently written
+`code/python/verify_width4_crossing_graph_indep.py`, which reproduces all twelve edges
+and validates the boundary convention on a genuine far-ahead standard-highway
+column. An adversarial model referee re-derived the state projection, four flags,
+recursion completeness argument, and far-tail graph bridge and found no remaining
+blocker after the manuscripts' label hypotheses were made explicit. The result is
+therefore promoted as a **computer-assisted theorem**, not as an end-to-end Lean
+theorem: local classifier completeness remains executable/independently reproduced
+rather than formalized in Lean.

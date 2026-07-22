@@ -1,6 +1,13 @@
 # A rigorous attempt on the finite-support Langton-ant highway conjecture
 
-**Status, 14 July 2026:** I did not obtain a complete proof or a counterexample. The conjecture remains open in the current literature, and it would be mathematically dishonest to fill the central gap with an unsupported assertion. This note records the main rigorous reduction. The continuously updated authoritative continuation is `langton_proof_journal.md`; it now includes the signed residue theorem, exact exclusion through period 44, the bounded-component/stationary-island theorems, the frontier-flight escape theorem, and the Lean formalization boundary.
+**Status, 20 July 2026:** I did not obtain a complete proof or a counterexample. This
+is a historical working note, not the source of submission claims. Some later sections
+preserve exploratory reductions and finite computations that were subsequently
+withdrawn, narrowed, or not packaged with publication-grade certificates; they must
+not be cited as theorems merely because they remain in this notebook. The canonical
+claims and proofs are `../paper/main.tex`; the continuously updated audit trail is
+`proof_journal.md`. In particular, the released paper does not claim the old exterior-
+dynamics, Hamming-isolation, centered-$3\times3$, or touch-graph-rank statements.
 
 ## 1. Formal statement
 
@@ -12,7 +19,11 @@ Let (c_0:\mathbb Z^2\to\{0,1\}) be an initial coloring, where (0) is white and (
 
 At a white cell the ant turns right; at a black cell it turns left. It flips the current cell and then moves one unit.
 
-The classical highway conjecture says that every such initial configuration eventually has the same qualitative behavior: a trace of least period (104) and a diagonal displacement ((\pm2,\pm2)) per period. This remains explicitly open in 2025–2026 sources: [Lutfalla, *Sideways on the highways*](https://arxiv.org/abs/2505.05426), [Gajardo–Lutfalla–Rao, *Ants on the highway*](https://arxiv.org/abs/2409.10124), and [Etse, *How Long Can the Escaping Ant Be Confined?*](https://arxiv.org/abs/2606.26677).
+The classical highway conjecture says that after some time the ant's future path and
+turn trace agree with the standard period-$104$ highway, up to lattice translation,
+quarter-turn rotation, and cyclic phase. Finite stationary debris outside the future
+path is allowed; equality of the entire colouring is not asserted. The conjecture
+remains open.
 
 There are two possible disproofs:
 
@@ -332,7 +343,15 @@ This yields a sharp local chronology theorem. If an R visit to a cell is followe
 
 At an L collision, the occupied Tait edge is a bridge exactly when the live and opposite roots lie on the same frozen boundary; deletion then splits that boundary. A nonbridge puts the roots on distinct boundaries and deletion merges them. This exhaustive local classification still does not control the eventual drift. In the exact obstacle reversal, an ancestral degree-one leaf bridge in a 34-edge component splits a length-120 boundary and ejects the ant onto a pristine live four-cycle, yet the eventual standard drift reverses from $(-2,2)$ to $(2,-2)$. The return stores its 524 changed cells in one endpoint-neutral Eulerian incidence component of cycle rank 444.
 
-The periodic touch-graph/interlacement construction is now exact. Pair every stabilized R with its following L and identify the two phase occurrences as a 4-valent temporal vertex. H/H and V/V smoothing is the $\psi$ transition of the temporal Euler circuit. Positive growth leaves $g$ unmatched R switches; cutting them gives a boundary touch graph whose wake-edge subgraph is a disjoint union of $\kappa$ even cycles. Suppressing those degree-two switches produces a genuine connected 4-regular Euler system, and the modified interlacement rows span the full cycle space of the touch graph with the wake cycles contracted. If $m=(N-g)/2$ and $c$ is the number of closed H/V smoothing circuits, the exact rank is $m-c-\kappa+1$. The uncontracted graph retains a $\kappa$-dimensional wake-cycle kernel. The standard trace itself misses exactly that one wake direction, proving that full-boundary spanning is false. For growth four, both possible wake graphs remain feasible and arbitrarily many closed H/V backtracking circuits may coexist with them. Controlling that kernel and those closed circuits through voltage/lattice labels is the unresolved step.
+An attempted touch-graph/interlacement compression was later found to lose information
+under the pushforward from distinct lifetime labels to physical row/column labels.
+The labelled cycle-space theorem therefore does not imply a full physical touch-graph
+rank theorem, and no such theorem is claimed in the paper. A narrow growth-four port-
+matching audit does show that the abstract wake kernel has $\kappa=1$ for axis drift,
+$\kappa=2$ for even diagonal drift, and $\kappa\in\{1,2\}$ for primitive diagonal
+drift. Natural oriented coordinate functionals are noninjective on this kernel; this
+is a negative result, not the signed all-$+1$ wake-residue theorem. Controlling the
+physical chronology remains open.
 
 ## 7. Best disproof program
 
@@ -382,30 +401,26 @@ Again, an `unresolved_count` greater than zero means only that the time cap was 
 
 For serious scaling I would next replace the Python depth-first engine with a compiled, work-stealing implementation and add checkpointed prefix queues. The exact periodic criterion and gateway verifier can remain the trusted reference checker.
 
-## 9. Conclusion
+## 9. Current conclusion (superseding the historical list)
 
-I cannot present a valid universal proof or counterexample. I can present:
+There is still no universal proof or counterexample. The release establishes only the
+claims proved in `../paper/main.tex`:
 
-- a rigorous criterion deciding whether any proposed periodic word is a finite-support highway;
-- an explicit proof certificate for the standard 104-step highway;
-- an exact exhaustive theorem for all centered (3\times3) patterns;
-- two-engine, rank-by-rank audited complete computer-assisted exclusion of all finite-support periodic highways of period at most 44;
-- a period-independent even-winding proof that no clean finite translator exists and hence that every periodic highway has positive black growth divisible by four;
-- the strand-density bound $g\ge2\|d\|_\infty$ for every finite-support repeating trace;
-- the stronger signed mod-four residue identity, which independently forces a positive even number of wake strands in every nonzero drift residue;
-- a complete historical computer-assisted exclusion of nonzero-drift zero-growth period 40, now subsumed by that analytic theorem;
-- an exact exclusion of alternative period-104 words within Hamming radius four of the standard word;
-- an exact boundary-loop/Tait-graph conjugacy and cycle-rank identity; and
-- conserved row/column, affine mod-four, and quadratic mod-four charges, plus exact clean-translator restrictions;
-- an exact algebraic description of the strands and linearly long wake of any repeating trace; and
-- a loop-memory trichotomy reducing any bounded-loop counterexample to unbounded-age near-return excursions;
-- bounded-black-lifetime and short-self-avoiding-factor lemmas; and
-- a corrected exterior-marker classification plus a persistent-seam theorem reducing the remaining bounded-loop loophole to one arbitrarily long inactive exterior episode.
-- bounded active loops imply uniformly bounded black components, and long bad seam episodes contain detached stationary islands of unbounded duration and excursion radius;
-- a warmed repeated renewal flight that clears all debris predating that flight must escape forever, reducing any returning bad core to endlessly changing ancestral-debris collisions or chronically short quiet intervals; and
-- an exact two-endpoint collision-chain boundary theorem, a bridge/nonbridge L-collision dichotomy, and a four-cell minimum for every completed black lifetime;
-- explicit signed mod-four row/column potentials and the minimum-rectangle sign law, independently audited and machine checked; and
-- a voltage-aware lifetime interlacement formula and an exact contracted boundary touch-graph rank theorem, isolating the remaining wake-cycle kernel; and
-- a sixteen-job Lean project that checks the finite transition kernel, collision/lifetime charge kernels, and most algebraic trace-to-strand/widget reductions, while explicitly leaving the final P3 normalization and potential geometry assumptions visible.
+- an exact constructive criterion deciding whether a proposed heading-resetting,
+  nonzero-drift periodic word is realizable from finite support;
+- an exact Tait-graph conjugacy and planar cycle-rank surgery identity;
+- an even-winding proof that no clean finite translator exists, implying that every
+  finite-support periodic highway has positive growth divisible by four;
+- a signed mod-four wake-residue identity and the bound
+  $g\ge2\max(|a|,|b|)$;
+- a two-endpoint row/column collision-chain parity theorem and the resulting
+  four-cell lower bound for a completed black lifetime; and
+- a residue-theorem-free, rank-audited computation excluding every finite-support
+  periodic highway of nonzero drift and period at most $48$.
 
-Large computation can substantially extend the finite exclusions and may discover a certificate-producing counterexample. It cannot by itself establish the universal conjecture without an additional theorem reducing infinitely many finite supports and unbounded times to a finite search.
+Selected algebraic kernels are checked in Lean 4, but the extraction of the required
+geometric trace certificate is not formalized end to end. The two unresolved duties
+are a universal bounded-active-core/entrance theorem and an unbounded-period
+classification of all positive-growth periodic highways. Computation may find a
+finite counterexample certificate or extend a bounded exclusion, but cannot by itself
+close either infinite gap.

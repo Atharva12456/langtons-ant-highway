@@ -46,3 +46,9 @@ Thumbs.db
 *.swp
 .idea/
 .vscode/
+
+# Build cruft (Java classes, stray LaTeX out dir, scratch)
+indep_classes/
+tmp/
+paper/$out/
+*.class

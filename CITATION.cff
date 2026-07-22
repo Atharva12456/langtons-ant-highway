@@ -1,42 +1,43 @@
 cff-version: 1.2.0
-message: "If you use this work, please cite the paper below."
-title: "New Structural and Arithmetic Constraints on Finite-Support Periodic Highways of Langton's Ant"
+message: "If you use this work, please cite the manuscript in preferred-citation."
+title: "Langton's ant finite-support highway research artifacts"
 authors:
   - family-names: Jillhewar
     given-names: Atharva
-type: article
-year: 2026
+type: software
 abstract: >-
-  For the classical two-colour Langton's ant on the integer lattice with finite
-  initial black support, we establish the first structural and arithmetic
-  constraints on the possible periodic highways: an even-winding theorem forcing
-  strictly positive net black growth divisible by four, a signed mod-four
-  wake-residue identity and the sharp bound g >= 2 max(|a|,|b|) relating growth to
-  drift, a Tait-graph conjugacy with a cycle-rank surgery identity, a two-endpoint
-  collision-chain parity theorem and a touch-graph interlacement rank formula, and
-  a two-engine rank-audited exhaustive exclusion of every finite-support periodic
-  highway of nonzero drift and period at most 48. A decidable
-  periodic-realisability criterion with an explicit finite seed is given, and the
-  algebraic core is machine-checked in Lean 4. No claim of a proof or disproof of
-  the highway conjecture is made.
+  Supplementary exact-search code and records, verification scripts, and a Lean 4
+  formalization of selected algebraic kernels for the accompanying manuscript on
+  finite-support periodic highways of Langton's ant. The highway conjecture remains
+  open; these artifacts do not claim a proof or disproof.
 keywords:
   - "Langton's ant"
   - turmite
   - cellular automata
   - highway conjecture
-  - symbolic dynamics
-  - Tait graph
-  - interlacement
+  - exact computation
   - Lean
 repository-code: "https://github.com/Atharva12456/langtons-ant-highway"
 url: "https://atharva12456.github.io/langtons-ant-highway/"
-version: "v1.0.1"
-doi: "10.5281/zenodo.21381637"
 identifiers:
   - type: doi
     value: "10.5281/zenodo.21381637"
-    description: "Concept DOI — always resolves to the latest archived release."
-  - type: doi
-    value: "10.5281/zenodo.21381638"
-    description: "Version DOI — pins release v1.0.1."
-license: CC-BY-4.0
+    description: "Project-level concept DOI; use a release's version DOI to pin exact files."
+license: MIT
+preferred-citation:
+  type: article
+  title: "Finite-Support Periodic Highways of Langton's Ant: Necessary Conditions, Transverse Exclusions, and Exact Search"
+  authors:
+    - family-names: Jillhewar
+      given-names: Atharva
+  year: 2026
+  abstract: >-
+    We give necessary structural and arithmetic conditions for finite-support
+    periodic highways of the classical two-colour Langton's ant, together with a
+    residue-theorem-free audited exclusion of nonzero-drift periods at most 48, a
+    decidable periodic-realisability criterion, extremal-line rigidity, and
+    all-period exclusions of diagonal transverse widths two and four. The width-four
+    result is computer-assisted, with two independent local enumerators and a
+    Lean-checked graph-rank certificate. No proof or disproof of the highway
+    conjecture is claimed.
+  url: "https://github.com/Atharva12456/langtons-ant-highway"

@@ -1,0 +1,23 @@
+{
+  "schema": "langton-p32-exclusion-v2",
+  "max_period": 32,
+  "prefix_partition": "R followed by every 5-symbol R/L word",
+  "records": 32,
+  "prefixes_covered_exactly_once": true,
+  "configured_node_cap_per_shard": 100000000,
+  "pruning_metadata_checked": {
+    "exact_period": false,
+    "target_growth": null,
+    "proved_clean_pruning": false
+  },
+  "largest_shard_nodes": 2623020,
+  "nodes": 46185421,
+  "period_le_5_baseline_nodes": 59,
+  "cyclic_phase_normalized_nodes_through_period_32": 46185480,
+  "coverage": "all first-R cyclic-phase representatives through period 32, plus the unprefixed period-<=5 baseline; every positive-growth heading-resetting word is represented",
+  "aggregate_shard_seconds": 1822.767089,
+  "highways_found": 0,
+  "problems": [],
+  "all_checks_passed": true,
+  "generator_sha256": "b395ed3aac53bb9f43aea375ffd7257cd81ec3df5404df098783ed0656c4bcfc"
+}

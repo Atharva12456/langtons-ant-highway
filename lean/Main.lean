@@ -5,6 +5,8 @@ import Langton.CollisionParity
 import Langton.TraceGeometry
 import Langton.DirectedPoseDiscrepancy
 import Langton.P3Endpoint
+import Langton.WidthFour
+import Langton.WidthFourCrossing
 
 open Langton
 

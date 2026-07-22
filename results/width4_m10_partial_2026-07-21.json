@@ -1,0 +1,33 @@
+{
+  "schema_version": 1,
+  "generated_at": "2026-07-21T18:56:13-05:00",
+  "status": "partial_fixed_drift_search",
+  "normalized_drift": [10, -10],
+  "mathematical_macro_period_bound": 70,
+  "existing_coverage": "P <= 38 is covered by the all-highway and unrestricted width-four searches.",
+  "engine": "code/java/WidthFourSearch.java",
+  "engine_sha256": "51FE7C1DC12B00FD7065ACB78F1F0A6E8FBDCFC1DE4FEED643F602F30A22D820",
+  "rows": [
+    {"P": 40, "N": 80, "nodes": 116849848, "structural_leaves": 34276, "odd_identity_pass": 0, "hits": 0, "seconds": 4.516},
+    {"P": 42, "N": 84, "nodes": 200521112, "structural_leaves": 17677, "odd_identity_pass": 0, "hits": 0, "seconds": 12.312},
+    {"P": 44, "N": 88, "nodes": 343182083, "structural_leaves": 11128, "odd_identity_pass": 0, "hits": 0, "seconds": 34.651},
+    {"P": 46, "N": 92, "nodes": 585047879, "structural_leaves": 3233, "odd_identity_pass": 0, "hits": 0, "seconds": 44.920},
+    {"P": 48, "N": 96, "nodes": 991596175, "structural_leaves": 2228, "odd_identity_pass": 0, "hits": 0, "seconds": 98.230},
+    {"P": 50, "N": 100, "nodes": 1667847890, "structural_leaves": 222, "odd_identity_pass": 0, "hits": 0, "seconds": 118.545},
+    {"P": 52, "N": 104, "nodes": 2778208331, "structural_leaves": 241, "odd_identity_pass": 0, "hits": 0, "seconds": 229.277},
+    {"P": 54, "N": 108, "nodes": 4577895901, "structural_leaves": 0, "odd_identity_pass": 0, "hits": 0, "seconds": 249.989},
+    {"P": 56, "N": 112, "nodes": 7455842818, "structural_leaves": 10, "odd_identity_pass": 0, "hits": 0, "seconds": 491.476},
+    {"P": 58, "N": 116, "nodes": 12007587775, "structural_leaves": 0, "odd_identity_pass": 0, "hits": 0, "seconds": 629.958},
+    {"P": 60, "N": 120, "nodes": 19138313024, "structural_leaves": 0, "odd_identity_pass": 0, "hits": 0, "seconds": 1108.564},
+    {"P": 62, "N": 124, "nodes": 30238836043, "structural_leaves": 0, "odd_identity_pass": 0, "hits": 0, "seconds": 1680.264},
+    {"P": 64, "N": 128, "nodes": 47442673612, "structural_leaves": 0, "odd_identity_pass": 0, "hits": 0, "seconds": 2738.439},
+    {"P": 66, "N": 132, "nodes": 74038045927, "structural_leaves": 0, "odd_identity_pass": 0, "hits": 0, "seconds": 3995.586}
+  ],
+  "remaining_admissible_macro_periods": [68, 70],
+  "stopped_unfinished": {
+    "at": "2026-07-21T18:56:13-05:00",
+    "periods": [68, 70],
+    "reason": "research-window cutoff; neither process returned a completed row"
+  },
+  "nonclaim": "This partial file does not exclude drift magnitude 10 and does not change the proved m <= 9 theorem."
+}

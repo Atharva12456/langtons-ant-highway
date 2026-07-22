@@ -1,10 +1,12 @@
-"""Aggregate + audit the Theorem-7.1-independent searches, and compare with the
-strand-pruned (P16) engine.
+"""Aggregate the residue-theorem-free searches and compare with the P16 variant.
 
 Checks, per period:
   * every prefix rank covered exactly once (no gap, no duplicate);
   * every shard reports search_complete and node_cap null;
   * aggregate counters equal the sum of the per-rank counters;
+  * shard period/prefix/rank-interval metadata are mutually consistent;
+  * each result rank and encoded prefix matches the declared shard interval;
+  * per-rank hit lists aggregate exactly to the shard hit list;
   * residue_theorem_used is false in every shard record;
   * zero hits.
 Emits a JSON summary suitable for release.
@@ -41,7 +43,7 @@ def sha256(p: Path) -> str:
 
 
 def audit(period: int, d: str):
-    files = sorted(glob.glob(f"{d}/shard_*.json"))
+    files = sorted(str(path) for path in (ROOT / d).glob("shard_*.json"))
     if not files:
         return None
     agg = {k: 0 for k in ("nodes", "growth_prunes", "endpoint_prunes",
@@ -51,32 +53,99 @@ def audit(period: int, d: str):
     hits, covered, problems = [], [], []
     prefix_length = total = None
     for f in files:
-        j = json.load(open(f))
+        with open(f, encoding="utf-8") as stream:
+            j = json.load(stream)
+        if j.get("period") != period:
+            problems.append(f"{f}: period {j.get('period')} != expected {period}")
         if not j.get("search_complete"):
             problems.append(f"{f}: search_complete false")
         if j.get("node_cap") is not None:
             problems.append(f"{f}: node_cap set")
         if j.get("residue_theorem_used") is not False:
             problems.append(f"{f}: residue_theorem_used not false")
-        prefix_length = j["prefix_length"]
-        total = j["total_rank_count"]
+        shard_prefix_length = j.get("prefix_length")
+        shard_total = j.get("total_rank_count")
+        if (not isinstance(shard_prefix_length, int) or shard_prefix_length < 1
+                or not isinstance(shard_total, int)):
+            problems.append(
+                f"{f}: invalid prefix metadata "
+                f"{(shard_prefix_length, shard_total)!r}")
+            continue
+        if shard_total != 1 << (shard_prefix_length - 1):
+            problems.append(
+                f"{f}: total_rank_count {shard_total} inconsistent with "
+                f"prefix_length {shard_prefix_length}")
+        if prefix_length is None:
+            prefix_length, total = shard_prefix_length, shard_total
+        elif (shard_prefix_length, shard_total) != (prefix_length, total):
+            problems.append(
+                f"{f}: prefix metadata {(shard_prefix_length, shard_total)} != "
+                f"{(prefix_length, total)}")
+        start, stop = j.get("rank_start"), j.get("rank_stop")
+        if (not isinstance(start, int) or not isinstance(stop, int)
+                or not (0 <= start <= stop <= shard_total)):
+            problems.append(f"{f}: invalid rank interval [{start},{stop})")
+            expected_ranks = []
+        else:
+            expected_ranks = list(range(start, stop))
+        actual_ranks = [r.get("rank") for r in j.get("results", [])]
+        if actual_ranks != expected_ranks:
+            problems.append(
+                f"{f}: result ranks do not equal declared interval [{start},{stop})")
+        if j.get("deficit_depths") != []:
+            problems.append(
+                f"{f}: deficit_depths {j.get('deficit_depths')!r} != []")
+        for key in ("deficit_checks", "deficit_prunes",
+                    "deficit_endpoints_tested"):
+            if j.get(key) != 0:
+                problems.append(f"{f}: inactive deficit counter {key} is {j.get(key)!r}")
         # per-rank counters must sum to the shard aggregate
         per = {k: 0 for k in agg}
-        for r in j["results"]:
-            covered.append(r["rank"])
+        per_hits = []
+        for r in j.get("results", []):
+            rank = r.get("rank")
+            if isinstance(rank, int):
+                covered.append(rank)
+                expected_prefix = "R" + "".join(
+                    "L" if rank & (1 << bit) else "R"
+                    for bit in range(shard_prefix_length - 2, -1, -1))
+                if r.get("prefix") != expected_prefix:
+                    problems.append(
+                        f"{f}: rank {rank} prefix {r.get('prefix')!r} != "
+                        f"{expected_prefix!r}")
+            else:
+                problems.append(f"{f}: invalid result rank {rank!r}")
             for k in per:
-                if k in r:
+                if k not in r:
+                    problems.append(f"{f}: rank {rank} missing counter {k}")
+                else:
                     per[k] += r[k]
-        for k in ("nodes", "leaves"):
-            if per[k] != j[k]:
+            rank_hits = r.get("hits")
+            if not isinstance(rank_hits, list):
+                problems.append(f"{f}: rank {rank} hits is not a list")
+            else:
+                per_hits.extend(rank_hits)
+        shard_hits = j.get("hits")
+        if not isinstance(shard_hits, list):
+            problems.append(f"{f}: shard hits is not a list")
+            shard_hits = []
+        if per_hits != shard_hits:
+            problems.append(f"{f}: per-rank hit lists do not equal shard hits")
+        for k in agg:
+            if k not in j:
+                problems.append(f"{f}: missing aggregate counter {k}")
+            elif per[k] != j[k]:
                 problems.append(f"{f}: {k} per-rank sum {per[k]} != aggregate {j[k]}")
+        if j.get("p3_checks") != j.get("leaves"):
+            problems.append(
+                f"{f}: p3_checks {j.get('p3_checks')} != leaves {j.get('leaves')}")
         for k in agg:
             agg[k] += j.get(k, 0)
         seconds += j.get("seconds", 0.0)
-        hits += j["hits"]
+        hits += shard_hits
 
     covered.sort()
-    expect = list(range(total))
+    expect = list(range(total)) if isinstance(total, int) else []
     if covered != expect:
         dup = len(covered) - len(set(covered))
         miss = set(expect) - set(covered)
@@ -89,6 +158,7 @@ def audit(period: int, d: str):
         "ranks_covered_exactly_once": covered == expect,
         "shards": len(files),
         "residue_theorem_used": False,
+        "deficit_rule_active": False,
         "exact_criterion_applied_to": "every positive-growth nonzero-drift leaf",
         **agg,
         "core_seconds": round(seconds, 3),
@@ -100,11 +170,11 @@ def audit(period: int, d: str):
 
 if __name__ == "__main__":
     out = {
-        "schema": "langton-independent-exclusion-v1",
+        "schema": "langton-residue-free-exclusion-v2",
         "claim": ("exhaustive positive-growth search using NO consequence of the "
                   "signed mod-four wake-residue theorem; the exact criterion is "
                   "applied to every positive-growth nonzero-drift leaf"),
-        "environment": {
+        "audit_environment": {
             "python": platform.python_version(),
             "platform": platform.platform(),
             "processor": platform.processor(),
@@ -118,11 +188,14 @@ if __name__ == "__main__":
         "periods": {},
     }
     ok = True
+    missing_periods = []
     for p in PERIODS:
         d = f"p{p}_indep_shards"
         a = audit(p, d)
         if a is None:
             print(f"period {p}: NOT RUN")
+            missing_periods.append(p)
+            ok = False
             continue
         a["strand_pruned_engine_nodes"] = ORIGINAL_NODES[p]
         a["node_ratio_indep_over_strand_pruned"] = round(
@@ -136,10 +209,11 @@ if __name__ == "__main__":
         for pr in a["problems"]:
             ok = False
             print(f"   ! {pr}")
-    out["all_checks_passed"] = ok and all(
+    out["missing_periods"] = missing_periods
+    out["all_checks_passed"] = ok and len(out["periods"]) == len(PERIODS) and all(
         v["highways_found"] == 0 and not v["problems"]
         for v in out["periods"].values())
-    Path("independent_exclusion_summary.json").write_text(
-        json.dumps(out, indent=2), encoding="utf-8")
+    (ROOT / "independent_exclusion_summary.json").write_text(
+        json.dumps(out, indent=2) + "\n", encoding="utf-8", newline="\n")
     print(f"\nall_checks_passed = {out['all_checks_passed']}")
     print("wrote independent_exclusion_summary.json")

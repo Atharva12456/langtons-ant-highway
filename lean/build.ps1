@@ -1,13 +1,27 @@
+param(
+    [string]$Lake = $env:LANGTON_LEAN_LAKE
+)
+
 $ErrorActionPreference = 'Stop'
-$toolRoot = (Resolve-Path (Join-Path $PSScriptRoot '..\lean_toolchain')).Path
-$env:ELAN_HOME = Join-Path $toolRoot '.elan'
-$lake = Join-Path $env:ELAN_HOME 'bin\lake.exe'
+
+if ([string]::IsNullOrWhiteSpace($Lake)) {
+    $portable = Join-Path $PSScriptRoot '..\lean_toolchain\.elan\bin\lake.exe'
+    if (Test-Path -LiteralPath $portable) {
+        $Lake = (Resolve-Path -LiteralPath $portable).Path
+    } else {
+        $command = Get-Command lake -ErrorAction SilentlyContinue
+        if ($null -eq $command) {
+            throw 'lake was not found. Install the pinned Lean toolchain or set LANGTON_LEAN_LAKE to lake.exe.'
+        }
+        $Lake = $command.Source
+    }
+}
+
 Push-Location $PSScriptRoot
 try {
-    & $lake build
+    & $Lake build
     if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
-
-    & $lake env lean (Join-Path $PSScriptRoot 'Audit.lean')
+    & $Lake env lean (Join-Path $PSScriptRoot 'Audit.lean')
     if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
 } finally {
     Pop-Location

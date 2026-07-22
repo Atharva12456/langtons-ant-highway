@@ -1,0 +1,63 @@
+{
+  "schema_version": 1,
+  "generated_at": "2026-07-21T19:24:33-05:00",
+  "status": "independently_audited_bounded_cross_check_superseded_by_all_period_theorem",
+  "claim": "No finite-support periodic Langton highway of transverse width four has normalized diagonal drift (m,-m) for 1 <= m <= 9.",
+  "mathematical_bound": {
+    "macro_period": "P <= 7m",
+    "ant_period": "N = 2P <= 14m",
+    "parity": "P congruent to m modulo 2",
+    "dependencies": [
+      "exact periodic-trace criterion P3",
+      "extremal-line singleton rigidity",
+      "the four-state width-four macro transition table",
+      "flow conservation at LN and US"
+    ]
+  },
+  "search": {
+    "engine": "code/java/WidthFourSearch.java",
+    "engine_sha256": "51FE7C1DC12B00FD7065ACB78F1F0A6E8FBDCFC1DE4FEED643F602F30A22D820",
+    "runtime": "OpenJDK Temurin 25.0.1+8-LTS",
+    "fixed_drift_prunes": [
+      "endpoint reachability",
+      "macro-period displacement parity",
+      "repeated extremal residue",
+      "ordinary same-physical-cell turn alternation"
+    ],
+    "leaf_checks": [
+      "heading reset and exact drift",
+      "positive growth",
+      "both extremal lines reached",
+      "growth equals the number of odd translation classes",
+      "every stabilized translation-class word starts R and alternates"
+    ]
+  },
+  "coverage": [
+    {"m": 1, "theorem_max_macro_period": 7, "tested_through": 7, "tested_parity": "odd", "hits": 0},
+    {"m": 2, "theorem_max_macro_period": 14, "tested_through": 16, "tested_parity": "even", "hits": 0},
+    {"m": 3, "theorem_max_macro_period": 21, "tested_through": 23, "tested_parity": "odd", "hits": 0},
+    {"m": 4, "theorem_max_macro_period": 28, "tested_through": 32, "tested_parity": "even", "hits": 0},
+    {"m": 5, "theorem_max_macro_period": 35, "tested_through": 39, "tested_parity": "odd", "hits": 0},
+    {"m": 6, "theorem_max_macro_period": 42, "tested_through": 48, "tested_parity": "even", "hits": 0},
+    {"m": 7, "theorem_max_macro_period": 49, "tested_through": 55, "tested_parity": "odd", "hits": 0},
+    {"m": 8, "theorem_max_macro_period": 56, "tested_through": 64, "tested_parity": "even", "hits": 0},
+    {"m": 9, "theorem_max_macro_period": 63, "tested_through": 63, "tested_parity": "odd", "hits": 0}
+  ],
+  "coverage_notes": [
+    "For m <= 6 the fixed-drift engine was run over the entire interval 1 <= P <= 8m; wrong-parity rows were rejected exactly.",
+    "For m = 7, the existing all-highway exclusion covers P <= 24, and fixed-drift runs cover P = 25 and every odd P from 27 through 55.",
+    "For m = 8, the existing all-highway exclusion covers P <= 24, and fixed-drift runs cover P = 26 and every even P from 28 through 64.",
+    "For m = 9, the existing all-highway exclusion covers P <= 24, the unrestricted width-four search covers P = 25 through 38, and fixed-drift runs cover every odd P from 39 through the theorem limit P = 63.",
+    "The final m = 9, P = 63 row visited 17,532,472,230 search nodes and had zero structural leaves.",
+    "The primitive m = 1 case also has a hand classification: P = 7 and six state-compatible words, each with an explicit P3 failure."
+  ],
+  "lean": {
+    "module": "lean/Langton/WidthFour.lean",
+    "sha256": "E0A4C88394FC5D08991F4C9432564B6AEDF7EBC03994A01B24BAC5CBDDF886B7",
+    "version": "Lean 4.32.0",
+    "build_jobs": 20,
+    "sorry_or_admit": 0,
+    "scope": "arithmetic kernels plus the block-key and low-crossing endpoints only; the geometric reduction and pumping splice remain on paper"
+  },
+  "nonclaim": "This does not exclude width four for unbounded m and does not prove the universal highway conjecture."
+}

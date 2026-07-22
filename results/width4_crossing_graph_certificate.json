@@ -1,0 +1,52 @@
+{
+  "schema_version": 1,
+  "generated_at": "2026-07-21T19:27:14-05:00",
+  "classification_generated_at": "2026-07-21T18:35:00-05:00",
+  "independent_referee_audited_at": "2026-07-21T19:20:00-05:00",
+  "status": "computer_assisted_all_period_width_four_exclusion_independently_audited",
+  "encoding": "Boundary signature entries are destination transverse lines; directions are right,left,right,...",
+  "blank_column_edges": [
+    {"left": [2,0,2], "right": [4]},
+    {"left": [4,2,2,0,2,2,2], "right": [2]},
+    {"left": [4,2,2,0,2,2,2], "right": [2,0,2]},
+    {"left": [4,2,2,0,2,2,2], "right": [2,0,2,2,2]},
+    {"left": [4,2,2,0,2,2,2], "right": [2,0,2,2,2,2,4]},
+    {"left": [2,0,4,2,2,2,2], "right": [2]},
+    {"left": [2,0,4,2,2,2,2], "right": [2,0,2]},
+    {"left": [2,0,4,2,2,2,2], "right": [2,0,2,2,2]},
+    {"left": [2,0,4,2,2,2,2], "right": [2,0,2,2,2,2,4]},
+    {"left": [2,0,2,2,4,2,2,2,2], "right": [4,2,2]},
+    {"left": [2,0,2,2,4,2,2,2,2], "right": [4,2,2,0,2]},
+    {"left": [2,0,2,2,4,2,2,2,2], "right": [4,2,2,0,2,2,2]}
+  ],
+  "graph": {
+    "occurring_vertices": 10,
+    "edges": 12,
+    "acyclic": true,
+    "longest_directed_path_edges": 3,
+    "longest_path": [[2,0,2,2,4,2,2,2,2], [4,2,2,0,2,2,2], [2,0,2], [4]]
+  },
+  "primary_generator": {
+    "path": "code/python/width4_crossing_graph.py",
+    "sha256": "2AF99EDCBC355945B547AB1F80CAEE6927FA75D6C1C064C5ADC41D13B5FE3E33",
+    "reachable_entry_states": 22,
+    "maximum_entry_depth": 8,
+    "reachable_entry_cycles": 0,
+    "pairwise_crosscheck_max_signature_length": 25,
+    "pairwise_vertices": 910
+  },
+  "independent_verifier": {
+    "path": "code/python/verify_width4_crossing_graph_indep.py",
+    "sha256": "694C1178B00FA8AB929A5375255E53762C403DE02FC1D2958A4409EF9B84AFE0",
+    "edge_agreement": true,
+    "standard_highway_far_column_replay": true,
+    "standard_left_boundary_length": 31,
+    "standard_right_boundary_length": 21
+  },
+  "lean_acyclicity": {
+    "path": "lean/Langton/WidthFourCrossing.lean",
+    "sha256": "548DF94E2B8B60CE23269153EE446CFF824AC1DB6AA1A41773F4E605205324FF",
+    "formalized": "Every listed edge lowers an explicit rank; no four-edge chain exists.",
+    "not_formalized": "Completeness of the 12-edge local classifier."
+  }
+}

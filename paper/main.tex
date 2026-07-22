@@ -1,6 +1,6 @@
 %=======================================================================
-%  New Structural and Arithmetic Constraints on Finite-Support
-%  Periodic Highways of Langton's Ant
+%  Finite-Support Periodic Highways of Langton's Ant:
+%  Necessary Conditions, Transverse Exclusions, and Exact Search
 %
 %  Author: Atharva Jillhewar
 %
@@ -10,7 +10,7 @@
 %  appendices render in one compile (Overleaf runs the 2 pdfLaTeX passes
 %  needed to resolve \cite and \ref automatically).
 %
-%  >>> Before posting: fill in the \address and \email placeholders below.
+%  Author metadata is filled below; update it only if the author requests a change.
 %=======================================================================
 \documentclass[11pt,reqno]{amsart}
 
@@ -26,7 +26,9 @@
 \usepackage{listings}
 \usepackage[margin=1in]{geometry}
 \usepackage[colorlinks=true,linkcolor=blue!55!black,citecolor=teal!60!black,
-            urlcolor=purple!55!black]{hyperref}
+            urlcolor=purple!55!black,
+            pdftitle={Finite-Support Periodic Highways of Langton's Ant: Necessary Conditions, Transverse Exclusions, and Exact Search},
+            pdfauthor={Atharva Jillhewar}]{hyperref}
 
 %------------------------------ theorem environments
 \theoremstyle{plain}
@@ -71,54 +73,53 @@
   backgroundcolor=\color{gray!5},
 }
 
-\title[Constraints on Langton-ant highways]{New Structural and Arithmetic Constraints on\\ Finite-Support Periodic Highways of Langton's Ant}
+\title[Finite-support periodic highways]{Finite-Support Periodic Highways of Langton's Ant:\\ Necessary Conditions, Transverse Exclusions, and Exact Search}
 
 \author{Atharva Jillhewar}
+\address{Independent researcher}
+\email{Atharvajil124@gmail.com}
 
-\date{\today}
+\date{21 July 2026}
 
 \keywords{Langton's ant, turmite, cellular automata, highway conjecture,
 symbolic dynamics, reversible dynamics, medial graph, Tait graph, interlacement}
 \subjclass[2020]{Primary 37B15; Secondary 37B10, 05C10, 68Q80, 68R15}
 
 \begin{document}
+\raggedbottom
 
 \begin{abstract}
-For the classical two-colour Langton's ant on $\Z^2$ with finite initial black
-support, we establish structural and arithmetic constraints on the
-possible \emph{periodic highways}. Our principal results are the following.
-\emph{(1) An even-winding theorem}: no finite-support pattern can drift to an
-exact translate of itself with restored heading and zero net change in the number
-of black cells; consequently every finite-support periodic highway must build a
-wake whose net black growth is a strictly positive multiple of four. \emph{(2) A
-signed mod-four wake-residue identity}: the checkerboard-signed strand bases of any
-periodic highway sum to $2\pmod 4$ in each residue class of every nonzero drift
-coordinate, whence the lower bound $\growth\ge 2\max(|a|,|b|)$ tying growth
-$\growth$ to drift $(a,b)$. \emph{(3) A Tait-graph conjugacy}: the ant is exactly
-conjugate to edge-toggling on a medial (Tait) graph, with a cycle-rank surgery
-identity $E+\Delta C=2\beta$. \emph{(4) A two-endpoint collision-chain parity
-theorem}. \emph{(5) A rank-audited exhaustive
-computation}---which assumes no consequence of~(2), and applies the exact criterion
-below to every positive-growth nonzero-drift leaf---excluding every finite-support
-periodic highway of nonzero drift and period at most $48$, so that any nonstandard
-periodic highway must have even period at least $50$. We also
-give a decidable periodic-realisability criterion with an explicit finite seed,
-strengthening the forbidden-word program for the ant's trace subshift. Selected
-finite algebraic identities used in the proofs---among them the parity telescope
-underlying the even-winding theorem and the mod-four monodromy and fiber
-computations underlying the residue theorem---are machine-checked in Lean $4$; the
-geometric reductions and the trace-certificate interface remain informal, so neither
-theorem is asserted as an end-to-end Lean result. Every result is a necessary
-condition on a finite-support periodic highway or
-an exact finite computation; none resolves the (open) convergence conjecture, and
-we delimit precisely what a solution must still supply.
+We study the classical two-colour Langton's ant on $\Z^2$, started from a
+colouring with finite black support, under the additional hypothesis that its turn
+trace is eventually periodic with nonzero drift. We give a necessary-and-sufficient,
+decidable criterion for a finite word to have such a finite-support periodic
+realisation, together with an explicit seed. We prove that every resulting highway
+has strictly positive net black growth divisible by four, and derive a signed
+mod-four residue identity for its growing wake and the bound
+$\growth\ge2\max(|a|,|b|)$ for drift $(a,b)$. We also give an exact medial
+(Tait)-graph formulation and a two-endpoint collision-chain parity identity. For
+diagonal drift we prove a transverse rigidity theorem: the two extremal level lines
+of the trace are horizontal, carry only the turn $\turnR$, and every cell of them
+reached by the periodic tail is entered exactly once and never revisited within that
+tail, so the highway is bounded on
+both sides by guard rails of permanent wake; the transverse width is therefore even. From
+this we deduce that no such highway has transverse width two.  We then give a
+computer-assisted all-period exclusion of width four: exact crossing sequences at
+successive untouched five-cell columns belong to a twelve-edge directed graph, and
+every edge strictly lowers an explicit rank.  Two independently written local
+enumerators reproduce the complete edge table, while Lean checks its rank
+consequence.  Thus every diagonal periodic highway has transverse width at least
+six. A
+residue-theorem-free audited enumeration applies the realisability criterion
+to every positive-growth, nonzero-drift leaf and excludes all periods at most $48$.
+Selected finite algebraic kernels are checked in Lean~$4$; the geometric extraction
+of those kernels from an ant trace is proved conventionally here but is not yet
+formalised end to end. These results constrain periodic highways but prove neither
+that every finite-support orbit eventually becomes periodic nor that the standard
+period-$104$ highway is the unique positive-growth periodic trace.
 \end{abstract}
 
 \maketitle
-
-\newpage
-\tableofcontents
-\newpage
 
 %=======================================================================
 \section{Introduction}
@@ -129,19 +130,23 @@ follows. Each cell is coloured white or black; a pointer, the \emph{ant}, occupi
 a cell and faces one of the four cardinal directions. At each step the ant reads
 the colour of its current cell: on white it turns $90^\circ$ right, on black it
 turns $90^\circ$ left; it then flips the colour of the current cell and moves one
-unit forward in its new heading. Starting from the all-white plane the ant produces,
-after a transient of $9977$ steps, a self-similar diagonal structure---the
-\emph{highway}---that repeats with least period $104$ and translates the ant by
-$(\pm2,\pm2)$ each period.
+unit forward in its new heading. In the convention used here, direct simulation from
+the all-white plane enters, after $9977$ steps, a diagonal translating
+structure---the \emph{highway}---whose turn trace has least period $104$ and whose
+ant position translates by a vector $(\pm2,\pm2)$ each period. The rule was
+introduced by Langton \cite{Langton1986}; the exact phase used here is reproduced in
+Appendix~\ref{app:example}.
 
 Throughout we impose the \emph{finite-support} condition: only finitely many cells
 are initially black. The empirical universality of the highway is the subject of a
 well-known open problem.
 
 \begin{conjecture}[Highway conjecture]\label{conj:main}
-For every finite initial black set and every initial pose, the orbit of Langton's
-ant eventually enters a translate, rotation, reflection, and phase shift of the
-standard period-$104$ highway.
+For every finite initial black set and every initial pose, there is a time after which
+the ant's future turn trace and path agree with the standard period-$104$ highway up
+to lattice translation, quarter-turn rotation, and cyclic phase shift. Finite cells
+outside the future path may remain as stationary debris; equality of the entire
+colouring is not asserted.
 \end{conjecture}
 
 \subsection{Prior art}
@@ -154,21 +159,19 @@ associated prediction problems are undecidable, on suitable infinite backgrounds
 Conjecture~\ref{conj:main}, which concerns finite configurations, beyond the evident
 point that no finite cutoff exhausts an infinite range. Gajardo
 \cite{Gajardo2003symbolic} gives an algebraic characterisation of the forbidden
-factors of the ant's trace subshift. Recent progress concerns \emph{generalised}
-ants: some rules admit infinitely many highways \cite{GajardoLutfallaRao2024},
-others have genuinely non-highway emergent behaviour \cite{Lutfalla2025sideways},
-and quantitative confinement bounds are available \cite{Etse2026confined}. We are not
-aware of prior published results that constrain what a \emph{classical} finite-support
-periodic highway can look like---a net-growth congruence, drift-versus-growth
-arithmetic, a translator-exclusion theorem, or a medial-graph analysis for the
-classical ant. The present paper aims at that structural layer.
+factors of the ant's trace subshift. Recent work on \emph{generalised} ants exhibits
+rules with infinitely many highways \cite{GajardoLutfallaRao2024} and rules with
+non-highway emergent behaviour \cite{Lutfalla2025sideways}. Quantitative confinement
+bounds for the classical ant are studied in \cite{Etse2026confined}. The present
+paper concerns a different, conditional question: what restrictions follow once a
+classical finite-support orbit is assumed to have a periodic translating tail?
 
 \subsection{Results}
-A \emph{repeating trace} is an infinite turn word $w^\omega$ that is realised as the
-trace of some finite-support colouring (Section~\ref{sec:criterion}); its
-\emph{drift} $\drift=(a,b)$ is the per-period displacement and its \emph{growth}
-$\growth$ the per-period change in the number of black cells. Our contributions,
-with an explicit account of their novelty:
+A \emph{repeating trace} is an infinite turn word $w^\omega$ realised from a
+finite-support colouring (Section~\ref{sec:criterion}), where the finite word $w$
+resets the heading; its \emph{drift}
+$\drift=(a,b)$ is the per-period displacement and its \emph{growth} $\growth$ the
+per-period change in the number of black cells. The main results are:
 
 \begin{enumerate}[leftmargin=2.4em,label=\textbf{(\arabic*)}]
 \item \textbf{Even-winding theorem} (Theorem~\ref{thm:evenwinding}): no
@@ -176,42 +179,47 @@ finite-support clean translator with nonzero drift exists. Hence every
 finite-support periodic highway has growth $\growth\in4\Z_{>0}$
 (Corollary~\ref{cor:growth4}). Bunimovich--Troubetzkoy excludes only \emph{bounded}
 repeatable orbits; a zero-growth glider is unbounded and is not covered by their
-theorem, so the strict positivity is new. (The divisibility by $4$ alone is the
+theorem. (The divisibility by $4$ alone is the
 elementary parity Lemma~\ref{lem:invariant}.)
 
-\item \textbf{Signed mod-four wake-residue identity} (Theorem~\ref{thm:residue}) and
-the lower bound $\growth\ge2\max(|a|,|b|)$ (Corollary~\ref{cor:P16}). We are not
-aware of any exact per-residue arithmetic identity, or any linear drift--growth
-bound, in the literature.
+\item \textbf{Signed mod-four wake-residue identity.}
+Theorem~\ref{thm:residue}; Corollary~\ref{cor:P16} gives the lower bound
+\[
+\growth\ge2\max(|a|,|b|).
+\]
 
 \item \textbf{Tait-graph conjugacy} (Theorem~\ref{thm:conjugacy}) and the cycle-rank
-surgery identity $E+\Delta C=2\beta$ (Theorem~\ref{thm:cyclerank}). We are not aware of
-prior Langton-ant work using medial/Tait graphs or loop merge/split surgery; the
-nearest precedent is the weaker checkerboard partition of
-\cite{GaleProppSutnerTroubetzkoy1995}.
+surgery identity $E+\Delta C=2\beta$ (Theorem~\ref{thm:cyclerank}), built on the
+checkerboard/HV partition of \cite{GaleProppSutnerTroubetzkoy1995}.
 
 \item \textbf{Collision-chain parity} (Theorem~\ref{thm:collision}), a two-endpoint
-$\F_2$ boundary identity for colour defects. We additionally record, building on
-Traldi's circuit-partition/interlacement theory
-\cite{Traldi2016signed,Traldi2012interlacement}, a rank computation for the periodic
-``touch graph'' (Observation~\ref{obs:touchgraph}); a self-contained treatment of the
-latter is deferred to the companion report \cite{Repo}. (We say ``touch graph'' to
-avoid a clash with the unrelated ``interlaced word'' of \cite{Lutfalla2025sideways}.)
+$\F_2$ boundary identity for colour defects.
+
+\item \textbf{Transverse rigidity and width-two/width-four exclusions}
+(Theorems~\ref{thm:extremal}, \ref{thm:width2}, and~\ref{thm:width4}). For diagonal drift the two
+extremal level lines of a periodic highway are horizontal, every turn on them is
+$\turnR$, and each cell reached on them is visited exactly once by the periodic tail
+and is left black; the transverse width is even. No such highway has
+transverse widths two or four; hence its width is at least six. Unlike~(6), these
+statements are not bounded period searches.  The width-four theorem is
+computer-assisted: two independent exact local enumerators certify a finite
+twelve-edge blank-column graph, and Lean certifies that every listed edge lowers
+rank.  The local enumeration's completeness is not yet formalised in Lean.  The
+proofs are independent of~(2).
 
 \item \textbf{Small-period exclusion} (Theorem~\ref{thm:periodexcl}): a rank-audited
 exhaustive search excludes every finite-support periodic highway of nonzero drift and
 period at most $48$. The search assumes no consequence of the residue theorem and
 applies the criterion to every positive-growth nonzero-drift leaf, so the exclusion
 does not depend on Section~\ref{sec:residue}; faster variants that do assume it agree.
-Existing computational work enumerates highways
-that do occur; we are not aware of a prior exhaustive nonexistence result below a
-fixed period bound.
+The certifying search is deliberately separated from the faster conditional
+cross-checks described in Appendix~\ref{app:repro}.
 \end{enumerate}
 
 Section~\ref{sec:criterion} also gives a decidable periodic-realisability criterion
 with an explicit finite seed, strengthening the forbidden-word program of
 \cite{Gajardo2003symbolic} from local factor-admissibility to global periodic
-finite-support realisability; only that strengthening is claimed as new. The
+finite-support realisability. The
 elementary heading/black-count invariant (Lemma~\ref{lem:invariant}) is folklore,
 implicit in \cite{BunimovichTroubetzkoy1992,GaleProppSutnerTroubetzkoy1995}.
 
@@ -222,9 +230,10 @@ therefore none resolves Conjecture~\ref{conj:main}. What we prove is that any
 finite-support periodic highway must build a positive wake divisible by four and must
 satisfy the residue identities and the density bound $\growth\ge2\|\drift\|_\infty$,
 and that no finite-support periodic highway has period at most $48$ (equivalently, any
-such highway has period at least $50$). The single
-geometric ingredient separating these results from a full solution is stated
-precisely in Section~\ref{sec:gap}.
+such highway has period at least $50$). Two logically separate gaps remain: an
+arbitrary finite-support orbit has not been shown to enter a translating periodic
+regime, and positive-growth finite-support periodic traces have not been classified.
+Section~\ref{sec:gap} states both problems explicitly.
 
 %=======================================================================
 \section{Setup and elementary facts}\label{sec:setup}
@@ -246,6 +255,18 @@ where $\triangle$ denotes symmetric difference and indices are read modulo $4$. 
 \eqref{eq:step} is invertible (step backward one cell, recolour, undo the turn), the
 dynamics is reversible and orbits never merge. Write $b_t=|B_t|$ and let
 $\che(x,y)=(-1)^{x+y}$ be the checkerboard sign.
+
+\begin{definition}[Periodic terminology]\label{def:periodic}
+Let $w=w_0\cdots w_{N-1}$ be a nonempty turn word and follow its induced lattice
+path from a specified initial heading. The word is \emph{heading-resetting} if the
+heading after $N$ turns equals the initial heading. In that case its \emph{drift} is
+$p_N-p_0$, and its \emph{growth} is
+$\#\{i:w_i=\turnR\}-\#\{i:w_i=\turnL\}$. An orbit has an \emph{eventually periodic
+turn trace} if, from some time $t_0$, its turns are $w^\omega$. If $w$ is
+heading-resetting with nonzero drift, we call that tail a \emph{periodic highway};
+its \emph{least trace period} is the smallest possible $N$. Highways are compared up
+to lattice translation, quarter-turn rotation, and cyclic phase shift of $w$.
+\end{definition}
 
 \begin{proposition}[Checkerboard/HV partition {\cite{GaleProppSutnerTroubetzkoy1995}}]
 \label{prop:hv}
@@ -282,11 +303,14 @@ Every finite-support orbit visits infinitely many cells.
 \end{theorem}
 
 \begin{proof}[Proof sketch]
-Were the visited set finite, reversibility would make the orbit periodic in the full
-state. Choose a visited cell $z$ maximising $x+y$; its north and east neighbours are
-unvisited. If $z$ is horizontal it is entered from the west, and its two successive
-(white then black) visits leave south and then north, forcing a visit to an unvisited
-corner neighbour---a contradiction; the vertical case is the $90^\circ$ rotation.
+Were the visited set finite, determinism and reversibility would make the orbit
+periodic in the full state. Choose a visited cell $z$ maximising $x+y$; its north and
+east neighbours are unvisited. If $z$ is horizontal it can only be entered from the
+west. During a full state period its colour returns, so its alternating visits include
+both a white/$\turnR$ and a black/$\turnL$ visit; these two turns leave respectively
+south and north, forcing a visit to the unvisited north neighbour. If $z$ is vertical
+it can only be entered from the south, and the two colours force departures east and
+west, including the unvisited east neighbour. Either case is a contradiction.
 \end{proof}
 
 \begin{lemma}[Heading/black-count invariant; folklore]\label{lem:invariant}
@@ -404,7 +428,7 @@ e_z=\begin{cases}\{(x,y-1),(x-1,y)\}, & x+y\ \text{even},\\[2pt]
 \end{equation}
 Let $H_B=\{e_z:z\in B\}$ be the finite edge subgraph induced by the black cells.
 
-\begin{figure}[h]
+\begin{figure}[ht]
 \centering
 \begin{tikzpicture}[scale=1.05,line width=0.9pt]
   % --- crossing at z, with the four incident arcs labelled 1..4
@@ -505,9 +529,10 @@ removing a non-bridge merges two loops and lowers $\beta$ by one.
 \end{theorem}
 
 \begin{proof}
-A regular neighbourhood of a graph with $V$ vertices, $E$ edges, and $k$ components is
-a compact surface with $k$ pieces and Euler characteristic $V-E$; its boundary
-consists of $k+\beta$ circles, where $\beta=E-V+k$ is the first Betti number.
+A regular neighbourhood of a plane graph with $V$ vertices, $E$ edges, and $k$
+components is a compact planar surface with $k$ genus-zero pieces and Euler
+characteristic $V-E$. If it has $b$ boundary circles, then $V-E=2k-b$, so
+$b=E-V+2k=k+\beta$, where $\beta=E-V+k$ is the first Betti number.
 Formula~\eqref{eq:cyclerank} is the difference from the $V$ trivial plaquette loops.
 The four surgery cases are the standard effect on the boundary of adding or deleting
 a bridge (Betti number unchanged; boundary count changes by $\mp1$) versus a cycle
@@ -516,9 +541,9 @@ Theorem~\ref{thm:conjugacy}(c).
 \end{proof}
 
 \begin{proposition}[Advanced records are bridges]\label{prop:record}
-Once a bounding-box record lies outside the finite initial support, its first visit
-is white, and a new east, north, west, or south record causes the ant to turn south,
-east, north, or west, respectively. In the
+Once a new bounding-box record lies strictly beyond the bounding box of the finite
+initial support, its first visit is white, and a new east, north, west, or south
+record causes the ant to turn south, east, north, or west, respectively. In the
 Tait graph the corresponding edge has a previously untouched endpoint, hence is a
 bridge. Therefore sufficiently advanced record creation never raises $\beta$; any
 unbounded production of cycle rank occurs strictly inside already-explored territory.
@@ -526,11 +551,9 @@ unbounded production of cycle rank occurs strictly inside already-explored terri
 
 \begin{proposition}[No monotone affine invariant]\label{rem:nomonotone}
 No nonconstant affine combination of $(E,V,k,\beta)$ is monotone along the blank
-orbit. In particular the active-loop length, its signed area, and each of $E$, $V$,
-$k$, $\beta$ separately fail to be monotone (e.g.\ the active loop drops from length
-$20$ to $4$ at step $4$, and the cycle rank takes every value in $\{1,\dots,5\}$
-during one mature period). This rules out the most direct potential-function proofs
-of Conjecture~\ref{conj:main}.
+orbit. In particular, each of $E$, $V$, $k$, and $\beta$ separately fails to be
+monotone. Thus no affine combination of these four graph statistics can serve as a
+monotone or Lyapunov potential along even the blank orbit.
 \end{proposition}
 
 \begin{proof}
@@ -642,8 +665,10 @@ since $4w\neq0$.
 \emph{Sufficiency for $A=\Z/4\Z$.} Composing pairs of relations in \eqref{eq:pot}
 expresses $F_N$ by its diagonal increments
 \begin{equation}\label{eq:Fdiag}
-F_N(x{+}1,y{+}1)-F_N(x,y)=-w(x,y)+w(x{+}1,y),\qquad
-F_N(x{+}1,y{-}1)-F_N(x,y)=w(x,y{-}1)-w(x{+}1,y{-}1),
+\begin{aligned}
+F_N(x{+}1,y{+}1)-F_N(x,y)&=-w(x,y)+w(x{+}1,y),\\
+F_N(x{+}1,y{-}1)-F_N(x,y)&=w(x,y{-}1)-w(x{+}1,y{-}1).
+\end{aligned}
 \end{equation}
 which define $F_N$ on each of the two $x{+}y$-parity sublattices by integration from a
 basepoint. Modulo four, the circulation of \eqref{eq:Fdiag} around the elementary
@@ -659,11 +684,6 @@ $\turnL$-at-$S$/$\turnR$-at-$N$ pair, which gives $F_N-2w$---and their discrepan
 exactly $4w$, which vanishes. Hence all four $F_q$ are consistent. Over $\F_2$ the
 solution space of \eqref{eq:cocycle} is the separable weights $\alpha(x)+\beta(y)$.
 \end{proof}
-
-A mod-four refinement of Proposition~\ref{prop:laurent} (using the quadratic solution
-$Q(x,y)=x^2+2xy$ of \eqref{eq:cocycle} over $\Z/4$) strengthens the drift of a clean
-translator to $(4a,0)$ or $(0,4a)$, with period divisible by $8$ and $N\ge8|\drift|$;
-we use only axis alignment below and refer to \cite{Repo} for the refinement.
 
 \subsection{The strand decomposition}
 Let $\growth=\#\turnR-\#\turnL$ over one period. Lemma~\ref{lem:invariant} gives
@@ -754,7 +774,7 @@ For the remainder of the section fix a hypothetical clean translator. Its drift 
 axis-aligned by Proposition~\ref{prop:laurent}. A clean translator has $\growth=0$, so
 its period $N=\#\turnR+\#\turnL=2\#\turnR$ is even; since each step changes $x+y$
 modulo $2$, the total displacement satisfies $a+b\equiv N\equiv0\pmod2$, so the
-nonzero drift coordinate is even. After a rotation and reflection write $\drift=(L,0)$
+nonzero drift coordinate is even. After a quarter-turn rotation write $\drift=(L,0)$
 with $L>0$ even---all that the argument below requires. Writing $B_j,p_j$ for the black
 set and ant position at phase $j$ of one period, reversibility and translation
 covariance give, for all $n\in\Z$,
@@ -854,12 +874,12 @@ w\equiv\sum_y h_y\equiv0\pmod2
 \]
 by \eqref{eq:telescope}. On the other hand the lift of the closed walk runs from $p$
 to $p+(L,0)$, so it winds exactly once around $C_L$: $w=1$. This contradiction proves
-the theorem for drift $(L,0)$; reflection and the $90^\circ$ rotation cover the
+the theorem for drift $(L,0)$; quarter-turn rotations (including a half-turn) cover the
 remaining axis-aligned drifts.
 \end{proof}
 
 \begin{corollary}[Growth is a positive multiple of four]\label{cor:growth4}
-Every finite-support eventually-translating periodic trajectory has net black growth
+Every finite-support periodic highway has net black growth
 \begin{equation}\label{eq:growth4}
 \growth\in4\Z_{>0}.
 \end{equation}
@@ -984,25 +1004,27 @@ In particular $\growth=0$ is impossible---an independent proof of
 Theorem~\ref{thm:evenwinding}. If a residue fiber contains exactly two strand bases,
 they share checkerboard parity; for $\drift=(\pm2,\pm2)$ and $\growth=4$ the
 $2\times2$ residue-count matrix is $\left[\begin{smallmatrix}2&0\\0&2\end{smallmatrix}\right]$
-or its transpose.
+or $\left[\begin{smallmatrix}0&2\\2&0\end{smallmatrix}\right]$.
 \end{corollary}
-
-\begin{remark}
-The bound \eqref{eq:P16} is a genuine lower bound but is not claimed to be attained by
-a chronological highway: the standard highway has $\growth=12$ against
-$2\max(2,2)=4$. Equality holds for the static aggregate edge-flow profiles that
-satisfy \eqref{eq:res-a}, but whether any of those profiles is realised by a single
-ant tour is exactly the kind of chronology question left open in
-Section~\ref{sec:gap}.
-\end{remark}
 
 \begin{proof}
 A sum of $m$ signs $\pm1$ congruent to $2\pmod4$ is nonzero, with $m$ positive and
 even. Hence each of the $|a|$ residue classes modulo $|a|$ contains at least two
 strand bases, giving $\growth\ge2|a|$; symmetrically $\growth\ge2|b|$. If $\growth=0$
 some class is empty while $\drift\neq0$, contradicting \eqref{eq:res-a}. A two-element
-fiber has $\che$-sum $\pm2$, forcing equal signs.
+fiber has $\che$-sum $\pm2$, forcing equal signs. When
+$\drift=(\pm2,\pm2)$ and $\growth=4$, every row and column of the $2\times2$ residue
+matrix therefore has sum $2$. Equal checkerboard signs in either fixed-$x$ row force
+its two bases into the same $y$-parity column, ruling out the matrix with all entries
+$1$; the only possibilities are the two matrices displayed in the statement.
 \end{proof}
+
+\begin{remark}
+The bound \eqref{eq:P16} is a genuine lower bound but is not claimed to be attained by
+a chronological highway: the standard highway has $\growth=12$ against
+$2\max(2,2)=4$. Determining which residue profiles can be realised by a single ant
+tour is part of the chronology problem left open in Section~\ref{sec:gap}.
+\end{remark}
 
 Unlike the even-winding argument, Theorem~\ref{thm:residue} uses neither axis
 alignment nor the clean-packet reduction; it applies to every repeating trace and
@@ -1011,11 +1033,12 @@ theorem in the ranges where it is testable (Appendix~\ref{app:repro}): the under
 toggle-charge identity \eqref{eq:conservation} was confirmed on all $172{,}092$
 heading-reset nonzero-drift words through length $18$. The strand identity
 \eqref{eq:res-a} and the bound \eqref{eq:P16} were confirmed on the standard highway,
-its powers, and its dihedral images; the direct strand-level test is vacuous through
+its powers, quarter-turn rotations, and cyclic phase shifts; the direct strand-level
+test is vacuous through
 length $18$ because no realisable nonzero-drift trace occurs in that range.
 
 %=======================================================================
-\section{Collision chains and the periodic touch graph}\label{sec:interlace}
+\section{Collision chains}\label{sec:interlace}
 %=======================================================================
 
 We encode a finite cell set as edges of the bipartite row--column incidence graph:
@@ -1033,67 +1056,338 @@ one defect component of $B_s\triangle B_t$ is non-Eulerian, and a same-pose retu
 
 \begin{proof}
 One step toggles the single edge $C_{p_x}R_{p_y}$, changing the degree parity of
-exactly $C_{p_x}$ and $R_{p_y}$; the pre- and post-step tokens $\eta$ differ by the
-one incidence-vertex whose axis matches the heading, so the boundary contribution of
-a single step is $\eta(s)+\eta(s')$. Summing over a run telescopes to
-$\eta(s)+\eta(t)$. A non-Eulerian component needs a nonempty boundary, so at most one
-exists, and it is absent when $\eta(s)=\eta(t)$.
+exactly $C_{p_x}$ and $R_{p_y}$. If the pre-step heading is vertical then
+$\eta(s)=C_{p_x}$ and the post-step heading is horizontal with unchanged row, so
+$\eta(s')=R_{p_y}$; for a horizontal pre-step heading the roles are reversed. Hence
+$\eta(s)+\eta(s')=C_{p_x}+R_{p_y}$, exactly the one-step boundary contribution.
+Summing over a run telescopes to
+$\eta(s)+\eta(t)$. By the handshaking lemma, every connected component has an even
+number of odd-degree vertices. If $\eta(s)\ne\eta(t)$, the entire graph has exactly
+those two odd vertices, so they lie in the same component; that component is the
+unique non-Eulerian one. If $\eta(s)=\eta(t)$, the boundary is empty and every
+component is Eulerian.
 \end{proof}
 
 This yields a four-cell lower bound on completed lifetimes. Take $s$ immediately after
 an $\turnR$ visit to $z=(x,y)$ and $t$ immediately before its next ($\turnL$) visit.
 Then $z$ is black at both times, so its edge $C_xR_y$ is absent from $G:=B_s\triangle
-B_t$; and since one state is horizontal at $z$ and the other vertical, the tokens are
-the two ends of that edge, $\eta(s)+\eta(t)=C_x+R_y$. By Theorem~\ref{thm:collision},
+B_t$. If arrivals at $z$ are vertical, the $\turnR$ step leaves $z$ horizontally
+along row $y$, so $\eta(s)=R_y$, while $\eta(t)=C_x$; if arrivals are horizontal the
+roles are reversed. Thus in either case the tokens are the two ends of the missing
+edge: $\eta(s)+\eta(t)=C_x+R_y$. By Theorem~\ref{thm:collision},
 $\partial G=C_x+R_y$, so $C_x$ and $R_y$ are joined in $G$ by a path avoiding the edge
 $C_xR_y$; in the simple bipartite incidence graph such a path has at least three edges.
 Adjoining $C_xR_y$ closes a cycle of length at least four, so the completed
 $\turnR$-to-$\turnL$ lifetime involves at least four distinct cells.
 
-We close the section with an observation that packages the periodic trace as a
-$4$-regular Euler system, so that Traldi's circuit-partition/interlacement theory
-\cite{Traldi2016signed,Traldi2012interlacement} becomes available. We state it as an
-observation rather than a theorem because a fully self-contained development of the
-touch-graph formalism (temporal vertices, $H/V$ smoothing circuits, the wake-edge
-subgraph, and the rank of the boundary cycle space) is lengthy; that development, with
-complete definitions and proofs, is given in the companion report \cite{Repo}, and we
-use here only its numerical output on the standard trace.
+Circuit-partition and interlacement formalisms may provide a useful compression of
+the chronological constraints, but we make no touch-graph rank claim here. The
+two-endpoint boundary identity above is the only result of this section used later.
 
-\begin{observation}[Periodic touch-graph rank]\label{obs:touchgraph}
-Pair every stabilised $\turnR$ with its following $\turnL$ into a $4$-valent temporal
-vertex; the $\growth$ wake $\turnR$ events become degree-two $H/V$ switches, whose
-suppression yields a connected $4$-regular Euler system. With $m$ the number of paired
-lifetimes, $c$ the number of closed $H/V$ smoothing circuits, and $\kappa$ the number
-of cycles in the $2$-regular wake-edge subgraph $W$, the labelled boundary touch graph
-$T$ and its wake-contraction $T/W$ satisfy
+%=======================================================================
+\section{Transverse rigidity and period-unbounded exclusions}\label{sec:transverse}
+%=======================================================================
+
+Every exclusion obtained so far is bounded: Theorem~\ref{thm:periodexcl} below rules
+out periods up to a fixed cutoff, and the residue identity constrains arithmetic
+rather than geometry. This section gives three statements that hold at \emph{every}
+period. Extremal rigidity and the width-two theorem use the ordering content of
+Theorem~\ref{thm:criterion}---condition (ii), that the stabilised word begins with
+$\turnR$, and condition (i), that it alternates.  The computer-assisted width-four
+theorem then combines extremal rigidity with exact local ant dynamics.  None uses
+Section~\ref{sec:residue}.
+
+Throughout this section the drift is \emph{diagonal}: $\drift=(a,b)$ with
+$|a|=|b|=m\ge1$. A quarter-turn rotation of the plane sends $\drift=(a,b)$ to
+$(-b,a)$, hence sends $ab$ to $-ab$, and commutes with the ant's rule; since
+Definition~\ref{def:periodic} identifies highways up to quarter-turn rotation, we may
+and do \emph{normalise so that $ab<0$}, and then set
+\begin{equation}\label{eq:tfun}
+t(x,y)=x+y,
+\end{equation}
+so that $\drift=m e$ with $e=\pm(1,-1)$. The standard highway is already in this
+frame, with $\drift=(2,-2)$, $m=2$ and $e=(1,-1)$.
+
+With this normalisation $t(\drift)=0$, so $t$ is constant on translation classes and
+the range of $t$ along the trace is the same in every period; and \emph{every unit
+step changes $t$ by exactly $\pm1$}, the four increments being $+1$ for east and
+north and $-1$ for west and south. Diagonality is what supplies the latter: for an
+axis drift the corresponding transverse functional is $x$ or $y$, which two of the
+four moves leave unchanged, and the arguments below fail.
+
+The normalisation is not cosmetic. In the rotated frame $ab>0$ one must instead take
+$t=x-y$, whose increments are $+1$ for east and \emph{south} and $-1$ for west and
+\emph{north}; the roles of the two axes are exchanged, and every horizontal/vertical
+assertion below is exchanged with it. Only the conclusions that do not name an axis
+---that every extremal turn is $\turnR$, that extremal cells are visited once, and
+that $W$ is even---are stated the same way in both frames. Remark~\ref{rem:frames}
+records the unnormalised form.
+
+Put
 \[
-\dim Z(T)=m-c+1,\qquad \dim Z(T/W)=m-c-\kappa+1,
+T=\max_i t(p_i),\qquad T'=\min_i t(p_i),\qquad W=T-T',
 \]
-fitting $0\to Z(W)\to Z(T)\to Z(T/W)\to0$, and the lifetime-interval rows span
-$Z(T/W)$ with codimension at most $\kappa$ in $Z(T)$. On the standard trace one
-computes $m=46$, $c=5$, $\kappa=1$, projected rank $41$, and full boundary rank $42$.
-\end{observation}
+and call $W$ the \emph{transverse width}. Call a lattice cell \emph{horizontal} or
+\emph{vertical} according to whether the arrivals at it are east/west or north/south;
+by Proposition~\ref{prop:hv} this is determined by its checkerboard parity. Since all
+cells on a level line $t=c$ share the parity of $c$, each level line is entirely
+horizontal or entirely vertical.
 
-Thus ordinary circuit-nullity closes the contracted graph but does not by itself
-supply the $\kappa$-dimensional wake-cycle restriction: at fixed $\growth=4$ an
-explicit abstract family (given in \cite{Repo}) has $c\to\infty$ and unbounded
-contracted rank, so no bound depending only on $\growth$ follows from the graph theory
-alone. Controlling that kernel with Langton-specific data is one of the open problems
-of Section~\ref{sec:gap}.
+\begin{theorem}[Extremal-line rigidity]\label{thm:extremal}
+Let $w^\omega$ be a finite-support periodic highway with diagonal drift, normalised
+as above so that $t=x+y$. Then
+\begin{enumerate}[label=\textup{(\roman*)}]
+\item both extremal level lines $t=T$ and $t=T'$ are horizontal;
+\item every turn on those two lines is $\turnR$; the arrival heading is east on the
+line $t=T$ and west on the line $t=T'$;
+\item every cell of those two lines that the periodic trace visits at all is visited
+\emph{exactly once}; equivalently, every translation class meeting an extremal line is
+a singleton, so each such cell is entered once, is left black, and is never returned
+to;
+\item $W$ is even.
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}
+Let $I$ be a translation class meeting the line $t=T$, and consider its cells
+$z_n=b_I+n\drift$; since $t(\drift)=0$ every $z_n$ lies on that same line. Take $n$
+large enough that $z_n$ has been reached by every phase of $I$, so that the
+chronological turn sequence at $z_n$ is the stabilised word of $I$; in particular
+every visit to $z_n$ has a predecessor. The ant can reach $t=T$ only from $t=T-1$, so
+each arrival at $z_n$ increases $t$; and it can never occupy $t>T$, so no departure
+from $z_n$ increases $t$.
+
+We use the explicit turn images: $\turnR$ is clockwise, so it sends north, east,
+south, west to east, south, west, north; $\turnL$ is anticlockwise and reverses this.
+With $t=x+y$ the increments are $+1$ for east and north and $-1$ for west and south.
+
+Consider $t=T$. The arrival at $z_n$ increases $t$, so it is east or north, and the
+departure must decrease $t$. If the line were vertical the arrival would be north,
+whose clockwise image is east---which increases $t$ and is therefore forbidden---while
+its anticlockwise image is west, which is allowed; every turn at $z_n$ would then be
+$\turnL$, so the stabilised word of $I$ would begin with $\turnL$, contradicting
+Theorem~\ref{thm:criterion}(ii). Hence the line is horizontal and the arrival is east.
+Now the anticlockwise image of east is north, which increases $t$ and is forbidden,
+while its clockwise image is south, which is allowed; so every turn at $z_n$ is
+$\turnR$.
+
+At $t=T'$ the arrival decreases $t$, so it is west or south, and the departure must
+increase $t$. If the line were vertical the arrival would be south, whose clockwise
+image is west decreases $t$ and is forbidden, while its anticlockwise image east is
+allowed; every turn would be $\turnL$, the same contradiction. Hence that line is
+horizontal too, the arrival is west, its clockwise image north is allowed and its
+anticlockwise image south is forbidden, so again every turn is $\turnR$. This proves
+(i) and (ii).
+
+In both cases the stabilised word of $I$ is a block of $\turnR$'s, and by
+Theorem~\ref{thm:criterion}(i) it alternates, so that block has length one: $I$ is a
+singleton. A singleton class is visited once at each of its cells and is odd, so every
+cell of $I$ that the trace reaches is entered exactly once and left black. As $I$ was
+an arbitrary class meeting an extremal line, this proves (iii). Both extremal lines
+being horizontal, they carry the same checkerboard parity, so $T\equiv T'\pmod2$,
+which is (iv).
+\end{proof}
+
+Theorem~\ref{thm:extremal} says that a periodic highway is bounded transversally by
+two guard rails of permanent wake, touched once and never returned to. The mechanism
+deserves a remark, since it is what the incidence arguments of the preceding sections
+cannot reach: the vertical case is eliminated purely by the \emph{first-turn}
+condition, and the single visit purely by \emph{alternation}. Both are assertions
+about the order in which a cell is visited, and the countermodels recorded in
+Section~\ref{sec:gap} satisfy every residue equation while violating the conclusion,
+so neither is a consequence of the arithmetic developed there.
+
+\begin{remark}[the unnormalised statement]\label{rem:frames}
+Without the normalisation $ab<0$ the conclusion must be read in the frame determined
+by the drift, and it is easy to state it wrongly. In the rotated frame $ab>0$ one
+takes $t=x-y$; the headings increasing $t$ are then east and \emph{south}, the
+argument of Theorem~\ref{thm:extremal} eliminates the \emph{horizontal} case, and both
+extremal lines are \emph{vertical}, with arrival south on $t=T$ and north on $t=T'$.
+What is common to the two frames, and is what the sequel uses, is that the two
+extremal lines have the \emph{same} type, that every extremal turn is $\turnR$, that
+extremal cells are entered at most once, and that $W$ is even. Concretely, the
+standard highway read from a north-facing start has $\drift=(2,-2)$ and horizontal
+extremal lines with arrivals east and west; the same highway read from an east-facing
+start---the same object, rotated---has $\drift=(-2,-2)$ and \emph{vertical} extremal
+lines with arrivals south and north. In both cases every extremal turn is $\turnR$.
+\end{remark}
+
+The rigidity is strong enough to collapse a narrow strip to a one-dimensional system,
+which can then be refuted at all periods simultaneously.
+
+\begin{theorem}[No highway of transverse width two]\label{thm:width2}
+No finite-support periodic highway with diagonal drift has transverse width $W=2$.
+Combined with Theorem~\ref{thm:extremal}(iv), every such highway has even width
+$W\ge4$.
+\end{theorem}
+
+\begin{proof}
+Suppose $W=2$ and label the three occupied level lines $0,1,2$, meaning $t=T,\,T-1,\,
+T-2$. By Theorem~\ref{thm:extremal} lines $0$ and $2$ are horizontal, each of their
+cells is entered at most once and turns $\turnR$; line $1$ is vertical. Because each
+step changes $t$ by $\pm1$, the ant alternates between line $1$ and lines $\{0,2\}$,
+so consecutive visits to line $1$ are separated by exactly one excursion to line $0$
+or to line $2$.
+
+Theorem~\ref{thm:extremal} makes those excursions rigid. Orient the longitudinal axis
+so that $e=(1,-1)$; recall east and north increase $t$. From a cell $z$ on line $1$
+the upward excursion
+enters line $0$ heading east and leaves it heading south, so it carries the ant from
+$z$ to $z+(1,0)+(0,-1)=z+e$; the downward excursion enters line $2$ heading west and
+leaves heading north, carrying $z$ to $z-e$. Index the cells of line $1$ by
+$\ell\in\Z$ along $e$. Every excursion changes $\ell$ by exactly $\pm1$.
+
+Now bound how often the ant can cross between adjacent sites. An upward excursion
+from site $\ell$ passes through the line-$0$ cell determined by $\ell$; call it
+$U_\ell$, and let $D_\ell$ be the line-$2$ cell used by a downward excursion from
+$\ell$. Distinct sites give distinct cells, and by Theorem~\ref{thm:extremal}(iii)
+each of $U_\ell$ and $D_\ell$ is entered at most once by the whole periodic trace.
+Since the gap between sites $\ell$ and $\ell+1$ is crossed upward only by an upward
+excursion from $\ell$, and downward only by a downward excursion from $\ell+1$,
+\begin{equation}\label{eq:edgebudget}
+\text{each gap is crossed at most once upward and at most once downward.}
+\end{equation}
+
+Choose a cyclic phase at a visit to line $1$, and let $s_0$ be that initial site.
+Because the drift is $+m$ along
+$\ell$, the ant's site tends to $+\infty$; so for every $\ell\ge s_0$ the walk starts
+weakly left of the gap $(\ell,\ell+1)$ and is eventually permanently to its right,
+whence its net number of upward minus downward crossings of that gap is exactly $1$.
+By \eqref{eq:edgebudget} the only way to achieve a net of $1$ with each count at most
+$1$ is one upward crossing and \emph{no} downward crossing. Hence for every
+$\ell>s_0$ the ant enters site $\ell$ exactly once, necessarily from $\ell-1$, and
+leaves it towards $\ell+1$, never returning.
+
+It remains to read off the turn at such a site. Arriving from $\ell-1$ means
+completing an upward excursion, which leaves line $0$ heading south; so the ant
+arrives at site $\ell$ heading south. Departing towards $\ell+1$ means beginning an
+upward excursion, which leaves site $\ell$ heading east. The anticlockwise image of
+south is east and the clockwise image is west, so the unique turn at site $\ell$ is
+$\turnL$.
+
+Finally, let $I$ be the translation class of such a site with $\ell>s_0$. Its cells
+are the sites $\ell+nm$, all but finitely many of which exceed $s_0$ and are therefore
+entered exactly once. So $I$ has a single phase, its stabilised word is the single
+letter $\turnL$, and Theorem~\ref{thm:criterion}(ii) is violated. Since there are
+infinitely many such sites, the contradiction is unavoidable.
+\end{proof}
+
+The next case admits a different reduction.  We give the finite computation as a
+separate lemma so that the computer-assisted boundary of the theorem is explicit.
+Write a finite sequence such as $(2,0,2)$ compactly as $202$.
+
+\begin{lemma}[blank-column classification]\label{lem:blankcolumn}
+Consider an initially white column consisting of the five cells on transverse
+lines $0,1,2,3,4$.  At each of its left and right boundaries record, in chronological
+order, the transverse line of the destination cell immediately after every horizontal
+crossing.  Suppose each sequence starts and ends with a rightward crossing, its
+directions alternate, every rightward label belongs to $\{2,4\}$, every leftward
+label belongs to $\{0,2\}$, and on each boundary the rightward label $4$ and
+leftward label $0$ occur at most once.  The compatible ordered pairs of left and
+right sequences are exactly the following twelve:
+\[
+\begin{array}{c|l}
+\text{left sequence}&\text{possible right sequences}\\ \hline
+202&4\\
+4220222&2,\ 202,\ 20222,\ 2022224\\
+2042222&2,\ 202,\ 20222,\ 2022224\\
+202242222&422,\ 42202,\ 4220222.
+\end{array}
+\]
+The directed graph formed by these pairs is acyclic; its longest directed path has
+three edges.
+\end{lemma}
+
+\begin{proof}[Exact finite verification]
+A column state consists of its five colour bits, the transverse entry line and
+heading, and four Boolean flags recording whether the exceptional top-rightward or
+bottom-leftward event has already occurred on either boundary.  Starting from the
+all-white mask and a first rightward entry on line $2$ or $4$, literal application of
+the ant rule reaches $22$ such entry states, has no reachable state cycle and stops
+after depth at most eight.  Exhausting the permitted return entry ($2$ or the one
+available extreme) gives precisely the twelve pairs displayed above.
+
+This enumeration is implemented twice.  The primary implementation uses a five-bit
+integer mask and numeric headings; an independently written verifier uses a set of
+black rows and compass-letter headings and imports no code from the first.  Both
+return the same twelve pairs.  As a convention check, the second implementation
+extracts two far-ahead crossing sequences from the documented standard-highway seed
+and exactly replays the intervening initially white column.  Finally, assigning rank
+$3$ to $202242222$, rank $2$ to $4220222$ and $2042222$, rank $1$ to $202$, and
+rank $0$ to every other displayed vertex makes every edge strictly decrease rank.
+The rank calculation and the impossibility of a four-edge path are also checked in
+Lean~$4$.  The accompanying certificate records the edge table, source hashes and
+the boundary between the enumerated and formalised parts.
+\end{proof}
+
+\begin{theorem}[No highway of transverse width four]\label{thm:width4}
+No finite-support periodic highway with diagonal drift has transverse width $W=4$.
+Consequently every such highway has even transverse width $W\ge6$.
+\end{theorem}
+
+\begin{proof}
+Suppose $W=4$.  Rotate by $180^\circ$ if necessary so that the normalised drift is
+$(m,-m)$ with $m>0$, shift the transverse coordinate so that
+$t=x+y\in\{0,1,2,3,4\}$, and use $x$ as longitudinal coordinate.  A north or south
+step remains in one column $x=k$, whereas an east or west step crosses a boundary
+$x=k+\tfrac12$.
+
+At the beginning of the periodic tail, only finitely many cells have been visited,
+and the initial black support is finite.  Hence all sufficiently large longitudinal
+columns are untouched and all five of their cells are white.  For such a far-ahead
+boundary let $\Gamma_k$ be its complete future crossing sequence, recording the
+destination transverse line.  The longitudinal position in successive periods is
+$nm$ plus one of finitely many phase offsets.  Thus the ant begins to the left of the
+boundary, crosses it only finitely many times, and is eventually permanently to its
+right.  Horizontal crossing directions therefore alternate right, left, \ldots,
+right, so $\Gamma_k$ is nonempty and has odd length.
+
+On a rightward crossing the destination label is $2$ or $4$; on a leftward crossing
+it is $0$ or $2$.  Direction is therefore implicit in the parity of the event index.
+Moreover, two rightward labels $4$ at the same cut would enter the same top-extremal
+cell twice, and two leftward labels $0$ would enter the same bottom-extremal cell
+twice.  Both are forbidden by Theorem~\ref{thm:extremal}(iii).
+
+The untouched column $x=k$ has left sequence $\Gamma_{k-1}$ and right sequence
+$\Gamma_k$, so Lemma~\ref{lem:blankcolumn} makes
+$\Gamma_{k-1}\to\Gamma_k$ an edge of its directed graph.  Infinitely many
+consecutive untouched columns would give a directed path of arbitrary length, while
+the lemma permits no path of four edges.  This contradiction excludes $W=4$.
+Together with Theorem~\ref{thm:extremal}(iv) and Theorem~\ref{thm:width2}, it gives
+$W\ge6$.
+\end{proof}
+
+\begin{remark}[why the same proof stops at width six]\label{rem:width4}
+The standard highway has $W=10$.  The blank-column recursion is acyclic at width
+four, but an extra interior horizontal line creates a reachable two-state local
+oscillator at widths six and eight.  In one state the black rows are $\{1,2\}$ and
+the ant enters row $2$ eastward; two turns change the mask to $\{1,3\}$ and exit
+eastward.  A westward return on row $2$ restores the first state and exits westward.
+The two reused cells alternate their turns correctly, and neither extreme is reused.
+This is not a highway; it proves only that the acyclic one-column argument does not
+extend unchanged.  A wider-width proof must couple columns or exploit the order of
+whole translation classes.  In particular, a finite alphabet on an unbounded strip
+does not by itself make the highway question finite-state.
+\end{remark}
+
+The hypotheses of this section are exactly Proposition~\ref{prop:hv} and
+Theorem~\ref{thm:criterion}. In particular Theorems~\ref{thm:extremal},
+\ref{thm:width2}, and~\ref{thm:width4} are independent of Section~\ref{sec:residue} and of the
+computations of Section~\ref{sec:computation}.
 
 %=======================================================================
 \section{Small-period exclusion}\label{sec:computation}
 %=======================================================================
 
 All searches are exact: integer coordinates, exact finite sets, and no probabilistic
-equality tests. Three search variants are used. The \emph{independent engine} uses no
+equality tests. Three search variants are used. The \emph{residue-free variant} uses no
 consequence of Theorem~\ref{thm:residue} and applies the exact criterion of
 Theorem~\ref{thm:criterion} to every positive-growth nonzero-drift leaf; its zero-hit
 outcome is what certifies Theorem~\ref{thm:periodexcl} below, and that certification
 is unconditional on the residue theorem. The \emph{strand-pruned} and
 \emph{residue-pruned} variants additionally prune with Corollary~\ref{cor:P16} and
 with the full identity of Theorem~\ref{thm:residue} respectively; they are faster, and
-their agreement with the independent engine is reported as a cross-check. All three
+their agreement with the residue-free variant is reported as a cross-check. All three
 accept the standard word. We stress that the three variants share one enumeration
 framework, one normalisation, and one representation, so their mutual agreement is a
 consistency check and not implementation independence; a separate verifier, written
@@ -1113,13 +1407,17 @@ Odd periods restore no heading (an odd number of quarter turns is never
 $0\bmod4$), and Corollary~\ref{cor:growth4} excludes zero growth at every period, so
 it suffices to search even periods for positive-growth traces. The evidence is:
 \begin{enumerate}[label=\textup{(\alph*)}]
-\item a complete enumeration of the legal trace tree through period $32$
-($46{,}185{,}421$ feasible nodes over $32$ prefix shards; zero highways). This
-enumeration applies no growth or endpoint pruning and is residue-free by construction;
+\item a complete first-$\turnR$, cyclic-phase-normalised enumeration through
+period $32$ ($46{,}185{,}421$ nodes at depths $6$--$32$ over $32$ prefix shards,
+plus a $59$-node unprefixed baseline through depth $5$; zero highways). Every
+positive-growth heading-resetting word contains $\turnR$, so a cyclic shift places
+it in this enumeration; shifting only changes the chosen phase on the same periodic
+orbit and preserves finite-support realisability. No growth or endpoint pruning is
+applied, so the search is residue-free by construction;
 independently, a brute-force Python verifier (Appendix~\ref{app:repro}) reproduces the
-exclusion over \emph{all} $2^{18}$ words of length at most $18$;
+exclusion over all $\sum_{L=1}^{18}2^L=524{,}286$ nonempty words of length at most $18$;
 \item rank-audited positive-growth searches at periods $34,\dots,48$ with the
-independent engine, which uses no consequence of Theorem~\ref{thm:residue} and applies
+residue-free variant, which uses no consequence of Theorem~\ref{thm:residue} and applies
 the exact criterion of Theorem~\ref{thm:criterion} to \emph{every} positive-growth
 nonzero-drift leaf. At the largest, period $48$, it visited $41{,}710{,}394{,}384$
 nodes and reached $7{,}446{,}719{,}550$ such leaves over all $2^{16}$ prefix ranks with
@@ -1128,24 +1426,24 @@ certificates. Every prefix rank is covered exactly once, every shard reports
 completion, and the aggregate counters equal the sums of the per-rank counters
 (Table~\ref{tab:excl}).
 \end{enumerate}
-The zero-hit outcome of the independent engine is the certificate of nonexistence, and
+The zero-hit outcome of the residue-free variant is the certificate of nonexistence, and
 it does not assume Theorem~\ref{thm:residue}. The strand-pruned and residue-pruned
 engines of Appendix~\ref{app:repro}, which do assume it, return zero certificates on
 the strictly smaller trees they explore; that agreement is a cross-check only. It is,
-however, evidence \emph{for} Corollary~\ref{cor:P16}: the independent engine reaches
+however, evidence \emph{for} Corollary~\ref{cor:P16}: the residue-free variant reaches
 the leaves P16 discards---at period $48$, $6{,}994{,}756{,}680$ of them---and finds no
 realisable word among them, so within this range the pruning discarded nothing.
 Table~\ref{tab:excl} summarises. Together these exclude every finite-support periodic
 highway of nonzero drift and period at most $48$.
 \end{proof}
 
-\begin{table}[h]
+\begin{table}[ht]
 \centering
 \begin{tabular}{@{}lrrrr@{}}
 \toprule
 Period & Nodes & Leaves & Criterion evaluations & Highways \\
 \midrule
-$\le 32$ & $46{,}185{,}421$ & --- & --- & $0$\\
+$\le 32$ & $46{,}185{,}480$ & --- & --- & $0$\\
 $34$ & $40{,}418{,}033$      & $6{,}989{,}418$      & $6{,}989{,}418$      & $0$\\
 $36$ & $108{,}995{,}287$     & $18{,}928{,}333$     & $18{,}928{,}333$     & $0$\\
 $38$ & $293{,}763{,}689$     & $51{,}386{,}767$     & $51{,}386{,}767$     & $0$\\
@@ -1157,23 +1455,21 @@ $48$ & $41{,}710{,}394{,}384$& $7{,}446{,}719{,}550$& $7{,}446{,}719{,}550$& $0$
 \bottomrule
 \end{tabular}
 \caption{Exhaustive exclusion of finite-support periodic highways of nonzero drift.
-All rows from period $34$ up are the output of the \emph{independent} engine, which
+All rows from period $34$ up are the output of the \emph{residue-free} variant, which
 assumes no consequence of Theorem~\ref{thm:residue}; the ``criterion evaluations''
 column equals the leaf column, i.e.\ the exact criterion of
 Theorem~\ref{thm:criterion} is applied to every positive-growth nonzero-drift leaf,
-with no leaf discarded unexamined. Each entry is complete over its parameter range
-with no node cap, and every prefix rank is covered exactly once. The period-$\le32$
-row is a complete legal-trace enumeration, which applies no growth or endpoint pruning
-and is residue-free by construction. Node counts are not comparable across different
-prefix lengths (Appendix~\ref{app:repro}).}
+with no leaf discarded unexamined. Each period-$34$--$48$ entry is complete over its
+parameter range with no node cap, and every prefix rank is covered exactly once. The
+period-$\le32$ row enumerates all first-$\turnR$ cyclic-phase representatives, plus
+the unprefixed depths below six. Every positive-growth heading-resetting word is
+represented, and no growth or endpoint pruning is applied, so this row is
+residue-free by construction. Its prefix shards were configured with a
+$10^8$-node safety cap, but every shard completed below that cap (the largest used
+$2{,}623{,}020$ nodes). Node counts are not comparable across different prefix
+lengths (Appendix~\ref{app:repro}).}
 \label{tab:excl}
 \end{table}
-
-\begin{proposition}[Hamming isolation]\label{prop:hamming}
-Every period-$104$ word distinct from the standard one and within Hamming distance
-four of it fails the criterion: all $5{,}356$ distance-two and $4{,}598{,}126$
-distance-four mutations are excluded. Odd Hamming distance cannot restore the heading.
-\end{proposition}
 
 A finite-period exclusion does not by itself establish eventual convergence for
 arbitrary finite initial configurations: Theorem~\ref{thm:periodexcl} bounds the
@@ -1186,39 +1482,54 @@ of the present kind exhausts that range.
 %=======================================================================
 
 The results above constrain the arithmetic and topology of any finite-support
-periodic highway, but do not force convergence. Two honest obstructions delimit the
+periodic highway, but do not force convergence. Two distinct obstructions delimit the
 gap.
 
 \begin{problem}[Bounded retreat / bounded active core]\label{prob:retreat}
-Show that for every finite-support initial configuration there is a time after which
-the ant stays within a bounded corridor behind its record frontier. A stronger
-Tait-graph formulation that would also suffice is that the active boundary component at
-or ahead of the current record has uniformly bounded size and that components shed
-behind an advancing frontier are never reabsorbed.
+Show that for every finite-support initial configuration there are a finite window
+$W\subset\Z^2$, a time $t_0$, and translations $v_t$ such that, for every
+$t\ge t_0$, the ant and every cell or Tait-boundary component capable of influencing
+the future orbit lie in $v_t+W$; all components outside that translated window are
+permanently inert and never reabsorbed. This is a bounded-active-core formulation,
+stronger than merely bounding the ant's distance behind a record frontier.
 \end{problem}
 
-Under either formulation the frontier window has finitely many states modulo
+Under this formulation the active window has finitely many states modulo
 translation, determinism forces eventual periodicity, and Theorem~\ref{thm:criterion}
-classifies the resulting cycle. We do not claim these are the only possible routes to a
+decides whether the resulting cycle is finite-support realisable and constructs a
+seed when it is. We do not claim these are the only possible routes to a
 solution, but no proof along them is known, and the following show why several easy
 attempts fail: unboundedness (Theorem~\ref{thm:unbounded}) permits an orbit that keeps
-enlarging a two-dimensional region; none of the natural scalar quantities or affine
-combinations of $(E,V,k,\beta)$ is monotone (Proposition~\ref{rem:nomonotone});
+enlarging a two-dimensional region; no nonconstant affine combination of
+$(E,V,k,\beta)$ is monotone (Proposition~\ref{rem:nomonotone});
 and a local pumping argument is invalid because equal local cores may connect through
 arbitrarily distant explored territory, turning a later merge into a split
 (Theorem~\ref{thm:conjugacy}).
 
 \begin{problem}[Periodic classification]\label{prob:periodic}
-Show that every positive-growth periodic trace admitted by finite support is the
-standard period-$104$ trace up to symmetry and phase.
+Show that every positive-growth periodic highway admitted by finite support agrees
+in path and turn trace with the standard period-$104$ highway up to lattice
+translation, quarter-turn rotation, and cyclic phase shift, as in
+Definition~\ref{def:periodic}.
 \end{problem}
 
-At fixed growth $\growth=4$ the residue skeletons of Theorem~\ref{thm:residue} and the
-touch-graph rank of Observation~\ref{obs:touchgraph} leave unbounded free parameters, and
-explicit heading-reset countermodels satisfy every incidence and residue condition yet
-fail the cross-period criterion. A resolution therefore needs a single-tour
-chronology/interlacement theorem valid for unbounded period---genuinely more than the
-incidence data used here. A \emph{disproof} of Conjecture~\ref{conj:main} would
+At fixed growth $\growth=4$ the residue skeletons of Theorem~\ref{thm:residue} leave
+unbounded free parameters, and explicit heading-reset countermodels satisfy every
+incidence and residue condition yet
+fail the cross-period criterion. A resolution therefore needs chronological input
+valid for unbounded period---genuinely more than the incidence data used here.
+Section~\ref{sec:transverse} supplies the first such input in this paper:
+Theorems~\ref{thm:extremal} and~\ref{thm:width2} are proved from the ordering content
+of Theorem~\ref{thm:criterion}, and the computer-assisted
+Theorem~\ref{thm:width4} combines that rigidity with exact column dynamics.  All
+three hold at every period and are not consequences of the residue equations.  They
+pin the boundary of the strip and exclude widths two and four, but
+Problem~\ref{prob:periodic} still requires control of all wider strips, non-diagonal
+periodic traces, and uniqueness within any surviving geometry.  Remark~\ref{rem:width4}
+also shows why ``fixed width is finite-state'' is not presently a theorem: at width
+six the local column dynamics already has recurrent interior memory.  Widths six and
+eight are concrete next targets, not claims of a completed decision procedure.
+A \emph{disproof} of Conjecture~\ref{conj:main} would
 instead exhibit an infinite certificate: a nonstandard periodic word passing
 Theorem~\ref{thm:criterion}, or a finite self-enlarging Tait gadget whose state recurs
 with a parameter increased. No such certificate has been found.
@@ -1232,13 +1543,33 @@ finite-support periodic highway: a decidable realisability criterion, an exact
 medial-graph conjugacy with surgery calculus, two independent proofs that no
 zero-growth clean translator exists (so every highway grows a wake of size
 $\in4\Z_{>0}$), the strand-density bound $\growth\ge2\|\drift\|_\infty$, a
-two-endpoint collision-chain parity theorem (and a touch-graph rank computation), and an
-exhaustive exclusion of all periodic highways of period at most $48$. The algebraic
-cores of the even-winding and residue theorems are machine-checked in Lean~$4$. The
-outstanding difficulty is isolated as a bounded-retreat / bounded-active-core lemma
-together with a single-tour chronology theorem; these, and not the arithmetic
-constraints proved here, are what a full solution of Conjecture~\ref{conj:main} must
-still supply.
+two-endpoint collision-chain parity theorem, a transverse rigidity theorem with the
+resulting all-period exclusions of diagonal transverse widths two and four, and an
+exhaustive exclusion of all periodic highways of period at most $48$. Selected
+algebraic kernels used in the even-winding and residue arguments are machine-checked
+in Lean~$4$.
+
+Three of these results are of a different character from the rest. The arithmetic
+constraints are incidence statements: they count strands, edges and charges, and
+Section~\ref{sec:gap} records countermodels satisfying all of them. Theorems
+\ref{thm:extremal} and~\ref{thm:width2} instead use the order in which a cell is
+visited, while Theorem~\ref{thm:width4} turns that rigidity into an acyclic exact
+crossing-sequence graph.  They apply at every period rather than up to a search
+bound.  The width-six interior oscillator shows, however, that the one-column
+acyclicity mechanism ends sharply at width four.  Widths six and eight are concrete
+next targets, but their unbounded longitudinal memory has not been reduced to a
+finite decision problem.
+
+One identified route to a full solution is a bounded-retreat or bounded-active-core
+lemma followed by a chronology theorem for unbounded period.  The arithmetic
+constraints proved here do not supply either step, and other routes are not excluded.
+
+\subsection*{Acknowledgements}
+The author thanks the maintainers of the Lean~4 community for the toolchain used in
+Appendix~\ref{app:lean}. AI systems were used for exploratory computation, drafting,
+and adversarial review.  Their output was treated as untrusted: promoted claims were
+rechecked against the displayed arguments, independent implementations, and released
+certificates.  The author is responsible for all remaining errors.
 
 \appendix
 %=======================================================================
@@ -1283,8 +1614,8 @@ they are different phases of the same highway.)
 %=======================================================================
 
 A dependency-light Lean~$4$ project (pinned to Lean $4.32.0$, standard library only)
-machine-checks the exact transition kernel and the algebraic cores of the theorems
-above. Every audited theorem depends only on the standard axioms
+machine-checks the exact transition kernel and selected algebraic kernels used above.
+Every audited theorem depends only on the standard axioms
 \texttt{propext}, \texttt{Classical.choice}, and \texttt{Quot.sound}; there are no
 \texttt{sorry}s, no custom axioms, and no \texttt{native\_decide}. The checked
 statements include the finite-support step kernel and its toggle lemmas, the
@@ -1292,7 +1623,10 @@ heading/black-count reset of Lemma~\ref{lem:invariant}, the four-corner admissib
 and mod-four fiber arithmetic of Theorem~\ref{thm:residue} (including
 ``one residue identity per class $\Rightarrow\growth\ge2n$''), the checker-cycle
 monodromy $2\sum\alpha$ of Lemma~\ref{lem:diag}, translated-widget cancellation, and
-the collision-chain endpoint parity of Theorem~\ref{thm:collision}.
+the collision-chain endpoint parity of Theorem~\ref{thm:collision}.  It also checks
+the finite rank certificate for Lemma~\ref{lem:blankcolumn}: every one of the twelve
+listed edges lowers rank, so no four-edge chain exists.  Completeness of the local
+Python enumeration is explicitly outside the present Lean boundary.
 
 The finite parity telescope \eqref{eq:telescope}---the combinatorial heart of the
 even-winding theorem---is checked in the following self-contained form
@@ -1323,35 +1657,52 @@ theorem evenWindingParityCore (interior : List Bool) :
 \end{lstlisting}
 
 The formalization isolates, as an explicit interface, the endpoint normal form and
-lifted potential geometry of a genuine translator, so Theorem~\ref{thm:residue} is
-certified conditional on a structured trace certificate rather than end to end;
-neither it nor Conjecture~\ref{conj:main} is asserted as an unconditional Lean
-theorem. The project and a build script accompany the paper \cite{Repo}.
+lifted potential geometry of a genuine periodic ant trace. In particular,
+\texttt{StabilizedP3Word.toOrbitEndpointData} constructs all algebraic endpoint data
+(first positive strand, balanced sum, and binary scan prefix) from an explicitly
+supplied stabilised P3 word. What remains outside Lean is the extraction of that word
+and of the local geometric charge certificates from an arbitrary periodic ant orbit.
+Thus Theorem~\ref{thm:residue} is certified conditional on a structured trace
+certificate rather than end to end; neither it nor Conjecture~\ref{conj:main} is
+asserted as an unconditional Lean theorem. The project and build instructions
+accompany the paper \cite{Repo}.
 
 %=======================================================================
 \section{Computational methodology and reproducibility}\label{app:repro}
 %=======================================================================
 
-The periodic search space is the tree of legal prefixes. Up to cyclic phase, every
-positive-growth repeating trace has a representative beginning with $\turnR$ (a
-realisable trace restarted at a later state remains realisable, and a positive-growth
-word contains an $\turnR$), so it suffices to search words beginning with $\turnR$;
-by Corollary~\ref{cor:growth4} only positive-growth heading-reset words need be
-considered. To distribute a
+The periodic search space is the tree of legal prefixes. The following cycle-lemma
+normalisation justifies the prefix-growth pruning used by the search. Write the word
+weights as $u_0,\ldots,u_{N-1}\in\{+1,-1\}$, with $\turnR$ assigned $+1$ and
+$\turnL$ assigned $-1$. Define $H_0=0$ and
+$H_j=\sum_{i=0}^{j-1}u_i$ for $1\le j\le N$, and suppose
+$H_N=\growth>0$. Choose $j\in\{0,\ldots,N-1\}$ at which $H_j$ is minimal. For a
+length-$r$ prefix of the rotation beginning at $j$, where $1\le r\le N$, the weight
+is $H_{j+r}-H_j\ge0$ if $j+r\le N$, and is
+$\growth+H_{j+r-N}-H_j\ge\growth>0$ if $j+r>N$. Thus every prefix of this rotation
+has nonnegative weight, and its first symbol is necessarily $\turnR$. Restarting a
+realisable orbit at that phase
+preserves finite support, and a quarter-turn rotation restores the fixed initial
+heading. Hence rejecting a prefix with negative $\turnR-\turnL$ balance loses no
+positive-growth periodic trace. By Corollary~\ref{cor:growth4} only positive-growth
+heading-reset words need be considered. To distribute a
 period-$N$ search, the half-open interval of length-$k$ prefix ranks $[0,2^{k-1})$ is
 partitioned into disjoint worker intervals; each worker performs a depth-first
 enumeration of its subtree, applying the exact criterion of
 Theorem~\ref{thm:criterion} at every leaf. A complete exclusion requires that every
-rank be covered exactly once, that every shard report completion with no node cap, and
+rank be covered exactly once, that every shard report completion without reaching any
+configured node cap, and
 that the aggregate node, leaf, and prune counters equal the sums of the per-rank
 counters.
 
 \subsection*{What certifies the exclusion, and what merely cross-checks it}
 
-Three variants are run for the period $42$--$48$ certifications. It matters exactly
-which pruning rule each one assumes, so we spell this out.
+The residue-free variant is run for every even period $34$--$48$ certification;
+the two conditional pruned variants provide selected cross-checks at periods
+$44$, $46$, and $48$. It matters exactly which pruning rule each one assumes, so we
+spell this out.
 
-The \emph{independent engine} (\texttt{PositiveGrowthSearchIndep.java}) uses only
+The \emph{residue-free variant} (\texttt{PositiveGrowthSearchIndep.java}) uses only
 rules that are free of Theorem~\ref{thm:residue}: the cyclic normalisation above,
 same-cell alternation (Proposition~\ref{prop:alt}), the growth congruence of
 Corollary~\ref{cor:growth4} (a consequence of the even-winding theorem of
@@ -1363,7 +1714,9 @@ zero-hit outcome is the certificate of Theorem~\ref{thm:periodexcl}, and that
 certificate is unconditional on Theorem~\ref{thm:residue}. It is, however,
 conditional on Corollary~\ref{cor:growth4}; we make no claim that the search is
 unconditional on the even-winding theorem, which is what reduces the problem to
-positive growth in the first place.
+positive growth in the first place. Every released certifying shard has
+\texttt{deficit\_depths=[]}; the optional odd-ending deficit routine is inactive, and
+all of its recorded counters are zero.
 
 The \emph{strand-pruned engine} (\texttt{PositiveGrowthSearch.java}) additionally
 contracts endpoint reachability to the P16 square of Corollary~\ref{cor:P16} and
@@ -1373,21 +1726,18 @@ Theorem~\ref{thm:residue}. Both are therefore \emph{conditional} on the residue
 theorem, and neither can certify Theorem~\ref{thm:periodexcl} on its own. Because
 Corollary~\ref{cor:P16} prunes at the node level, the strand-pruned and
 residue-pruned engines do not merely discard leaves: they never reach them, which is
-why their reported leaf counts are smaller than the independent engine's rather than
+why their reported leaf counts are smaller than the residue-free variant's rather than
 equal to them, and why their agreement on node counts is a statement about the
 P16-contracted tree only.
 
-An earlier version of this paper described the strand-pruned engine as making no use
-of Theorem~\ref{thm:residue} and as applying Theorem~\ref{thm:criterion} to every
-leaf. That was incorrect on both counts: it prunes with Corollary~\ref{cor:P16}, and
-its ``every leaf'' quantifier ranged only over the leaves surviving that pruning.
-Period $46$ measures the gap. The independent engine reaches $2{,}757{,}152{,}898$
+Period $46$ illustrates the scale of the conditional pruning. The residue-free
+variant reaches $2{,}757{,}152{,}898$
 leaves and evaluates the criterion at each; the strand-pruned engine reaches
 $98{,}568{,}824$, i.e.\ $3.6\%$ of them, and the residue-pruned engine evaluates the
 criterion on $6{,}132{,}192$, i.e.\ $0.22\%$. The $2{,}658{,}584{,}074$ leaves the
 strand-pruned engine never reaches are exactly the ones a residue-free certificate
-must inspect. The independent engine was written to remove the assumption entirely,
-and every period-exclusion count reported here is its output.
+must inspect. Every period-exclusion count reported here is output of the residue-free
+variant.
 
 Finally, the three variants share one enumeration framework, one normalisation, one
 representation, and one exact-criterion routine, so a shared bug would affect all
@@ -1405,23 +1755,67 @@ criterion and the one-sort shortcut agree on every word, with zero disagreements
 accept the standard period-$104$ word, and the Java binary agrees with the Python
 verifier on every word sampled directly from it. For period at most $18$ this is a
 genuine end-to-end cross-language replication: the Python verifier brute-forces all
-$2^{18}$ words with no pruning whatsoever and independently reproduces the exclusion.
+$\sum_{L=1}^{18}2^L=524{,}286$ nonempty words with no pruning whatsoever and
+independently reproduces the exclusion.
 Beyond that length brute force is infeasible and the check is confined to the
 criterion, which is the component a shared bug would most plausibly corrupt.
+
+The analytic transverse results, Theorems~\ref{thm:extremal}
+and~\ref{thm:width2}, are proved rather than computed, while
+Theorem~\ref{thm:width4} uses the explicitly delimited finite classification in
+Lemma~\ref{lem:blankcolumn}.  The analytic inputs are also checked:
+\texttt{verify\_extremal.py} confirms
+Theorem~\ref{thm:extremal} on the standard word (transverse range $[-5,5]$, width
+$10$; each extremal line carrying two once-visited cells, all arrivals horizontal,
+all turns $\turnR$), on its square, and on its $\turnR/\turnL$ reflection, where the
+extremal turns are all $\turnL$ and the word is correctly rejected---the mirror image
+of the vertical case excluded in the proof. More usefully it checks the
+contrapositive exhaustively: of the $60{,}854$ diagonal-drift heading-resetting words
+of length at most $18$, exactly $18{,}946$ have a repeated cell on an extremal line,
+and \emph{none} of those is realisable, as Theorem~\ref{thm:extremal} requires.
+\texttt{verify\_width.py} checks the geometric inputs of Theorem~\ref{thm:width2}---the
+two forced excursions and the arrival/departure headings from which the final turn is
+read---and then runs an adversarial search in which the colour of every
+not-yet-visited site is chosen by an opponent rather than assumed white. With at most
+$k$ black seeds no opponent survives more than $k+4$ steps before some gap must be
+crossed twice in one direction, which is the budget Theorem~\ref{thm:extremal}(iii)
+forbids. That the opponent is given this freedom matters: an earlier version of both
+the proof and the script assumed that a site's first visit turns $\turnR$, which is
+\emph{false}---condition (ii) of Theorem~\ref{thm:criterion} constrains only
+stabilised words, and \eqref{eq:seed} blackens cells below their class's maximal
+level precisely so that some first turns are $\turnL$. The argument given above uses
+no such assumption.
+
+For Lemma~\ref{lem:blankcolumn}, \texttt{width4\_crossing\_graph.py} supplies both
+the unbounded 22-state recursion and a pairwise cross-check over all $910$ admissible
+signatures through length $25$.  The independently written
+\texttt{verify\_width4\_crossing\_graph\_indep.py} shares neither its state
+representation nor its turn implementation, reproduces the same twelve edges, and
+performs the standard-highway column replay described in the lemma.  The machine-
+readable certificate \texttt{width4\_crossing\_graph\_certificate.json} contains the
+edge list, statistics, source hashes and formalisation boundary.  A separate
+set of combined exact searches, using the proved bound $P\le7m$, covers drift
+magnitudes $1\le m\le9$ with no hit.  The fixed-drift macro engine supplies all
+periods for $m\le6$ and the upper ranges for $m=7,8,9$; the general and unrestricted
+width-four searches supply their lower ranges.  The $m=10$ record is explicitly
+partial through $P=66$.  These searches are independent bounded cross-checks, not inputs to
+Theorem~\ref{thm:width4}.
 
 One further assumption of the engines is worth isolating, since it is what makes the
 search exhaustive. The engines never test the heading directly; they test
 $\growth\equiv0\pmod4$. These agree by Lemma~\ref{lem:invariant}, but the lemma as
 usually stated gives only the forward implication, and it is the \emph{converse} the
 search relies on: a word rejected for $\growth\not\equiv0$ must genuinely fail to
-reset the heading, or a candidate would be silently skipped. Both directions follow
-from $q_t-b_t\equiv q_0-b_0$, and we confirmed the equivalence by enumeration over all
+reset the heading, or a candidate would be silently skipped. For an arbitrary turn
+word, the heading increment modulo $4$ is directly
+$\#\turnR-\#\turnL=\growth$, so the two conditions are equivalent even before a
+colour realisation is considered. We also confirmed the equivalence by enumeration over all
 $524{,}286$ words of length at most $18$: the heading-resetting words number
 $174{,}762$, and so do the words with $\growth\equiv0\pmod4$, with no exceptions in
 either direction.
 
 The residue theorem was audited separately, with the following counts over all
-$\sum_{L\le18}2^{L}=524{,}286$ turn words of length at most $18$:
+$\sum_{L=1}^{18}2^{L}=524{,}286$ nonempty turn words of length at most $18$:
 $174{,}762$ restore the heading; $172{,}092$ of those have nonzero drift; and
 \emph{none} of those $172{,}092$ passes the realisability criterion of
 Theorem~\ref{thm:criterion}, consistent with the period-$\le48$ exclusion. The
@@ -1430,7 +1824,8 @@ traces, so its direct test is vacuous in this length range; what the enumeration
 verify on all $172{,}092$ words is the underlying additive toggle-charge identity
 \eqref{eq:conservation} (which holds for every heading-reset word, realisable or not).
 The strand-level identity \eqref{eq:res-a} and the bound \eqref{eq:P16} are instead
-confirmed on the standard word, its powers, and its dihedral transforms. (In
+confirmed on the standard word, its powers, quarter-turn rotations, and cyclic phase
+shifts. (In
 particular a word such as $\turnR\turnL$, with drift $(1,1)$ and growth $0$, restores
 the heading and lies among the $172{,}092$ but is \emph{not} realisable and is
 excluded from the strand-level test, as it must be.)
@@ -1441,20 +1836,30 @@ The searches reported here were run on a single workstation, not on a cluster: o
 Intel Core i5-1334U (10 physical cores, 12 logical, $1.3$\,GHz base) with $16$\,GB of
 RAM under Windows~$11$ (build $26200$), on Eclipse Temurin OpenJDK $25.0.1{+}8$
 (64-bit Server VM), with one JVM per shard and at most $12$ concurrent shards; the
-Python verifier ran on CPython $3.13.14$. The period-$48$ run of the independent
-engine is the largest single job and completes in a few core-hours on this machine,
-so the exclusion is reproducible on commodity hardware without special allocation.
+Python verifier ran on CPython $3.13.14$. The period-$48$ run of the residue-free
+variant is the largest single job: its shard records total $51{,}856.023$ worker-seconds
+($14.40$ aggregate worker-hours). With at most $12$ one-JVM workers, the observed wall
+time was on the order of one to two hours; the exact per-shard times are archived.
 
-The engines' source, an SHA-256 manifest of every released artifact, the aggregation
+The engines' source, an SHA-256 manifest of the released snapshot, the aggregation
 and cross-audit scripts, and the exact commands to regenerate every shard are publicly
-available in the accompanying repository \cite{Repo}. The \emph{complete} per-rank
-shard records for every reported search---each rank's node, leaf, prune, and
+available in the accompanying repository \cite{Repo}. For periods $34$--$48$, the
+\emph{complete} per-rank shard records---each rank's node, leaf, prune, and
 exact-evaluation counters, its wall time, and its hit list---are archived with the
-paper rather than left to be regenerated: compressed, the full set is a few megabytes.
-The archive also carries the aggregation output, the rank-coverage verification (every
-rank covered exactly once, no shard reporting a node cap), the per-rank comparison
-between the independent and pruned engines, the exact commands, and the environment
-strings above.
+paper rather than left to be regenerated. For period at most $32$, the archive instead
+contains the unprefixed depth-$5$ baseline and all $32$ complete six-symbol prefix-shard
+logs; these certify prefix coverage but do not contain per-rank subrecords. Compressed,
+the full set is a few megabytes.
+The archive also carries the aggregation output, the period-$34$--$48$ rank-coverage
+verification (every rank covered exactly once), the
+check that every configured cap was left unreached, the raw records needed for
+per-rank comparison of the residue-free and pruned variants where both were run, the
+exact commands, and the
+environment strings above. The period-$34$--$48$ certifying shards have
+\texttt{node\_cap=null}; the older period-$\le32$ shards record a $10^8$ safety cap
+but all completed far below it. The exact search-record archive used for this revision
+has SHA-256
+\texttt{7052f3070829bf804ae317a40379f6bb045b00775aff826b4e347880747bcc1a}.
 
 %=======================================================================
 \begin{thebibliography}{99}
@@ -1465,7 +1870,7 @@ L.~A. Bunimovich and S.~E. Troubetzkoy.
 \newblock \emph{J. Stat. Phys.} \textbf{67} (1992), no.~1--2, 289--302.
 
 \bibitem{Etse2026confined}
-K.~Etse.
+K.~R. Etse.
 \newblock How long can the escaping ant be confined?
 \newblock arXiv:2606.26677 (2026).
 
@@ -1478,12 +1883,13 @@ A.~Gajardo, V.~H. Lutfalla, and M.~Rao.
 A.~Gajardo, A.~Moreira, and E.~Goles.
 \newblock Complexity of {L}angton's ant.
 \newblock \emph{Discrete Appl. Math.} \textbf{117} (2002), no.~1--3, 41--50.
-\newblock arXiv:nlin/0306022.
+\newblock doi:10.1016/S0166-218X(00)00334-6; arXiv:nlin/0306022.
 
 \bibitem{Gajardo2003symbolic}
 A.~Gajardo.
 \newblock A symbolic projection of {L}angton's ant.
-\newblock \emph{Discrete Math. Theor. Comput. Sci.} (2003).
+\newblock \emph{Discrete Math. Theor. Comput. Sci. Proc.} AB (DMCS'03)
+  (2003), 57--68.
 \newblock doi:10.46298/dmtcs.2312.
 
 \bibitem{GaleProppSutnerTroubetzkoy1995}
@@ -1491,31 +1897,24 @@ D.~Gale, J.~Propp, S.~Sutherland, and S.~Troubetzkoy.
 \newblock Further travels with my ant.
 \newblock \emph{Math. Intelligencer} \textbf{17} (1995), no.~3, 48--56.
 
+\bibitem{Langton1986}
+C.~G. Langton.
+\newblock Studying artificial life with cellular automata.
+\newblock \emph{Physica D} \textbf{22} (1986), no.~1--3, 120--149.
+\newblock doi:10.1016/0167-2789(86)90237-X.
+
 \bibitem{Lutfalla2025sideways}
 V.~H. Lutfalla.
 \newblock Sideways on the highways.
 \newblock arXiv:2505.05426 (2025).
 
-\bibitem{Traldi2012interlacement}
-L.~Traldi.
-\newblock Interlacement in $4$-regular graphs: a new approach using nonsymmetric
-matrices.
-\newblock arXiv:1204.0482 (2012).
-
-\bibitem{Traldi2016signed}
-L.~Traldi.
-\newblock Circuit partitions and signed interlacement in $4$-regular graphs.
-\newblock arXiv:1607.04233 (2016).
-
 \bibitem{Repo}
 A.~Jillhewar.
-\newblock Langton's ant: structural constraints, exact searches, and a Lean
-formalization (supplementary code, data, and a companion technical report).
-\newblock Zenodo, 2026. \textsc{doi}:\,\href{https://doi.org/10.5281/zenodo.21381637}{10.5281/zenodo.21381637}.
-\newblock Archived from the GitHub repository
-\url{https://github.com/Atharva12456/langtons-ant-highway}; the DOI resolves to the
-latest archived release, and \texttt{results/artifact\_hashes.json} in each release
-gives a SHA-256 for every file.
+\newblock Langton's ant: exact searches, a Lean formalization, and supplementary data.
+\newblock GitHub, \url{https://github.com/Atharva12456/langtons-ant-highway}; Zenodo
+concept \textsc{doi}:\,\href{https://doi.org/10.5281/zenodo.21381637}{10.5281/zenodo.21381637}.
+The search archive used here is pinned in Appendix~\ref{app:repro}; file-level hashes
+are in \texttt{results/artifact\_hashes.json}.
 
 \end{thebibliography}
 

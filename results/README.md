@@ -1,9 +1,11 @@
 # Results
 
-Small, human-readable summaries of the exact computations. The **complete per-rank
-shard records are archived** with the release (compressed, the full set is a few MB);
-they are also exactly regenerable with the commands in the top-level `README.md` and
-`../code/README.md`.
+Small, human-readable summaries of the exact computations. Complete per-rank records
+for periods 34–48 and complete prefix-shard logs through period 32 are archived with
+the release (compressed, the full set is a few MB);
+they are also regenerable from the exact commands and partitions in
+`../records/RECORDS_MANIFEST.json` and the audit scripts in `../records/`. The
+top-level `README.md` and `../code/README.md` give shorter illustrative commands.
 
 ## Files
 
@@ -11,18 +13,20 @@ they are also exactly regenerable with the commands in the top-level `README.md`
 Aggregated totals of the exhaustive periodic-highway searches. For every period up to
 48 the number of highways found is **0**.
 
-**What certifies the result.** The counts below are the output of the **independent
-engine** (`../code/java/PositiveGrowthSearchIndep.java`), which uses **no consequence
+**What certifies the result.** The counts below are the output of the **residue-free
+variant** (`../code/java/PositiveGrowthSearchIndep.java`), which uses **no consequence
 of the signed mod-four wake-residue theorem** (paper, Theorem 7.1) and applies the
 exact realisability criterion (paper, Theorem 3.1) to **every** positive-growth
 nonzero-drift leaf. Its zero-hit outcome therefore does not depend on Theorem 7.1.
 It does still assume Corollary 6.5 (growth is a positive multiple of four), which
 comes from the even-winding theorem — that is what reduces the problem to positive
-growth in the first place.
+growth in the first place. This variant shares its enumeration framework,
+representation, and criterion routine with the pruned variants; it is not an
+independent implementation.
 
 | Period | Nodes | Leaves | Criterion evaluations | Highways |
 |-------:|------------------:|-----------------:|-----------------:|:-:|
-| ≤ 32 | 46,185,421 | — | — | 0 |
+| ≤ 32 | 46,185,480 | — | — | 0 |
 | 34 | 40,418,033 | 6,989,418 | 6,989,418 | 0 |
 | 36 | 108,995,287 | 18,928,333 | 18,928,333 | 0 |
 | 38 | 293,763,689 | 51,386,767 | 51,386,767 | 0 |
@@ -34,10 +38,14 @@ growth in the first place.
 
 The *criterion evaluations* column equals the *leaves* column at every period: no leaf
 is discarded unexamined. Every prefix rank is covered exactly once, every shard reports
-completion with no node cap, and aggregate counters equal the per-rank sums — all
-checked mechanically by `../../work/aggregate_indep.py`. The ≤ 32 row is a complete
-legal-trace enumeration, which applies no growth or endpoint pruning and is
-residue-free by construction.
+completion, and aggregate counters equal the per-rank sums — all checked mechanically
+by `../records/aggregate_indep.py`. The period-34–48 records have no node cap. The
+≤ 32 records had a configured 100,000,000-node cap per shard, but the largest shard
+visited only 2,623,020 nodes; their 46,185,421 sharded nodes plus the 59-node period-≤5
+baseline give the table total. These shards enumerate every first-`R`, cyclic-phase
+representative through length 32; every positive-growth heading-resetting word has
+such a representative. No growth or endpoint pruning is applied, so the enumeration
+is residue-free by construction.
 
 > **Node counts are not comparable across different prefix lengths**, since the search
 > tree is counted from the prefix depth downwards. Compare engines only at the same
@@ -47,16 +55,16 @@ residue-free by construction.
 (`PositiveGrowthSearch.java`, assumes Corollary 7.3) and the residue-pruned engine
 (`PositiveGrowthResidueSearch.java`, assumes Theorem 7.1) return zero certificates on
 the strictly smaller trees they explore. Because Corollary 7.3 prunes at the *node*
-level, their leaf counts are **subsets** of the independent engine's and are *not*
+level, their leaf counts are **subsets** of the residue-free variant's and are *not*
 expected to match. At period 46:
 
 | engine | assumes Thm 7.1 | leaves reached | criterion evaluations |
 |---|:-:|---:|---:|
-| independent (certifies) | **no** | 2,757,152,898 | 2,757,152,898 |
+| residue-free (certifies) | **no** | 2,757,152,898 | 2,757,152,898 |
 | strand-pruned | yes | 98,568,824 | 98,568,824 |
 | residue-pruned | yes | 98,568,824 | 6,132,192 |
 
-This also yields evidence **for** Corollary 7.3: the independent engine reaches the
+This also yields evidence **for** Corollary 7.3: the residue-free variant reaches the
 leaves P16 discards — 6,994,756,680 of them at period 48 — and finds no realisable word
 among them, so within this range the pruning discarded nothing.
 
@@ -78,18 +86,46 @@ highway** (do not interchange their seeds):
 Blank-orbit onset step is `9977`. Both seeds were verified by direct simulation
 (`../code/python/verify_standard_highway.py`).
 
+### `width4_crossing_graph_certificate.json`
+Machine-readable certificate for the computer-assisted all-period exclusion of
+diagonal transverse width four. It records the complete 12-edge blank-column graph,
+the explicit longest path, primary and independent implementation hashes, the
+22-state/no-cycle recursion statistics, the standard-highway boundary-convention
+replay, and the exact Lean formalization boundary. The certificate's three embedded
+source hashes are checked before release.
+
+### `width4_drift_exclusion_summary.json`
+Independent bounded cross-check: using the proved macro bound `P <= 7m`, combined
+general, unrestricted width-four, and fixed-drift searches exclude every width-four
+highway with normalized drift `(m,-m)` for `1 <= m <= 9`. The fixed-drift engine alone
+covers the complete range only for `m <= 6`; the JSON records the exact patchwork for
+`m=7,8,9`. This bounded result is logically superseded by the crossing-graph
+theorem but is retained as independent structural evidence and reproducibility data.
+
+### `width4_m10_partial_2026-07-21.json`
+Explicitly partial fixed-drift search for `m=10`. Completed zero-hit rows run through
+macro period 66. Rows 68 and 70 were stopped unfinished and are not results; this
+file does not extend the fixed-drift exhaustive theorem beyond `m <= 9`.
+
 ### `artifact_hashes.json`
-SHA-256 of every tracked file in the repository.
+SHA-256 of every tracked file and every non-ignored untracked release file in the
+working snapshot, excluding the manifest itself. Regenerate it only after all source,
+PDF, journal, and archive changes are final:
+
+```bash
+python results/update_artifact_hashes.py
+```
 
 ## Environment
 
 The searches ran on a single workstation, **not a cluster**: Intel Core i5-1334U
 (10 physical cores, 12 logical), 16 GB RAM, Windows 11 build 26200, Eclipse Temurin
 OpenJDK 25.0.1+8, one JVM per shard, ≤ 12 concurrent shards; Python verifier on CPython
-3.13.14. Period 48 — the largest job — is ~52,000 core-seconds, a few core-hours on this
-machine. **No cluster or special allocation is required to reproduce the exclusion.**
+3.13.14. Period 48 — the largest job — totals 51,856.023 aggregate shard-seconds
+(14.40 aggregate shard-hours); the recorded wall time was approximately 1 h 29 min
+with 11 workers. **No cluster or special allocation was used.**
 
 ## Regenerating the full records
 See the top-level `README.md` (§ *Reproducing the search results*). Each shard is an
 independent job; a complete exclusion is the union of shards covering every prefix rank
-exactly once, with the independent engine's hit lists all empty.
+exactly once, with the residue-free variant's hit lists all empty.

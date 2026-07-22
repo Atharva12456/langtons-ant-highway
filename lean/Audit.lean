@@ -5,6 +5,8 @@ import Langton.CollisionParity
 import Langton.TraceGeometry
 import Langton.DirectedPoseDiscrepancy
 import Langton.P3Endpoint
+import Langton.WidthFour
+import Langton.WidthFourCrossing
 
 #print axioms Langton.departed_cell_toggled
 #print axioms Langton.other_cell_unchanged
@@ -63,3 +65,21 @@ import Langton.P3Endpoint
 #print axioms Langton.TraceGeometry.StabilizedP3Word.even_prefix_bound
 #print axioms Langton.TraceGeometry.scanWidget_binary_of_prefix_bounds
 #print axioms Langton.TraceGeometry.removeOneAt_prefix_bound
+#print axioms Langton.TraceGeometry.StabilizedP3Word.toOrbitEndpointData
+#print axioms Langton.WidthFour.macroPeriod_le_seven_mul_drift
+#print axioms Langton.WidthFour.macroPeriod_mod_two_eq_drift
+#print axioms Langton.WidthFour.antPeriod_le_seven_mul_growth
+#print axioms Langton.WidthFour.primitive_macroPeriod_eq_seven
+#print axioms Langton.WidthFour.sixMask_of_signedCharge
+#print axioms Langton.WidthFour.evenFiber_le_evenWidth
+#print axioms Langton.WidthFour.growth_le_drift_mul_width
+#print axioms Langton.WidthFour.higherCellBlock_precedes
+#print axioms Langton.WidthFour.many_low_crossing_cuts
+#print axioms Langton.WidthFour.shortControlSignature_count
+#print axioms Langton.WidthFour.drift_le_candidate_signature_cutoff
+#print axioms Langton.WidthFour.drift_le_candidate_control_signature_cutoff
+#print axioms Langton.WidthFour.drift_le_candidate_weighted_control_cutoff
+#print axioms Langton.WidthFour.shortExtremalControlSignature_counts
+#print axioms Langton.WidthFour.drift_le_candidate_extremal_control_cutoff
+#print axioms Langton.WidthFourCrossing.blankEdge_rank_decreases
+#print axioms Langton.WidthFourCrossing.no_four_blankEdge_chain

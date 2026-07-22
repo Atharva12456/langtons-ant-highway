@@ -12,8 +12,17 @@ From PowerShell in this directory:
 .\build.ps1
 ```
 
-The project is pinned to Lean 4.32.0.  The portable compiler is expected at
-`..\lean_toolchain\.elan` and no user PATH modification is required.
+The project is pinned to Lean 4.32.0 by `lean-toolchain`.  `build.ps1` uses `lake`
+from `PATH`, an optional sibling portable toolchain, or the executable named by
+`LANGTON_LEAN_LAKE`.
+
+For a clean Linux build with no host Lean installation:
+
+```powershell
+docker build -t langton-lean:4.32.0 .
+docker run --rm --mount "type=bind,source=${PWD},target=/src" `
+  langton-lean:4.32.0 bash -lc "lake build && lake env lean Audit.lean"
+```
 
 ## What is formalized
 
@@ -66,6 +75,17 @@ The project is pinned to Lean 4.32.0.  The portable compiler is expected at
 - `toLocalResidueCertificate`, which constructs all algebraic certificate
   fields from a normalized exact trace and the remaining lifted-potential
   geometry.
+- `StabilizedP3Word.toOrbitEndpointData`, which derives the first positive
+endpoint, the balanced remainder, and binary widget scan from a stabilized,
+decreasing-level P3 word instead of assuming those endpoint fields.
+- Width-four arithmetic kernels: the six-mask finite enumeration, the upper step in
+  `g <= mW`, the macro period bound `P <= 7m`, period parity, the primitive-drift
+  arithmetic reduction, spatial block ordering, and explicitly labelled candidate
+  crossing-signature cutoff arithmetic.
+- The 12-edge blank-column graph as one literal list, with `BlankEdge` defined by
+  list membership, an explicit rank decrease for every edge, and a theorem excluding
+  four-edge chains. Completeness of the Python-generated edge list is not formalized
+  in Lean.
 
 ## Scope and assumptions
 
@@ -85,12 +105,20 @@ The earlier residue-density theorem still exposes
 `forall r, fiberCharge r bases + 2 = 0` directly.  The newer trace theorem
 removes the finite additive-algebra layer and constructs periodicity, widget
 cancellation, strand identification, and the delta-alpha cycle.  It still does
-not produce a normalized translator from an arbitrary Langton orbit.  The
-remaining explicit inputs are: a finite covering window whose aggregated exact
-phase toggles satisfy the binary endpoint normal form; a physical lifted path
+not produce a normalized periodic-trace certificate from an arbitrary Langton
+orbit.  The
+remaining explicit inputs are: a geometric construction of the stabilized P3 word
+for each drift orbit and its identification with the aggregated exact phase toggles;
+a physical lifted path
 making one closed residue traversal; the local potential formula on that path;
 and conservation of exact grouped phase charge plus potential drift.
 
 Thus the new theorem is a machine-checked conditional bridge, not a full proof
 of P22/P16.  No P12 decomposition assumption or geometric entrance statement is
 hidden in it.  See `FORMALIZATION_BOUNDARY.md` for the exact interface.
+
+The width-four crossing module has a separate, narrower boundary: Lean checks the
+finite graph implication once the 12 edges are supplied. Two independent Python
+enumerators establish completeness of that local table. Neither the table
+enumeration nor the reduction from an arbitrary periodic ant trace to an infinite
+blank-column path is formalized end to end.

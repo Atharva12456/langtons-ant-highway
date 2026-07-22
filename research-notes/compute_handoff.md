@@ -1,6 +1,23 @@
 # Langton-ant proof and compute handoff
 
-Last updated: 2026-07-14 (live continuation checkpoint)
+Last updated: 2026-07-21 19:25 CDT (post-research manuscript and referee phase)
+
+## Live session checkpoint
+
+The research interval ended at 19:00 CDT on 21 July 2026.  The width-four result that
+survived audit has now been integrated into both manuscripts.  An independent
+adversarial referee re-derived the proof, found an omitted label hypothesis, and
+passed the repaired theorem; a second consistency audit supplied additional scope
+corrections.  Final PDF/release QA and the requested unsent Gmail drafts remain in
+progress.  No universal proof or counterexample exists at this checkpoint.
+
+Codebase audit note: the Java class whose filename contains `Indep` is best
+described as the **residue-theorem-free variant**, not as an independent
+implementation. All three Java variants share enumeration and representation;
+the separate Python literal-criterion verifier supplies the implementation-level
+cross-check. Preserve the larger residue-free counts in the paper. Before release,
+repair the principal paper's lifetime-state wording and explicitly qualify the
+labelled touch-graph theorem under physical row/column pushforward.
 
 ## Truth status
 
@@ -214,3 +231,497 @@ with `work/` and `outputs/` in this note are relative to that root. In this publ
 repository the corresponding sources live under `code/`, `lean/`, and `results/`;
 the bulk search-shard data referenced here is regenerable via the commands in the
 top-level `README.md`.
+
+## 20 July 2026 publication-continuation handoff (supersedes stale counts above)
+
+The conjecture remains open. The current submission is
+`paper/main.tex`, retitled *Finite-Support Periodic Highways of Langton's Ant:
+Necessary Conditions and Short-Period Exclusion*. It states two separate open
+obligations: eventual entrance for every finite seed and unbounded-period
+classification/uniqueness of positive-growth periodic traces.
+
+### Formal boundary
+
+`lean/Langton/P3Endpoint.lean` now contains
+`StabilizedP3Word.toOrbitEndpointData`. Given an explicit stabilized nonincreasing P3
+level word, it derives the first positive endpoint, zero-sum balanced remainder, and
+binary widget prefix. It does not extract that word from every actual periodic ant
+trace, and the lifted residue path/local potential geometry remains explicit. A clean
+official-Lean-4.32.0 Docker build completed all 18 jobs; the axiom audit lists only
+`propext`, `Quot.sound`, and where used `Classical.choice`. Use `lean/Dockerfile` or
+the repaired `lean/build.ps1`.
+
+### Exact computation boundary
+
+Do not call `PositiveGrowthSearchIndep.java` an independent implementation. It is the
+**residue-free variant** of the shared Java enumeration framework. It certifies the
+period-34--48 rows by applying P3 to every positive-growth nonzero-drift leaf; the
+P16/P22 variants are conditional consistency checks.
+
+The period-at-most-32 tree was freshly regenerated under current Python source:
+59 unprefixed nodes through depth 5 plus 46,185,421 nodes in the 32 length-six prefix
+shards, 46,185,480 total, zero hits, all complete. The current source SHA-256 is
+`b395ed3aac53bb9f43aea375ffd7257cd81ec3df5404df098783ed0656c4bcfc`.
+
+`records/aggregate_indep.py` now checks all eight counters and fails on a missing
+period. The archive described at this historical checkpoint was later rebuilt. Do
+not use its obsolete checksum; the canonical archive and checksum are specified in
+the superseding final-release section below.
+Period 48 is 51,856.023 aggregate shard-seconds (14.404 shard-hours), with recorded
+wall time 1:28:48 using 11 workers.
+
+### Narrow growth-four result
+
+The compatible abstract wake matchings have (kappa=1) for axis drift,
+(kappa=2) for even diagonal drift, and (kappa\in\{1,2\}) for primitive diagonal
+drift. This is a topology classification only. `cycle_functionals` uses alternating
+oriented coefficients and is not P22; do not infer that P22 annihilates or controls
+the wake kernel.
+
+### Paper corrections already applied
+
+The cyclic-minimum normalization now has a proof. Bare reflection was removed as a
+symmetry. The affine-invariant theorem was narrowed to what it proves. The unsupported
+clean-translator refinement and Hamming-isolation proposition were removed. The
+completed-lifetime token argument was repaired. The touch-graph statement now keeps
+labels/multigraph conventions and explicitly limits physical pushforward to
+(pi_*Z(T/W)). Bibliographic metadata and runtime/cap claims were corrected.
+
+### Immediate continuation checklist
+
+1. Resolve the two final internal adversarial referee reports; do not describe them as
+   peer review.
+2. Recompile twice and require zero undefined references and zero overfull boxes.
+3. Render all PDF pages and inspect every page visually.
+4. Regenerate `results/artifact_hashes.json` after final source/PDF changes.
+5. Finish `professor_outreach_email.md` with placeholders; state clearly that the
+   preprint does not solve the conjecture and request targeted technical feedback.
+6. Mirror this handoff and the proof journal to `outputs/` after every final correction.
+
+## 20 July 2026 final release handoff (supersedes every earlier checkpoint above)
+
+### Mathematical status
+
+The finite-support highway conjecture is **not proved or disproved**. No
+counterexample certificate was found. The release proves necessary conditions on
+finite-support periodic highways and one exact bounded computation. A complete proof
+still needs both:
+
+1. a bounded-active-core/entrance theorem placing the ant and every cell or
+   Tait-boundary component capable of influencing the future in one finite translated
+   window, with all outside debris permanently inert; and
+2. an unbounded-period chronology theorem showing that every positive-growth
+   periodic highway agrees in path and turn trace with the standard period-104
+   highway up to translation, quarter-turn rotation, and cyclic phase.
+
+Do not revive the earlier exterior-dynamics, centered-3-by-3, Hamming-isolation,
+minimum-rectangle, or physical touch-graph-rank claims. They were removed from the
+release because their proof or publication certificate was incomplete. The narrow
+growth-four wake-port matching audit is only an abstract topology classification;
+its alternating oriented functionals are not the signed all-`+1` P22 charges.
+
+### Canonical documents
+
+- Principal source: `paper/main.tex`
+- Principal PDF: `paper/main.pdf` (18 pages), SHA-256
+  `d3b30f6ca9c9656690c12a9ed637649ad721f72f8d1826d7687e9d0ca0183ea3`
+- Technical companion: `companion/main.tex`
+- Companion PDF: `companion/main.pdf` (15 pages), SHA-256
+  `8c711ae8cdb5b94f006db9a73b8ffdc8753effc16582044ee585349a108afa74`
+- Accessible copies: `docs/paper.pdf` and `docs/companion.pdf`; each is byte-identical
+  to its source PDF.
+- Outreach template: `docs/professor_outreach_email.md`
+- Detailed audit trail: `research-notes/proof_journal.md`
+
+Both LaTeX files were compiled twice after the final source edit. Their logs contain
+no LaTeX warning, undefined citation/reference, overfull box, underfull box, or fatal
+error. The PDFs have explicit title/author metadata. All companion pages and all
+changed main-paper pages were rendered and visually inspected; the main paper had
+already received a complete all-page visual pass earlier in the same session.
+
+The external-facing claims passed two final internal adversarial agent audits: one
+mathematical/companion audit and one cold repository/release audit. These are not peer
+review and must never be represented as such.
+
+### Exact computation certificate
+
+The period-at-most-32 records are a complete **first-R cyclic-phase-normalised**
+enumeration, not a literally unnormalised binary tree: 59 unprefixed nodes through
+depth 5 plus 46,185,421 nodes in all 32 `R` plus five-symbol prefix shards through
+depth 32, for 46,185,480 nodes total. Every positive-growth heading-resetting word
+contains `R`, and cyclic phase shift preserves the represented periodic orbit and
+finite-support realisability. All shards completed below their 100,000,000-node cap
+and found zero highways.
+
+Periods 34--48 are certified by the residue-theorem-free shared-framework Java
+variant, applying the exact criterion at every positive-growth nonzero-drift leaf.
+The strand- and residue-pruned variants are conditional consistency checks, not
+independent implementations. The certifying Java source SHA-256 is
+`dacd32f6ab2f0c033c4e8226987333f21582e5aecad25322863439065645d68f`.
+
+The frozen archive `records/langton_search_records.tar.gz` contains exactly 460
+members and has SHA-256
+`7052f3070829bf804ae317a40379f6bb045b00775aff826b4e347880747bcc1a`.
+Its constructor verified the exact member set and every inner hash. A fresh extraction
+passed both:
+
+    python audit_p32.py
+    python aggregate_indep.py
+
+The latter reported `all_checks_passed = True` for every even period 34--48, with
+exact rank coverage and zero hits.
+
+The post-normalisation cold extraction was run at 20:32 CDT on 20 July 2026 into a
+new directory, without reusing repository-side generated files. `audit_p32.py`
+reported schema `langton-p32-exclusion-v2`, all 32 prefixes exactly once,
+46,185,480 cyclic-phase-normalised nodes, and zero problems. `aggregate_indep.py`
+reported `[OK]` for each even period 34--48 and `all_checks_passed = True`. The
+embedded `RECORDS_MANIFEST.json` contains zero CRLF byte pairs.
+
+### Lean boundary
+
+Lean 4.32.0 cleanly built all 18 jobs in the provided Docker environment. The axiom
+audit lists only `propext`, `Quot.sound`, and where used `Classical.choice`; the source
+contains no `sorry`, `admit`, custom axiom, `native_decide`, or unsafe escape.
+`StabilizedP3Word.toOrbitEndpointData` derives the first positive endpoint, balanced
+remainder, and binary widget-prefix facts from an explicitly supplied stabilized P3
+word. Lean still does not extract that word or the physical lifted potential geometry
+from every periodic ant orbit, so P22 and the conjecture are not end-to-end Lean
+theorems.
+
+### Release metadata and remaining human actions
+
+`CITATION.cff` validates against CFF schema 1.2.0. `.zenodo.json` records the mixed
+license: code/Lean/data are MIT; papers/prose are CC BY 4.0. The deterministic script
+`results/update_artifact_hashes.py` regenerates `results/artifact_hashes.json` from all
+tracked and non-ignored untracked release files, excluding the self-referential
+manifest itself. The manifest was regenerated only after the final PDFs, journal,
+handoff, archive, and mirrored outputs were fixed.
+
+Before emailing or depositing:
+
+1. fill the commented author address and professional-email fields in
+   `paper/main.tex`;
+2. personalize one targeted theorem/interface request per professor;
+3. mint or identify an exact Zenodo version DOI (the concept DOI does not pin these
+   bytes); and
+4. after any such edit, rebuild the PDFs, resync `docs/`, and rerun
+   `python results/update_artifact_hashes.py`.
+
+## 21 July 2026 continuation: transverse rigidity (supersedes the section above on open obligations)
+
+### What changed
+
+Two new theorems were proved, audited, corrected, and added to both papers. They
+address obligation 2 (periodic classification), and they are the first results in this
+project that hold at **every period** rather than up to a search bound.
+
+- **Extremal-line rigidity.** For diagonal drift $|a|=|b|=m$, normalise by quarter-turn
+  rotation so that $ab<0$ and take $t=x+y$. Then both extremal level lines $t=T$ and
+  $t=T'$ are horizontal, the arrival is east on $t=T$ and west on $t=T'$, every turn on
+  them is `R`, every cell of them the trace reaches is entered exactly once (so every
+  class meeting an extremal line is a singleton and its cells end black), and $W=T-T'$
+  is even.
+- **Width-two exclusion.** No finite-support periodic highway with diagonal drift has
+  transverse width $2$; hence $W$ is even and $W\ge4$. The standard highway has $W=10$.
+
+Both use only the HV partition and the *ordering* content of the periodic criterion —
+that the stabilised word at a cell alternates and begins with `R`. Neither uses the
+residue theorem or any of its corollaries. Full statements, proofs and the audit
+record are in journal Section 37.
+
+### Two defects found by adversarial audit, both repaired
+
+Recorded in full in journal 37.6. Summarised because both are traps that will recur:
+
+1. Defining the transverse functional by a case split ($x+y$ when $ab<0$, $x-y$ when
+   $ab>0$) and then arguing in one frame gives a **false** conclusion in the other: the
+   two frames differ by a quarter turn, which exchanges the axes, so "both extremal
+   lines are horizontal" fails for half of all drifts. The counterexample is the
+   standard highway itself read from an east-facing start. Repaired by normalising to
+   $ab<0$ and writing the proof with explicit compass directions.
+2. The width-two proof asserted that a site's first visit turns `R`. That is false:
+   criterion (ii) constrains only *stabilised* words, and the seed construction
+   blackens cells below their class's maximal level precisely so that some first turns
+   are `L`. Repaired by counting **edge crossings** instead of site visits: each gap is
+   crossed at most once in each direction (each crossing consumes an extremal cell), and
+   drift forces net $+1$ per gap, so every site above the start is entered exactly once,
+   arrives heading south, departs east, and therefore turns `L` — contradicting (ii).
+
+`verify_width.py` had hard-coded the same false assumption as defect 2, so it could not
+have caught it. It has been rewritten to check the geometric inputs and to run an
+adversarial search in which an opponent chooses the colour of every not-yet-visited
+site; no opponent survives more than $k+4$ steps on $k$ black seeds.
+
+### Current document state
+
+- `paper/main.tex` → `paper/main.pdf`, **22 pages**, compiles with zero errors, zero
+  Type-3 fonts. New Section 9 "Transverse rigidity and a period-unbounded exclusion";
+  small-period exclusion is now Section 10 and the gap section Section 11.
+- `companion/main.tex` → `companion/main.pdf`, **16 pages**, zero errors.
+- `docs/paper.pdf` and `docs/companion.pdf` are byte-identical to their sources.
+- New verification scripts, all in `code/python/`: `verify_extremal.py`,
+  `verify_width.py`, `explore_chronology.py`, `explore_skeleton.py`.
+- `results/artifact_hashes.json` regenerated over 70 files.
+
+### Immediate next steps
+
+1. **Fill the author address and professional email** in `paper/main.tex`, rebuild,
+   resync `docs/`, rerun `results/update_artifact_hashes.py`.
+2. **Commit and tag** (the working tree is not committed). Mint a version DOI.
+3. **Send outreach** from `docs/professor_outreach_email.md` — nine verified
+   recipients with individually personalised letters, ordered; send one at a time.
+   arXiv now requires a personal endorsement for independent researchers; Propp
+   (math.CO) and Troubetzkoy (math.DS) are the best-positioned endorsers.
+
+### The obvious research continuation
+
+Width $4$. Lines $0,2,4$ are horizontal and $1,3$ vertical; the extremal lines $0$ and
+$4$ remain single-visit, but the interior horizontal line $2$ may be revisited, so the
+one-dimensional collapse used for width two does not apply. For each fixed $W$ the
+question is finite-state — a highway of width $W$ is an orbit of a machine whose tape
+cells are the strip's columns, with alphabet $2^{\lceil (W+1)/2\rceil}$ — so widths
+$4,6,8$ are a well-posed decidable target. Settling them would prove the standard
+highway is the narrowest possible, which is the transverse counterpart of the
+arithmetic constraints already proved.
+
+## 21 July 2026 width-four checkpoint
+
+This section supersedes the immediately preceding claim that fixed width is
+automatically finite-state. A finite alphabet on an unbounded longitudinal tape can
+retain unbounded memory. What is now proved finite at width four is the search at each
+*fixed diagonal drift*, via the period bound below. Decidability for an arbitrary
+fixed width still requires a bounded-memory theorem.
+
+Detailed derivations and failed attempts are in
+`research-notes/width4_research_2026-07-21.md`. The new paper-grade statements are:
+
+1. **Diagonal width--growth sandwich.** For normalised drift `(m,-m)`, growth `g`,
+   and even transverse width `W`, `2m <= g <= mW`.
+2. **Six-mask theorem at width four.** In each `x` residue, and independently in
+   each `y` residue, the set of odd transverse levels is exactly one of
+   `{0,2}`, `{1,3}`, `{0,4}`, `{2,4}`, `{0,1,2,4}`, `{0,2,3,4}`. If `h` residues
+   have four-element masks, then `g=2m+2h` and `h=m (mod 2)`.
+3. **Width-four period--drift bound.** For macro period `P` and ant period `N=2P`,
+   `P+8x<=7m`, hence `P<=7m`, `N<=14m`, and `P=m (mod 2)`, where `x` counts the
+   `LN->LN` bottom-boundary macro transition. This uses P3 and extremal singleton
+   rigidity, but not the residue theorem. With strand density it gives `N<=7g`.
+4. **Primitive width-four exclusion.** No width-four highway has
+   `(|a|,|b|)=(1,1)` at any period. The proof forces `P=7` and lists six possible
+   words, each with an explicit stabilised-class ordering failure. It is independent
+   of the residue theorem.
+
+The fixed-drift Java search combines item 3 with early extremal-residue uniqueness.
+It has now excluded every width-four highway for `1<=m<=9`.  The final theorem-bound
+row `(m,P)=(9,63)` visited `17,532,472,230` nodes, reached no structural leaf, and
+therefore had no P3 hit. The unrestricted width-four
+search has zero hits through ant period 76. Result summary:
+`results/width4_drift_exclusion_summary.json`.
+
+Lean 4.32.0 now builds 22 jobs and audits the arithmetic kernels in
+`lean/Langton/WidthFour.lean`: the six-mask enumeration, even-fiber upper-bound step,
+`P+8x<=7m`, period parity, `N<=7g`, and primitive `P=7`. There are no `sorry` or
+`admit` declarations. The macro geometry remains a paper input, not an end-to-end
+formalisation.
+
+Two negative lessons must remain in the journal:
+
+- `starts R` alone fails: period-50 structural countermodels satisfy it but violate
+  alternation;
+- an attempted boundary-transition reduction was false because the two-symbol macro
+  label was read in the wrong order; it was deleted before use.
+
+`code/python/width4_smt.py` supplies an independent symbolic P3 ordering model. It
+returns exact UNSAT on several small instances but times out on harder ones; timeouts
+are not exclusions. An incremental class-arithmetic Java prune reduced nodes by only
+0.054% and slowed the `m=9,P=57` benchmark from 329.221 to 410.472 seconds, so it was
+removed.
+
+Later in the same research window, P3 was rewritten in **spatial block form**. For a
+fixed line and residue, the stabilised word is the concatenation of each physical
+cell's ordinary visit word from largest longitudinal coordinate to smallest. Hence
+the nonzero physical-cell charges `#R-#L` alternate `+1,-1,+1,...` from front to
+back, and every forward prefix charge is `0` or `1`. This is exact all-period
+ordering information, not another aggregate incidence identity.
+
+A connected integer-flow relaxation satisfying all those prefix inequalities is
+still SAT for `m=2,3`; its Euler order fails ordinary same-cell chronology. Therefore
+the outstanding obstruction is specifically an order-compatible Euler-trail
+problem. A separate exact density lemma gives a more promising finite-reduction
+route: among the `m` longitudinal cuts, at least `m/4` are crossed at most seven
+times, because their positive odd crossing counts sum to at most `P<=7m`. Repeated
+finite crossing signatures may support a pumping theorem, but the splice must still
+be proved to preserve tape colours and the P3 seed/wake relation.
+
+The `m=10` continuation has completed every even row through `P=66` with zero P3
+hits. At `P=56=5m+6` there are exactly ten ordinary-alternating/extremal leaves, none
+passing the odd-class identity; `P=58` and `P=60` have no structural leaf. The
+`P=60` row visited `19,138,313,024` nodes; `P=62` visited `30,238,836,043`; and
+`P=64` visited `47,442,673,612`; and `P=66` visited `74,038,045,927`. All four had
+no structural leaf. The `P=68` and `P=70` workers were stopped unfinished at
+18:56:13 CDT and produced no completed rows. The proved fixed-drift range therefore
+remains `m<=9`. The completed partial rows are preserved
+in `results/width4_m10_partial_2026-07-21.json`.
+
+### Candidate width-four pumping reduction (research only)
+
+The corrected cut signature for residue `r` contains every macro transition that
+crosses a lifted cut `r+qm+1/2`, sorted by the stabilised crossing time `i-Pq`.
+The signatures partition the `P` macro steps. Their lengths are positive odd
+integers summing to `P<=7m`, so at least `m/4` residues have length at most seven.
+
+The current candidate splice lemma says that equal signatures at two residues let
+one delete the intervening slab in every future translate and produce a smaller-
+drift width-four highway. Its most precise formulation encodes the strip ant as a
+deterministic one-tape machine: a tape symbol is a five-bit longitudinal column and
+finite control stores transverse line and heading. The splice-sufficient control
+signature keeps direction and destination even line, so the classical
+crossing-sequence induction preserves all reads and writes on retained columns.
+Start the infinitely many disjoint deletions beyond the finite seed and define them
+by a finite-time direct limit; every finite prefix uses only finitely many ordinary
+splices and the compressed initial tape still has finite support.
+
+For a rightward crossing the destination is `2` or `4`; for a leftward crossing it
+is `0` or `2`. Thus after direction is fixed there are only two choices per event,
+and at most `2+2^3+2^5+2^7=170` short control signatures. This supersedes both the
+three-line overcount `2460` and the earlier decorated count `287934`.
+
+The full average-length budget improves the cutoff further. The short signatures
+can supply at most `6*2+4*8+2*32=108` units below average length seven; every
+remaining signature has length at least nine and costs at least two units. Hence
+there are at most 54 long signatures and at most `2+8+32+128+54=224` residues total.
+
+Extremal singleton rigidity is stronger still. In a length-`2n+1` control
+signature, `(+ ,4)` and `(- ,0)` can each occur at most once, so the capacity is at
+most `(n+2)(n+1)`. The length-`1,3,5,7` capacities are `2,6,12,20`; their deficit is
+60, allowing at most 30 longer signatures. The resulting strongest conditional
+cutoff is `m<=70`.
+
+If an independent audit accepts the remaining equivariance step, a minimal drift
+has pairwise-distinct control signatures and therefore satisfies the explicit cutoff
+`m<=70`; together with `P<=7m`, width-four existence would be decidable by a
+finite search. This does **not** exclude width four and is not yet a manuscript
+theorem. The remaining hostile point is to prove that old tail translation by
+`(2P,m)` advances the oriented spliced event path by a fixed positive finite number
+of events after compression, rather than merely preserving its unoriented image.
+The full audit checklist is
+`research-notes/width4_crossing_splice_proof_draft.md`.
+
+The current proposed discharge uses the crossing-sequence graph. The all-white
+far-tail columns form a closed compatible walk of length `m`; equal control
+signatures are equal vertices, so deleting the intervening subwalk gives length
+`m'`. Translation by one new cycle maps ordered local transcripts and `j`-th
+boundary occurrences to their translates, hence is a successor-preserving map of
+the one-way tail event path and must be `n -> n+k`. Since it shifts space by
+`m'>0`, `k>0`. The remaining independent-audit question is whether the finite-splice
+direct limit rules out truncation of a crossing sequence only at infinity.
+
+The current proof rules it out by chronology monotonicity: paired right crossings
+occur left-cut then right-cut, while paired left crossings occur right-cut then
+left-cut, so every splice jumps forward and only deletes events. Successive finite
+splices form subsequences; each retained occurrence has a nonincreasing natural
+event index and stabilises. The one-cut lemma supplies it at every finite stage, and
+no extra finite-index event can first appear in the limit. Independent review must
+still attack this argument before paper promotion.
+
+### Stronger candidate: direct width-four exclusion
+
+`code/python/width4_crossing_graph.py` simulates one initially white five-cell
+column from its exact left/right control crossing sequences. Extremal rigidity lets
+each boundary use the exceptional rightward top landing and exceptional leftward
+bottom landing at most once. An unbounded recursion over column masks, entry state,
+and four flags finds exactly 12 compatible edges on 10 vertices, zero reachable
+entry cycles, and a directed graph of longest path three. An independent pairwise
+check of all 910 constrained signatures through length 25 gives the same 12 edges.
+
+The edge certificate is:
+
+```
+202 -> 4
+4220222 -> 2, 202, 20222, 2022224
+2042222 -> 2, 202, 20222, 2022224
+202242222 -> 422, 42202, 4220222
+```
+
+Infinitely many initially white columns ahead of any finite seed would require an
+infinite path in this acyclic graph. Hence no diagonal width-four highway exists at
+any period.  An independent adversarial model has now verified the simulator and
+global bridge; Journal \S38.16 records the omitted label hypothesis it caught and the
+repair.  The result is promoted with the explicit status ``computer-assisted; local
+classifier completeness not formalised in Lean.'' Source SHA-256:
+`2AF99EDCBC355945B547AB1F80CAEE6927FA75D6C1C064C5ADC41D13B5FE3E33`.
+The unbounded generator reaches 22 entry states, has maximum entry depth eight, and
+finds no reachable entry cycle.
+
+`lean/Langton/WidthFourCrossing.lean` checks that the listed graph has the claimed
+rank decrease and no four-edge chain. SHA-256:
+`548DF94E2B8B60CE23269153EE446CFF824AC1DB6AA1A41773F4E605205324FF`.
+It does not yet formalise the Python enumeration's completeness.
+
+Independent implementation check:
+`code/python/verify_width4_crossing_graph_indep.py` imports no project search code,
+uses compass-letter headings and set-valued black rows, and reproduces the same 12
+edges. SHA-256:
+`694C1178B00FA8AB929A5375255E53762C403DE02FC1D2958A4409EF9B84AFE0`.
+It also extracts crossings at cuts 100 and 101 of the documented standard-highway
+finite seed and exactly replays the initially white column between them (boundary
+lengths 31 and 21), validating the convention on a genuine highway.
+
+Why this does not immediately exclude widths six/eight:
+`code/python/explore_even_width_crossing_cycles.py` finds a reachable two-state
+interior cycle `({1,2},2,E) <-> ({1,3},2,W)` at both widths, while finding none at
+width four. It does not reuse an extreme event. This is a local-memory obstruction,
+not a highway. SHA-256:
+`760CD63D8CCC0292AD5FF2A3134CAE7A4E2CDD1AA16758527BFF5F706806F327`.
+
+Machine-readable table, statistics, hashes, and formalisation boundary:
+`results/width4_crossing_graph_certificate.json`.
+
+Final pre-manuscript self-audit of the bridge: with `t=x+y` and longitudinal
+coordinate `x`, vertical moves remain in a five-cell tape column and horizontal
+moves cross its boundaries.  The even destination line plus alternating event
+parity is therefore complete boundary control.  Positive periodic drift makes each
+far-boundary sequence finite, nonempty, odd, and right/left alternating.  The four
+exception flags are exactly the two extremal-cell singleton constraints on each of
+the two sides.  Because the preperiod and initial black support touch only finitely
+many cells, all sufficiently far columns are untouched white symbols; their exact
+boundary sequences would form an infinite directed path through the 12-edge graph.
+This pins the only computer-assisted premise to completeness of the independently
+reproduced local edge table.  The global reduction and acyclicity contradiction are
+not heuristic.
+
+The width-six/two-state failure was hand-decoded as a centre-line rotor oscillator:
+mask `{1,2}` with an eastward entry on line 2 changes to `{1,3}` and exits east;
+the westward return on line 2 restores `{1,2}` and exits west.  The two reused cells
+turn `L,R,L,R,...` in alternating phases and no extreme repeats.  Thus ordinary
+same-cell alternation does not kill the recurrence.  A width-six attack must couple
+neighbouring columns or use stabilised class-start order; this local cycle is not a
+global highway.
+
+Research froze at 19:00:02 CDT on 21 July 2026.  Immediately before the cutoff the
+two width-four classifiers and their standard-highway convention test passed again,
+and the Docker-pinned Lean 4.32.0 project built 22/22 targets.  All subsequent edits
+belong to the manuscript/review/release phase rather than new mathematical research.
+
+## 21 July 2026 release-packaging note (authoritative on final document state)
+
+Supersedes the page counts in every earlier checkpoint, which were accurate when
+written but predate the width-four additions. As frozen for release:
+
+- `paper/main.tex` -> `paper/main.pdf`: **24 pages**, compiles with zero errors and
+  zero Type-3 fonts; text layer intact (ligatures extract correctly). Section 9 is
+  "Transverse rigidity and period-unbounded exclusions" (plural: it now carries the
+  width-two theorem, the blank-column classification lemma, and the width-four
+  theorem, W>=6). Small-period exclusion is Section 10, the gap Section 11.
+- `companion/main.tex` -> `companion/main.pdf`: **18 pages**, zero errors.
+- `docs/paper.pdf` and `docs/companion.pdf` are byte-identical to their sources.
+- Corresponding author email on the paper: Atharvajil124@gmail.com; affiliation line
+  reads "Independent researcher" (the ASSIP/GMU summer account is deliberately not
+  claimed as an institutional affiliation).
+- `lean/` is clean of sorry/admit/native_decide/custom axioms across all modules,
+  including the two new width-four files.
+
+Not yet done, and explicitly the user's to authorise: (1) commit and push the
+width-four working tree -- the live GitHub Pages PDF and the concept DOI still resolve
+to the pre-width-four release, so any outreach link is stale until this is pushed;
+(2) mint a Zenodo version DOI for the new bytes; (3) send the prepared outreach drafts.

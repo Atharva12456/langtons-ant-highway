@@ -9,8 +9,9 @@ import java.util.Locale;
 
 /**
  * Exact sharded search for positive-growth finite-support periodic Langton
- * traces.  This is an independent work-area program; it deliberately does
- * not modify the source-hashed reference engine in outputs/.
+ * traces.  This residue-pruned variant shares its enumeration and exact-criterion
+ * infrastructure with the other Java variants and serves as a conditional
+ * cross-check of the residue-free certifying search.
  *
  * <p>The safe pruning rules are:
  * <ol>

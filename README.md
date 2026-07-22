@@ -1,4 +1,4 @@
-# Langton's Ant: Structural Constraints on Finite-Support Periodic Highways
+# Finite-Support Periodic Highways of Langton's Ant
 
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.21381637.svg)](https://doi.org/10.5281/zenodo.21381637)
 [![License: MIT](https://img.shields.io/badge/code-MIT-blue.svg)](LICENSE)
@@ -10,14 +10,17 @@
 🌐 **[Project page](https://atharva12456.github.io/langtons-ant-highway/)** ·
 📌 **Cite:** [`10.5281/zenodo.21381637`](https://doi.org/10.5281/zenodo.21381637)
 
-This repository accompanies two papers on the **finite-support highway conjecture**
-for Langton's ant, together with the exact search code, the result records, and a
-machine-checked Lean 4 formalization of the algebraic core.
+This repository accompanies a main paper and a companion technical report on the
+**finite-support highway conjecture** for Langton's ant, together with the exact search code, the result records, and a
+machine-checked Lean 4 formalization of selected algebraic kernels.
 
 > **Status.** The highway conjecture is a well-known **open** problem. Nothing here
-> proves or disproves it. What this project contributes is the first body of
+> proves or disproves it. What this project contributes is a collection of
 > *structural and arithmetic constraints* on what a finite-support periodic highway
-> can look like, plus an exhaustive exclusion of short-period highways. The papers
+> can look like, all-period exclusions of diagonal transverse widths two and four,
+> plus an exhaustive exclusion of short-period highways. The width-four theorem is
+> explicitly computer-assisted: two independent local enumerators certify its finite
+> edge table, while Lean checks the graph-rank consequence. The papers
 > are explicit about exactly what remains open.
 
 ---
@@ -29,9 +32,10 @@ and steps forward; on a black cell it turns left, whitens the cell, and steps
 forward. Started on the all-white plane, after 9977 steps it builds the **highway**:
 a period-104 pattern that drifts diagonally forever.
 
-**Highway conjecture.** *For every finite initial set of black cells, the ant
-eventually builds a (translated/rotated/reflected/phase-shifted) copy of this
-period-104 highway.*
+**Highway conjecture.** *For every finite initial set of black cells, the ant's future
+path and turn trace eventually agree with a translated, quarter-turn-rotated, and
+phase-shifted copy of this period-104 highway.* Finite stationary debris away from
+the future path is allowed; equality of the entire colouring is not asserted.
 
 ## Main results (all proved / computed here)
 
@@ -40,30 +44,44 @@ period-104 highway.*
 | 1 | **Even-winding theorem** — no finite-support pattern can drift to an exact copy of itself with *zero* net black growth. Hence every periodic highway grows a wake of size `g ∈ 4ℤ₍>0₎`. | `paper/` §6 |
 | 2 | **Signed mod-four wake-residue identity** — checker-signed strand bases sum to `2 (mod 4)` in each drift residue class, giving the strand-density lower bound `g ≥ 2·max(|a|,|b|)`. (A lower bound, not claimed attained: the standard highway has `g = 12` against a bound of `4`.) | `paper/` §7 |
 | 3 | **Tait-graph conjugacy** + cycle-rank surgery identity `E + ΔC = 2β`. | `paper/` §4 |
-| 4 | **Two-endpoint collision-chain parity** + touch-graph interlacement rank formula. | `paper/` §8 |
-| 5 | **Exhaustive exclusion of every finite-support periodic highway of period ≤ 48** — rank-by-rank audited, `hits = 0`, and *assuming no consequence of result 2*: the exact criterion is applied to every positive-growth nonzero-drift leaf. | `paper/` §9, `results/` |
-| 6 | **Decidable periodic-realisability criterion** with an explicit finite seed. | `paper/` §3 |
+| 4 | **Two-endpoint collision-chain parity** for row-column colour defects. | `paper/` §8 |
+| 5 | **Transverse rigidity** — for diagonal drift, the two extremal level lines of a periodic highway share one arrival axis (horizontal after normalizing the drift so `ab < 0`), every turn on them is `R`, and each of their cells the ant reaches is entered exactly once and never revisited: the highway runs between two guard rails of permanent wake. The transverse width is therefore even. | `paper/` §9 |
+| 6 | **No periodic highway of transverse width 2** — the first exclusion here that is **not** bounded by a period cutoff: it holds at every period. Follows from (5) by collapsing the strip to a one-dimensional walk. | `paper/` §9 |
+| 7 | **No diagonal periodic highway of transverse width 4, at any period** — exact crossing sequences through untouched five-cell columns form a 12-edge acyclic graph. Two independent enumerators certify the complete local table; Lean certifies the displayed rank decrease. Hence diagonal highway width is even and at least 6. | `paper/` §9, `results/width4_crossing_graph_certificate.json` |
+| 8 | **Exhaustive exclusion of every finite-support periodic highway of period ≤ 48** — prefix-shard audited through period 32 and rank-by-rank audited for periods 34–48, with `hits = 0`; the exact criterion is applied to every positive-growth nonzero-drift leaf without assuming result 2. | `paper/` §10, `results/` |
+| 9 | **Decidable periodic-realisability criterion** with an explicit finite seed. | `paper/` §3 |
 
-The algebraic cores of results (1) and (2) are **machine-checked in Lean 4**
-(`lean/`), with no `sorry`s and only the standard axioms.
+Results (5)–(7) are of a different kind from (1)–(4): those are *incidence*
+statements (counts of strands, edges and charges), and the paper records explicit
+countermodels satisfying all of them. (5) and (6) instead use the **order** in which a
+cell is visited — that the turn sequence at a cell alternates and starts with `R` — and
+so apply at every period rather than up to a search bound. Result (7) combines that
+rigidity with exact local dynamics; its computer-assisted boundary is stated above.
+
+Selected algebraic kernels used by results (1) and (2) are **machine-checked in Lean
+4** (`lean/`), with no `sorry`s and only the standard axioms. Lean also checks the
+width-four graph-rank certificate. This is not an
+end-to-end formalization of the dynamics or of either full paper theorem; the exact
+boundary is listed in `lean/FORMALIZATION_BOUNDARY.md`.
 
 ## What is *not* claimed
 
 None of the above resolves the conjecture. Every result is a *necessary condition*
-on a periodic highway or an exact finite computation. The single missing geometric
-ingredient — a bounded-retreat / bounded-active-core lemma, plus a single-tour
-chronology theorem — is stated precisely in `paper/` §10.
+on a periodic highway or an exact finite computation. Two separate gaps remain: an
+entrance theorem for arbitrary finite seeds and a classification theorem for all
+positive-growth periodic traces. Widths six and eight, non-diagonal translators, and
+universal entrance remain open. They are stated precisely in `paper/` §11.
 
 ---
 
 ## Repository layout
 
 ```
-paper/            The publishable paper (self-contained main.tex, arXiv-ready)
-companion/        Extended technical report: the full ledger of results, with proofs
-docs/             HTML renderings (for GitHub Pages / quick reading)
-lean/             Lean 4 formalization of the transition kernel + algebraic core
-code/java/        The two exact search engines (reference + residue-pruned)
+paper/            Main preprint (self-contained main.tex, submission-ready source)
+companion/        Companion technical report; the main paper controls submission claims
+docs/             Current accessible summaries and compiled PDFs for GitHub Pages
+lean/             Lean 4 transition kernel + selected algebraic kernels
+code/java/        One residue-free certifying variant + two conditional pruned variants
 code/python/      Reference implementation of the criterion, and audit scripts
 results/          Aggregated search results + the standard highway word/seed
 research-notes/   The full research journal and compute handoff (honest audit trail)
@@ -100,17 +118,21 @@ Requires a standard TeX distribution (TeX Live / MiKTeX) with `amsart`, `amsmath
 
 ## Reproducing the search results
 
-The exclusion of periodic highways of period ≤ 48 is certified by the **independent
-engine**, which assumes no consequence of the signed mod-four wake-residue theorem
+The exclusion of periodic highways of period ≤ 48 is certified by the **residue-free
+variant**, which assumes no consequence of the signed mod-four wake-residue theorem
 (paper, Theorem 7.1) and applies the exact criterion to *every* positive-growth
 nonzero-drift leaf. Two faster variants that do assume that theorem are kept as
 cross-checks; because they prune at the node level they explore a strictly smaller
-tree, so their counters are **not** expected to match the independent engine's.
+tree, so their counters are **not** expected to match the residue-free variant's.
 
-The **complete per-rank shard records are committed** (compressed, the full set is a
-few MB); `results/period_exclusion_summary.json` holds the aggregated totals, and the
-commands below regenerate everything exactly. The whole exclusion runs in a few
-core-hours on a laptop — no cluster or special allocation is required.
+The **complete search records are archived**: per-rank records for periods 34–48,
+plus the depth-5 baseline and all 32 complete six-symbol prefix-shard logs through
+period 32 (compressed, a few MB). `results/period_exclusion_summary.json` holds the
+aggregated totals. The commands below are illustrative; the exact complete commands
+and rank partitions are recorded in `records/RECORDS_MANIFEST.json` and the audit
+scripts in `records/`. The period-48 certificate records
+51,856.023 aggregate shard-seconds (14.40 shard-hours) and 1:28:48 wall time with
+11 workers on the machine described below.
 
 ```bash
 # Compile the engines
@@ -121,19 +143,21 @@ javac -d build/residue  code/java/PositiveGrowthResidueSearch.java # residue-pru
 # One shard of a period-48 search (rank interval [START, STOP) of 2^16 length-17 prefixes)
 java -cp build/indep PositiveGrowthSearchIndep \
      --period 48 --prefix-length 17 --rank-start 0 --rank-stop 4096 \
-     --deficit-depths 0 --output shard_00.json
+     --output shard_00.json
 # Every record of this engine carries "residue_theorem_used": false.
 
 # The pruned variants (conditional on Theorem 7.1) — same arguments
 java -cp build/residue PositiveGrowthResidueSearch \
      --period 48 --prefix-length 17 --rank-start 0 --rank-stop 4096 \
-     --deficit-depths 0 --output shard_00_res.json
+     --output shard_00_res.json
 ```
-A complete exclusion requires: every rank covered exactly once, every shard
-`search_complete=true` with `node_cap=null`, empty hit lists, and the two engines'
-per-rank node/leaf/prune counters in agreement. See `code/README.md`.
+A complete period-34--48 exclusion requires every rank covered exactly once, every
+shard `search_complete=true` with `node_cap=null`, empty hit lists, and every
+per-rank counter summing to its shard aggregate. The conditional variants explore
+smaller trees and are consistency checks, not independent implementations. See
+`code/README.md`.
 
-**Positive control.** Both engines *accept* the standard highway word:
+**Positive control.** All three Java variants *accept* the standard highway word:
 ```bash
 java -cp build/original PositiveGrowthSearch --check-trace <standard-word>
 # => {"prefix_rules_valid":true,"growth":12,"drift":[2,-2],"p16_valid":true,"p3_valid":true}
@@ -166,24 +190,24 @@ certified.
 
 See [`CITATION.cff`](CITATION.cff). Suggested:
 
-> A. Jillhewar, *New Structural and Arithmetic Constraints on Finite-Support Periodic
-> Highways of Langton's Ant*, preprint, 2026. Supplementary code, data and Lean
+> A. Jillhewar, *Finite-Support Periodic Highways of Langton's Ant: Necessary
+> Conditions, Transverse Exclusions, and Exact Search*, preprint, 2026. Supplementary code, data and Lean
 > formalization: Zenodo, doi:[10.5281/zenodo.21381637](https://doi.org/10.5281/zenodo.21381637).
 
 The DOI above is the **concept DOI**: it always resolves to the latest archived
-release. To pin an exact version, use that release's own DOI (e.g. `v1.0.1` is
-[`10.5281/zenodo.21381638`](https://doi.org/10.5281/zenodo.21381638)).
+release. To pin an exact version, use the version DOI shown on that Zenodo release;
+do not substitute the concept DOI when exact file identity matters.
 
 ## License
 
 - **Code, Lean, data** (`code/`, `lean/`, `results/`): MIT — see [`LICENSE`](LICENSE).
 - **Papers and prose** (`paper/`, `companion/`, `docs/`, `research-notes/`):
-  Creative Commons Attribution 4.0 (CC BY 4.0).
+  Creative Commons Attribution 4.0 (CC BY 4.0) — see `LICENSE-PAPER.md`.
 
 ## Acknowledgements
 
 The exact searches were run on a single workstation (Intel Core i5-1334U, 10 physical
 cores, 16 GB RAM, Windows 11 build 26200; Eclipse Temurin OpenJDK 25.0.1+8; CPython
 3.13.14) — one JVM per shard, at most 12 concurrent shards. No cluster or special
-allocation was used, and the full exclusion reproduces in a few core-hours on
-commodity hardware.
+allocation was used. The period-48 run totals 14.40 aggregate shard-hours and
+records 1:28:48 wall time with 11 workers.

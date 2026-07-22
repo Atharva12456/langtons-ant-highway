@@ -11,8 +11,10 @@ import java.util.Locale;
  * Exact sharded search for positive-growth finite-support periodic Langton
  * traces, using NO consequence of the signed mod-four wake-residue theorem.
  *
- * <p>This is the theorem-independent reference engine.  It exists to certify
- * the small-period exclusion without assuming the residue theorem.  Compared
+ * <p>This is the residue-theorem-free certifying variant.  It shares its
+ * enumeration, representation, and exact-criterion infrastructure with the
+ * two pruned variants, so it is not an implementation-independent engine.
+ * It certifies the small-period exclusion without assuming the residue theorem. Compared
  * with {@code PositiveGrowthSearch}, every use of the strand-density bound
  * P16, g >= 2 max(|dx|,|dy|) --- a corollary of the residue theorem --- has
  * been removed:

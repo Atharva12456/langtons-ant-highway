@@ -1,14 +1,14 @@
 {
-  "schema": "langton-independent-exclusion-v1",
+  "schema": "langton-residue-free-exclusion-v2",
   "claim": "exhaustive positive-growth search using NO consequence of the signed mod-four wake-residue theorem; the exact criterion is applied to every positive-growth nonzero-drift leaf",
-  "environment": {
+  "audit_environment": {
     "python": "3.13.14",
     "platform": "Windows-11-10.0.26200-SP0",
     "processor": "Intel64 Family 6 Model 186 Stepping 3, GenuineIntel",
     "java": "openjdk version \"25.0.1\" 2025-10-21 LTS\nOpenJDK Runtime Environment Temurin-25.0.1+8 (build 25.0.1+8-LTS)\nOpenJDK 64-Bit Server VM Temurin-25.0.1+8 (build 25.0.1+8-LTS, mixed mode, sharing)"
   },
   "engine_sha256": {
-    "PositiveGrowthSearchIndep.java": "f04663f4a6e4bbc574e97cc68f9b514a5ae62ce3f585862b8c69bd88cb10e57c"
+    "PositiveGrowthSearchIndep.java": "dacd32f6ab2f0c033c4e8226987333f21582e5aecad25322863439065645d68f"
   },
   "periods": {
     "34": {
@@ -18,6 +18,7 @@
       "ranks_covered_exactly_once": true,
       "shards": 47,
       "residue_theorem_used": false,
+      "deficit_rule_active": false,
       "exact_criterion_applied_to": "every positive-growth nonzero-drift leaf",
       "nodes": 40418033,
       "growth_prunes": 9631051,
@@ -41,6 +42,7 @@
       "ranks_covered_exactly_once": true,
       "shards": 47,
       "residue_theorem_used": false,
+      "deficit_rule_active": false,
       "exact_criterion_applied_to": "every positive-growth nonzero-drift leaf",
       "nodes": 108995287,
       "growth_prunes": 25755259,
@@ -64,6 +66,7 @@
       "ranks_covered_exactly_once": true,
       "shards": 48,
       "residue_theorem_used": false,
+      "deficit_rule_active": false,
       "exact_criterion_applied_to": "every positive-growth nonzero-drift leaf",
       "nodes": 293763689,
       "growth_prunes": 68872065,
@@ -87,6 +90,7 @@
       "ranks_covered_exactly_once": true,
       "shards": 48,
       "residue_theorem_used": false,
+      "deficit_rule_active": false,
       "exact_criterion_applied_to": "every positive-growth nonzero-drift leaf",
       "nodes": 791801484,
       "growth_prunes": 184318595,
@@ -110,6 +114,7 @@
       "ranks_covered_exactly_once": true,
       "shards": 12,
       "residue_theorem_used": false,
+      "deficit_rule_active": false,
       "exact_criterion_applied_to": "every positive-growth nonzero-drift leaf",
       "nodes": 2133302151,
       "growth_prunes": 493254963,
@@ -133,6 +138,7 @@
       "ranks_covered_exactly_once": true,
       "shards": 12,
       "residue_theorem_used": false,
+      "deficit_rule_active": false,
       "exact_criterion_applied_to": "every positive-growth nonzero-drift leaf",
       "nodes": 5748138964,
       "growth_prunes": 1320936251,
@@ -156,6 +162,7 @@
       "ranks_covered_exactly_once": true,
       "shards": 12,
       "residue_theorem_used": false,
+      "deficit_rule_active": false,
       "exact_criterion_applied_to": "every positive-growth nonzero-drift leaf",
       "nodes": 15483269352,
       "growth_prunes": 3537269314,
@@ -179,6 +186,7 @@
       "ranks_covered_exactly_once": true,
       "shards": 96,
       "residue_theorem_used": false,
+      "deficit_rule_active": false,
       "exact_criterion_applied_to": "every positive-growth nonzero-drift leaf",
       "nodes": 41710394384,
       "growth_prunes": 9478377506,
@@ -196,5 +204,6 @@
       "node_ratio_indep_over_strand_pruned": 4.807
     }
   },
+  "missing_periods": [],
   "all_checks_passed": true
 }

@@ -495,4 +495,59 @@ theorem StabilizedP3Word.odd_balanced_prefix_bound (word : StabilizedP3Word)
     simpa [hgrowth] using word.raw_prefix_bound k
   · exact hspec.prefixes_zero
 
+/-!
+## Endpoint data derived from a stabilized P3 word
+
+This constructor discharges every algebraic normal-form field of
+`OrbitEndpointData`.  What remains outside this module is the geometric bridge
+that extracts the stabilized, decreasing-level P3 word for each drift orbit of
+an `ExactPeriodTrace` and identifies its aggregate with the exact phase toggles.
+-/
+
+def StabilizedP3Word.toOrbitEndpointData
+    (word : StabilizedP3Word) {n orbitCount : Nat}
+    (o : Fin orbitCount) (residue : Fin n) (odd : Bool) :
+    OrbitEndpointData n orbitCount o where
+  residue := residue
+  odd := odd
+  level0 := word.origin
+  delta := word.delta
+  growth := word.growth
+  strandIndex := firstOneIndex word.delta
+  strandIndex_valid := by
+    intro hgrowth
+    exact (word.firstOneSpec hgrowth).valid
+  strand_is_first_positive := by
+    intro hgrowth
+    have hspec := word.firstOneSpec hgrowth
+    exact ⟨hspec.value, hspec.earlier⟩
+  balanced_sum_zero := by
+    cases hgrowth : word.growth with
+    | false =>
+        have hsum := word.delta_sum
+        simpa [hgrowth] using hsum
+    | true =>
+        have hspec := word.firstOneSpec hgrowth
+        have hremove := sum_removeOneAt (firstOneIndex word.delta) word.delta
+          hspec.valid
+        have hsum : word.delta.sum = 1 := by
+          simpa [hgrowth] using word.delta_sum
+        simp only [if_true]
+        rw [hremove, hsum]
+        omega
+  binary_prefix := by
+    apply scanWidget_binary_of_prefix_bounds 0
+    intro cut
+    cases hgrowth : word.growth with
+    | false =>
+        have hbound := word.even_prefix_bound hgrowth cut
+        simp only [Int.zero_sub]
+        simp
+        rcases hbound with hzero | hneg <;> omega
+    | true =>
+        have hbound := word.odd_balanced_prefix_bound hgrowth cut
+        simp only [Int.zero_sub]
+        simp
+        rcases hbound with hzero | hneg <;> omega
+
 end Langton.TraceGeometry

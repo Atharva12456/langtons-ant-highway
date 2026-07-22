@@ -283,10 +283,12 @@ def main() -> None:
             "shared counters at every rank, and report zero hits."
         ),
     }
-    SUMMARY_PATH.write_text(json.dumps(summary, indent=2) + "\n", encoding="utf-8")
+    SUMMARY_PATH.write_text(
+        json.dumps(summary, indent=2) + "\n", encoding="utf-8", newline="\n"
+    )
     summary_hash = sha256(SUMMARY_PATH)
 
-    note = f"""# Independent period-44 search audit
+    note = f"""# Two-engine period-44 conditional cross-audit
 
 Date: 2026-07-14  
 Scope: exact positive-growth finite-support periodic trace search, period 44,
@@ -294,12 +296,13 @@ prefix length 15, ranks 0 through 16,383, and no deficit depths.
 
 ## Verdict
 
-**PASS.** The residue-aware and original engines both searched the full stated
+**PASS.** The residue-aware and strand-pruned engines both searched the full stated
 rank interval with `search_complete=true`, `node_cap=null`, and zero hits. All
-shared search counters agree rank-by-rank across all 16,384 records. This is an
-independent computational exclusion of positive-growth periodic traces of
-period 44 under the engines' rigorously documented normalization and pruning
-rules; it is not a proof of the universal finite-seed highway conjecture.
+shared search counters agree rank-by-rank across all 16,384 records. This is a
+conditional consistency cross-audit under the engines' documented normalization
+and pruning theorems, not an independent implementation or the certifying
+residue-free search. It is not a proof of the universal finite-seed highway
+conjecture.
 
 ## Exact run command
 
@@ -365,7 +368,7 @@ Every shard JSON, console, and stderr SHA-256 is recorded individually in the
 summary JSON. Timing fields were deliberately excluded from cross-engine
 equality because they are not mathematical counters.
 """
-    NOTE_PATH.write_text(note, encoding="utf-8")
+    NOTE_PATH.write_text(note, encoding="utf-8", newline="\n")
     print(json.dumps({
         "verdict": "PASS",
         "summary": str(SUMMARY_PATH),

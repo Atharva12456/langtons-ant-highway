@@ -57,4 +57,8 @@ for (cx,cy) in G:
     deg[('C',cx)]^=1; deg[('R',cy)]^=1
 bd=sorted(k for k,v in deg.items() if v)
 print("boundary(G) =", bd, " expected [C_x,R_y] =", sorted([('C',x),('R',y)]))
-print(">=4 distinct cells in G:", len(G)>=4)
+lifetime_support = set(G)
+lifetime_support.add(z)
+print(">=4 distinct cells in G union {z}:", len(lifetime_support) >= 4,
+      " |G union {z}| =", len(lifetime_support))
+assert len(lifetime_support) >= 4
