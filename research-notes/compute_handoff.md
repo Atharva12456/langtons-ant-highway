@@ -725,3 +725,32 @@ Not yet done, and explicitly the user's to authorise: (1) commit and push the
 width-four working tree -- the live GitHub Pages PDF and the concept DOI still resolve
 to the pre-width-four release, so any outreach link is stale until this is pushed;
 (2) mint a Zenodo version DOI for the new bytes; (3) send the prepared outreach drafts.
+
+## 22 July 2026 consolidation note (single paper; companion folded in and removed)
+
+The project previously shipped two overlapping documents: `paper/main.tex` and a
+`companion/main.tex` technical report. They had drifted to cover essentially the same
+results and did not cross-reference each other, so publishing both would read as
+redundant self-overlap. Consolidated to a single paper of record:
+
+- The companion's one genuinely unique result -- the width-four six-mask structure and
+  the period bound P <= 7m (companion `prop:width4arithmetic`) -- was folded into the
+  main paper as a new appendix, "Width-four structure and an independent partial
+  exclusion" (`app:width4arith`), with `prop:width4arithmetic` and a corollary framing
+  it as a logically independent route: P <= 7m bounds each fixed drift to a finite
+  search, excluding width four for m <= 9 WITHOUT the blank-column table
+  (Lemma 9.4), corroborating Theorem 9.5 on that range. This is non-vacuous because it
+  does not assume the crossing-graph completeness premise.
+- Everything else in the companion (criterion, invariant, Tait conjugacy, even-winding,
+  residue, collision parity, extremal rigidity, width-two, width-four crossing graph,
+  period-<=48 exclusion, gateway seed, Lean) was already present in the main paper, so
+  nothing else was lost.
+- Removed: `companion/main.tex`, `docs/companion.pdf`, `docs/companion.html`. Updated
+  `README.md`, `docs/index.html`, `.zenodo.json`, `LICENSE`, `LICENSE-PAPER.md` to stop
+  referencing a companion. `CITATION.cff` already cited only the one paper.
+
+Final state: single paper `paper/main.tex` -> `paper/main.pdf`, **25 pages**, zero
+errors, zero Type-3 fonts, ligatures intact; `docs/paper.pdf` byte-identical to source.
+Manifest regenerated after removal. The mathematics is unchanged; this is a packaging
+consolidation, not a new result. Supersedes the "18-page companion" line in the
+21 July release-packaging note above.

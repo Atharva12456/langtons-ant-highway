@@ -52,3 +52,5 @@ indep_classes/
 tmp/
 paper/$out/
 *.class
+compile.done
+p[0-9].log

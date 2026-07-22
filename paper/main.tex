@@ -1354,7 +1354,10 @@ $\Gamma_{k-1}\to\Gamma_k$ an edge of its directed graph.  Infinitely many
 consecutive untouched columns would give a directed path of arbitrary length, while
 the lemma permits no path of four edges.  This contradiction excludes $W=4$.
 Together with Theorem~\ref{thm:extremal}(iv) and Theorem~\ref{thm:width2}, it gives
-$W\ge6$.
+$W\ge6$. Appendix~\ref{app:width4arith} records an independent arithmetic route that
+excludes width four for bounded drift without the blank-column table
+(Lemma~\ref{lem:blankcolumn}), and pins the admissible odd-level masks of any
+width-four highway.
 \end{proof}
 
 \begin{remark}[why the same proof stops at width six]\label{rem:width4}
@@ -1860,6 +1863,85 @@ environment strings above. The period-$34$--$48$ certifying shards have
 but all completed far below it. The exact search-record archive used for this revision
 has SHA-256
 \texttt{7052f3070829bf804ae317a40379f6bb045b00775aff826b4e347880747bcc1a}.
+
+%=======================================================================
+\section{Width-four structure and an independent partial exclusion}\label{app:width4arith}
+%=======================================================================
+
+Theorem~\ref{thm:width4} excludes every diagonal width-four highway using the
+completeness of the twelve-edge blank-column table (Lemma~\ref{lem:blankcolumn}),
+which is the one computer-assisted premise of Section~\ref{sec:transverse}. This
+appendix records a logically independent arithmetic route that reaches the same
+conclusion for bounded drift without that premise, and along the way pins the exact
+odd-level structure of any hypothetical width-four highway. It rests only on the
+residue identity, extremal-line rigidity, and the exact criterion.
+
+\begin{proposition}[width-four masks and period bound]\label{prop:width4arithmetic}
+Let a finite-support periodic highway have transverse width four and normalised drift
+$\drift=(m,-m)$, $m>0$. For each longitudinal residue, the set of levels carrying odd
+translation classes is one of
+\[
+\{0,2\},\ \{1,3\},\ \{0,4\},\ \{2,4\},\ \{0,1,2,4\},\ \{0,2,3,4\},
+\]
+and for each diagonal-coordinate residue the corresponding set belongs to the same
+six-element list. If $h$ of the $m$ longitudinal residues use a four-element mask,
+then $\growth=2m+2h$ and $h\equiv m\pmod2$. With $P$ the macro period and $N=2P$ the
+ant period,
+\[
+P\le 7m,\qquad N\le 14m,\qquad P\equiv m\pmod2.
+\]
+\end{proposition}
+
+\begin{proof}
+Let $o_{j,r}$ indicate that the class on level $j$ and longitudinal residue $r$ is
+odd. The signed residue identity of Theorem~\ref{thm:residue} reads
+$o_{0,r}-o_{1,r}+o_{2,r}-o_{3,r}+o_{4,r}\equiv2\pmod4$. Exhausting the five binary
+values gives exactly the six displayed masks; the other coordinate residue identity
+gives the diagonal version. Summing mask sizes gives $\growth=2m+2h$, and
+$\growth\in4\Z$ (Corollary~\ref{cor:growth4}) fixes the parity of $h$.
+
+For the period bound, start the cycle immediately after a bottom-extremal visit and
+observe the ant only on the odd levels. The forced bottom turn puts it in state
+$LN$, and one translated period returns to $LN$; width four ensures a top-line
+transition also occurs. Write the four states $LN,LS,UN,US$ for lower/upper level and
+north/south arrival. The twelve possible two-turn macro transitions are
+\[
+\begin{array}{c|ccc}
+LN&(LS,+1,\mathrm{RR})&(UN,+1,\mathrm{RL})&(LN,-1,\mathrm{LR})\\
+LS&(LN,-1,\mathrm{RR})&(LS,+1,\mathrm{LR})&(UN,+1,\mathrm{LL})\\
+UN&(US,+1,\mathrm{RR})&(UN,-1,\mathrm{LR})&(LS,-1,\mathrm{LL})\\
+US&(UN,-1,\mathrm{RR})&(LS,-1,\mathrm{RL})&(US,+1,\mathrm{LR}).
+\end{array}
+\]
+Let $x$ count $LN\to LN$, $y$ count $US\to US$, $c$ count $LS\to LN$, and $f$ count
+$UN\to US$. If $a,b$ count $LN\to LS$, $LN\to UN$ and $i,j$ count $US\to UN$,
+$US\to LS$, flow conservation gives $c=a+b$ and $f=i+j$. Extremal singleton rigidity
+(Theorem~\ref{thm:extremal}) gives $x+c\le m$ and $f+y\le m$. Let $L_1,L_3$ be the
+lower and upper odd-level $\turnL$ totals. The criterion of
+Theorem~\ref{thm:criterion}, that each stabilised class alternates and begins with
+$\turnR$, makes the $\turnR$-minus-$\turnL$ excess on each odd level nonnegative; the
+lower right-turn total is $a+b+c=2c$ and the upper one is $f+i+j=2f$, so $L_1\le2c$
+and $L_3\le2f$. Flow conservation and the longitudinal displacement read from the
+table give
+\[
+P=2c+2f+L_1+L_3,\qquad m=L_1-L_3-2x+2y.
+\]
+Hence $L_1+L_3\le3m-6x+2y$, and substitution yields $P\le7m-8x\le7m$. Every macro
+move changes the longitudinal coordinate by $\pm1$, so $P\equiv m\pmod2$.
+\end{proof}
+
+\begin{corollary}[independent width-four exclusion for bounded drift]\label{cor:width4bounded}
+Fix $m\ge1$. By Proposition~\ref{prop:width4arithmetic} a width-four highway of drift
+$(m,-m)$ has ant period $N\le14m$, so only finitely many turn words can realise one,
+and Theorem~\ref{thm:criterion} decides each. Performing this finite search excludes
+width-four highways of drift $(m,-m)$ for every $1\le m\le9$
+(\texttt{results/width4\_drift\_exclusion\_summary.json}). This conclusion uses only
+Proposition~\ref{prop:width4arithmetic} and the exact criterion, not the
+blank-column table of Lemma~\ref{lem:blankcolumn}, so it corroborates
+Theorem~\ref{thm:width4} on that range by a logically separate route. The
+crossing-graph argument of Section~\ref{sec:transverse} supersedes it by removing the
+drift bound.
+\end{corollary}
 
 %=======================================================================
 \begin{thebibliography}{99}

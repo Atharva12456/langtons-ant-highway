@@ -25,6 +25,6 @@ NOTE ON THE PAPERS AND PROSE
 
 The MIT license above covers the source code, the Lean formalization, and the
 data in this repository (the code/, lean/, and results/ directories). The
-written papers and prose (the paper/, companion/, docs/, and research-notes/
+written paper and prose (the paper/, docs/, and research-notes/
 directories) are instead licensed under the Creative Commons Attribution 4.0
 International License (CC BY 4.0): https://creativecommons.org/licenses/by/4.0/

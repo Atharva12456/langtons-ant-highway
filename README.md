@@ -10,7 +10,7 @@
 🌐 **[Project page](https://atharva12456.github.io/langtons-ant-highway/)** ·
 📌 **Cite:** [`10.5281/zenodo.21381637`](https://doi.org/10.5281/zenodo.21381637)
 
-This repository accompanies a main paper and a companion technical report on the
+This repository accompanies a paper on the
 **finite-support highway conjecture** for Langton's ant, together with the exact search code, the result records, and a
 machine-checked Lean 4 formalization of selected algebraic kernels.
 
@@ -77,9 +77,8 @@ universal entrance remain open. They are stated precisely in `paper/` §11.
 ## Repository layout
 
 ```
-paper/            Main preprint (self-contained main.tex, submission-ready source)
-companion/        Companion technical report; the main paper controls submission claims
-docs/             Current accessible summaries and compiled PDFs for GitHub Pages
+paper/            The preprint (self-contained main.tex, submission-ready source)
+docs/             Accessible HTML summary and the compiled PDF for GitHub Pages
 lean/             Lean 4 transition kernel + selected algebraic kernels
 code/java/        One residue-free certifying variant + two conditional pruned variants
 code/python/      Reference implementation of the criterion, and audit scripts
@@ -201,7 +200,7 @@ do not substitute the concept DOI when exact file identity matters.
 ## License
 
 - **Code, Lean, data** (`code/`, `lean/`, `results/`): MIT — see [`LICENSE`](LICENSE).
-- **Papers and prose** (`paper/`, `companion/`, `docs/`, `research-notes/`):
+- **Paper and prose** (`paper/`, `docs/`, `research-notes/`):
   Creative Commons Attribution 4.0 (CC BY 4.0) — see `LICENSE-PAPER.md`.
 
 ## Acknowledgements
